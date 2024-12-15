@@ -129,6 +129,7 @@ public class LateralZeroPowerAccelerationTuner extends OpMode {
 
         poseUpdater.update();
         Vector heading = new Vector(1.0, poseUpdater.getPose().getHeading() - Math.PI / 2);
+        telemetryA.addData("Calc Velocity:", MathFunctions.dotProduct(poseUpdater.getVelocity(), heading));
         if (!end) {
             if (!stopping) {
                 if (MathFunctions.dotProduct(poseUpdater.getVelocity(), heading) > VELOCITY) {

@@ -40,8 +40,8 @@ import java.util.List;
  * @version 1.0, 3/13/2024
  */
 @Config
-@Autonomous(name = "Forward Velocity Tuner", group = "Autonomous Pathing Tuning")
-public class ForwardVelocityTuner extends OpMode {
+@Autonomous(name = "CheckDistance", group = "Autonomous Pathing Tuning")
+public class CheckDistance extends OpMode {
     private ArrayList<Double> velocities = new ArrayList<>();
 
     private DcMotorEx leftFront;
@@ -106,10 +106,12 @@ public class ForwardVelocityTuner extends OpMode {
      */
     @Override
     public void start() {
-        leftFront.setPower(1);
-        leftRear.setPower(1);
-        rightFront.setPower(1);
-        rightRear.setPower(1);
+        /*
+        leftFront.setPower(0.2);
+        leftRear.setPower(0.2);
+        rightFront.setPower(0.2);
+        rightRear.setPower(0.2);
+         */
         end = false;
     }
 

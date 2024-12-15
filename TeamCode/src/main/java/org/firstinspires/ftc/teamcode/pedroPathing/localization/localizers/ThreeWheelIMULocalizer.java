@@ -63,9 +63,13 @@ public class ThreeWheelIMULocalizer extends Localizer {
     private double previousIMUOrientation;
     private double deltaRadians;
     private double totalHeading;
-    public static double FORWARD_TICKS_TO_INCHES = 0.002957;//8192 * 1.37795 * 2 * Math.PI * 0.5008239963;
-    public static double STRAFE_TICKS_TO_INCHES = -0.003127403096038503;//8192 * 1.37795 * 2 * Math.PI * 0.5018874659;
-    public static double TURN_TICKS_TO_RADIANS = 0.002995;//8192 * 1.37795 * 2 * Math.PI * 0.5;
+    //public static double FORWARD_TICKS_TO_INCHES = 0.002957;//8192 * 1.37795 * 2 * Math.PI * 0.5008239963;
+    public static double FORWARD_TICKS_TO_INCHES = 0.001978897637795;;
+   // public static double STRAFE_TICKS_TO_INCHES = -0.003127403096038503;//8192 * 1.37795 * 2 * Math.PI * 0.5018874659;
+    public static double STRAFE_TICKS_TO_INCHES = 0.001978897637795;
+    //public static double TURN_TICKS_TO_RADIANS = 0.002995;//8192 * 1.37795 * 2 * Math.PI * 0.5;
+    public static double TURN_TICKS_TO_RADIANS = 0.0019786280075646387; // 0.002032614324886769
+
 
     public static boolean useIMU = true;
 
@@ -91,22 +95,22 @@ public class ThreeWheelIMULocalizer extends Localizer {
         imu = hardwareMap.get(IMU.class, "imu");
 
         // TODO: replace this with your IMU's orientation
-        imu.initialize(new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.LEFT, RevHubOrientationOnRobot.UsbFacingDirection.UP)));
+        imu.initialize(new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.LEFT)));
 
         // TODO: replace these with your encoder positions
-        leftEncoderPose = new Pose(-3, 5.7, 0);
-        rightEncoderPose = new Pose(-3, -5.7, 0);
-        strafeEncoderPose = new Pose(6.9, 1, Math.toRadians(90));
+        leftEncoderPose = new Pose(-3, 3.8, 0);
+        rightEncoderPose = new Pose(-3, -3.8, 0);
+        strafeEncoderPose = new Pose(-6.5, 1, Math.toRadians(90));
 
 
         // TODO: replace these with your encoder ports
-        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "lb"));
-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "lf"));
-        strafeEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rf"));
+        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
+        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftRear"));
+        strafeEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightRear"));
 
         // TODO: reverse any encoders necessary
         leftEncoder.setDirection(Encoder.REVERSE);
-        rightEncoder.setDirection(Encoder.FORWARD);
+        rightEncoder.setDirection(Encoder.REVERSE);
         strafeEncoder.setDirection(Encoder.FORWARD);
 
         setStartPose(setStartPose);
