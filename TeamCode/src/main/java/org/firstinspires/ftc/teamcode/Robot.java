@@ -1,4 +1,9 @@
 package org.firstinspires.ftc.teamcode;
+import static org.firstinspires.ftc.teamcode.pedroPathing.tuning.FollowerConstants.leftFrontMotorName;
+import static org.firstinspires.ftc.teamcode.pedroPathing.tuning.FollowerConstants.leftRearMotorName;
+import static org.firstinspires.ftc.teamcode.pedroPathing.tuning.FollowerConstants.rightFrontMotorName;
+import static org.firstinspires.ftc.teamcode.pedroPathing.tuning.FollowerConstants.rightRearMotorName;
+
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -14,14 +19,15 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 public class Robot {
-    public DcMotor motorFR = null; // Front Right
-    public DcMotor motorFL = null; // Front Left
-    public DcMotor motorBR = null; // Back Right
-    public DcMotor motorBL = null; // Back Left
+    public DcMotor rightFront = null; // Front Right
+    public DcMotor leftFront = null; // Front Left
+    public DcMotor rightRear = null; // Back Right
+    public DcMotor leftRear = null; // Back Left
 
     public DcMotorEx motorSlider; // Slider
     public Servo servoArm; // Elbow or Arm
@@ -33,7 +39,7 @@ public class Robot {
     public Telemetry telemetry;
 
     public WebcamName webcam;
-    //public MecanumDrive mDrive;
+    public Follower follower;
 
     // Claw positions
     public double claw_open = 0.15;
@@ -76,22 +82,31 @@ public class Robot {
 
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
-        motorFL = hardwareMap.get(DcMotor.class, "leftFront");
-        motorFR = hardwareMap.get(DcMotor.class, "rightFront");
-        motorBL = hardwareMap.get(DcMotor.class, "leftRear");
-        motorBR = hardwareMap.get(DcMotor.class, "rightRear");
+
+        leftFront = hardwareMap.get(DcMotorEx.class, leftFrontMotorName);
+        leftRear = hardwareMap.get(DcMotorEx.class, leftRearMotorName);
+        rightRear = hardwareMap.get(DcMotorEx.class, rightRearMotorName);
+        rightFront = hardwareMap.get(DcMotorEx.class, rightFrontMotorName);
+
+        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
         motorSlider = hardwareMap.get(DcMotorEx.class, "sliders");
-        //servoArm = hardwareMap.get(Servo.class, "arm");
         servoArm = hardwareMap.get(Servo.class, "arm");
         servoWrist = hardwareMap.get(Servo.class, "claw_arm");
         servoCL = hardwareMap.get(Servo.class, "claw_left");
         servoCR = hardwareMap.get(Servo.class, "claw_right");
-//        webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
         led = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         led.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
+//        webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
 
-
-        //mDrive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        follower = new Follower(hardwareMap);
     }
 
 }

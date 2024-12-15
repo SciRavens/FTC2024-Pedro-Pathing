@@ -22,14 +22,11 @@ public class EncoderTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap, telemetry);
-        robot.motorFL.setDirection(DcMotorSimple.Direction.REVERSE);
-        robot.motorBL.setDirection(DcMotorSimple.Direction.REVERSE);
 
         rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
         leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftRear"));
         strafeEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightRear"));
 
-        // TODO: reverse any encoders necessary
         leftEncoder.setDirection(Encoder.REVERSE);
         rightEncoder.setDirection(Encoder.REVERSE);
         strafeEncoder.setDirection(Encoder.FORWARD);
@@ -39,19 +36,19 @@ public class EncoderTest extends LinearOpMode {
             get_ticks();
             if (gamepad1.x) {
                 stopall();
-                robot.motorFL.setPower(1.0);
+                robot.leftFront.setPower(1.0);
             }
             if (gamepad1.y) {
                 stopall();
-                robot.motorBL.setPower(1.0);
+                robot.leftRear.setPower(1.0);
             }
             if (gamepad1.a) {
                 stopall();
-                robot.motorFR.setPower(1.0);
+                robot.rightFront.setPower(1.0);
             }
             if (gamepad1.b) {
                 stopall();
-                robot.motorBR.setPower(1.0);
+                robot.rightRear.setPower(1.0);
             }
             robot.telemetry.update();
         }
@@ -59,10 +56,10 @@ public class EncoderTest extends LinearOpMode {
 
     public void stopall()
     {
-        robot.motorBL.setPower(0);
-        robot.motorBR.setPower(0);
-        robot.motorFR.setPower(0);
-        robot.motorFL.setPower(0);
+        robot.rightFront.setPower(0);
+        robot.rightRear.setPower(0);
+        robot.leftRear.setPower(0);
+        robot.leftFront.setPower(0);
     }
 
 
@@ -73,9 +70,9 @@ public class EncoderTest extends LinearOpMode {
         robot.telemetry.addData("rightEncoder", rightEncoder.getDeltaPosition());
         robot.telemetry.addData("LeftEncoder", leftEncoder.getDeltaPosition());
         robot.telemetry.addData("StrafeEncoder", strafeEncoder.getDeltaPosition());
-        robot.telemetry.addData("Right ticks -- rightFront", robot.motorFR.getCurrentPosition());
-        robot.telemetry.addData("Left ticks -- BackLeft", robot.motorBL.getCurrentPosition());
-        robot.telemetry.addData("BackRight ticks -- rightRear", robot.motorBR.getCurrentPosition());
+        robot.telemetry.addData("Right ticks -- rightFront", robot.rightFront.getCurrentPosition());
+        robot.telemetry.addData("Left ticks -- BackLeft", robot.leftRear.getCurrentPosition());
+        robot.telemetry.addData("BackRight ticks -- rightRear", robot.rightRear.getCurrentPosition());
     }
 }
 
