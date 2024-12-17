@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 @TeleOp(name = "SciRavens-TeleOp")
 public class RobotTeleop extends LinearOpMode {
     public Robot robot;
-    public DriveTrain DT;
+    //public DriveTrain DT;
     public Slider slider;
     public Arm arm;
     public Wrist wrist;
@@ -17,14 +17,13 @@ public class RobotTeleop extends LinearOpMode {
 
     RevBlinkinLedDriver.BlinkinPattern pattern;
     Leds leds;
-private int cur = 1;
-private double slider_pos;
-public DcMotorEx par0, par1, perp;
+    private int led_cur = 1;
+    private double slider_pos;
 
     @Override
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap, telemetry);
-        DT = new DriveTrain(robot, gamepad1);
+        robot.follower.startTeleopDrive();
         slider = new Slider(robot, gamepad2);
         arm = new Arm(robot);
         wrist = new Wrist(robot);
@@ -36,9 +35,9 @@ public DcMotorEx par0, par1, perp;
         arm.setPosStarting(false);
         wrist.setPosStarting(false);
         waitForStart();
-//        leds.setPattern(cur);
+//        leds.setPattern(led_cur);
         while(opModeIsActive()) {
-            DT.drive();
+            follower_operate();
             arm.operate();
             wrist.operate();
 //            slider_operate();
@@ -51,34 +50,31 @@ public DcMotorEx par0, par1, perp;
         }
     }
 
+
+    private void follower_operate()
+    {
+        robot.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x);
+        robot.follower.update();
+    }
+
     private void arm_wrist_operate()
     {
         if (gamepad2.dpad_down) {
             arm.setPosSample(true);
             wrist.setPosSample(true);
-            //arm.setSCTarget(robot.arm_pos_sample);
-            //wrist.setSCTarget(robot.wrist_pos_sample);
         } else if (gamepad2.y) {
             arm.setPosBasket(true);
             wrist.setPosBasket(true);
-            //arm.setSCTarget(robot.arm_pos_basket);
-            //wrist.setSCTarget(robot.wrist_pos_basket);
         } else if(gamepad2.x) {
             arm.setPosStarting(false);
             wrist.setPosStarting(false);
-            //arm.setSCTarget(robot.arm_pos_starting);
-            //wrist.setSCTarget(robot.wrist_pos_starting);
         } else if(gamepad2.b) {
             arm.setPosSpecimen(true);
             wrist.setPosSpecimen(true);
-            //arm.setSCTarget(robot.arm_pos_specimen);
-            //wrist.setSCTarget(robot.wrist_pos_specimen);
         }
         else if(gamepad2.a){
             arm.setPosSampleTwo(true);
             wrist.setPosSampleTwo(true);
-            //arm.setSCTarget(robot.arm_pos_sample_two);
-            //wrist.setSCTarget(robot.wrist_pos_sample_two);
         }
         else if(gamepad2.dpad_up) {
             // TBD: fix this
@@ -96,17 +92,7 @@ public DcMotorEx par0, par1, perp;
 
     public void get_ticks() {
         slider_pos = slider.getCurrentPosition();
-
         robot.telemetry.addData("Slider Curr tick:", slider_pos);
-
-        par0 = hardwareMap.get(DcMotorEx.class, "rightFront");
-        par1 = hardwareMap.get(DcMotorEx.class, "leftRear");
-        perp = hardwareMap.get(DcMotorEx.class, "rightRear");
-
-        robot.telemetry.addData("rightFront ticks", par0.getCurrentPosition());
-        robot.telemetry.addData("leftFront ticks", par1.getCurrentPosition());
-        robot.telemetry.addData("rightRear ticks", perp.getCurrentPosition());
-
     }
 
 
@@ -158,9 +144,9 @@ public DcMotorEx par0, par1, perp;
     }
     private void leds_operate() {
         if (gamepad2.right_bumper || gamepad1.right_bumper) {
-            cur = (cur + 1) % leds.patterns.length;
-            leds.setPattern(cur);
-            telemetry.addData("SETTING COLOR", leds.patterns[cur].toString());
+            led_cur = (led_cur + 1) % leds.patterns.length;
+            leds.setPattern(led_cur);
+            telemetry.addData("SETTING COLOR", leds.patterns[led_cur].toString());
             telemetry.update();
         }
     }
