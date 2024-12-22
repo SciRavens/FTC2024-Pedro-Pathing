@@ -10,6 +10,8 @@ import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Path;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathChain;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathBuilder;
+
 
 @Autonomous(name = "PathTest", group = "Examples")
 public class PathTest extends OpMode {
@@ -17,33 +19,140 @@ public class PathTest extends OpMode {
     private Follower follower;
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState = 0;
-    private final Pose pose0 = new Pose(0, 0, Math.toRadians(0));
+    private final Pose pose0 = new Pose(9.757, 65.000, Math.toRadians(0));
     private final Pose pose1 = new Pose(40, 0, Math.toRadians(00));
     private final Pose pose2 = new Pose(40, 20, Math.toRadians(90));
     private final Pose pose3 = new Pose(0, 20, Math.toRadians(90));
 
     private Path path0, path1, path2, path3;
     private PathChain pathChain1, pathChain2, pathChain3;
+    PathBuilder builder;
 
-    public void buildPaths() {
-        path0 = new Path(new BezierLine(new Point(pose0), new Point(pose1)));
-        path0.setLinearHeadingInterpolation(pose0.getHeading(), pose1.getHeading());
-                //path0.setPathEndVelocityConstraint(4);
-        pathChain1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(pose1), new Point(pose2)))
-                .setLinearHeadingInterpolation(pose1.getHeading(), pose2.getHeading())
-                //.setPathEndVelocityConstraint(4)
-                .build();
-        pathChain2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(pose2), new Point(pose3)))
-                //.setPathEndVelocityConstraint(4)
-                .setLinearHeadingInterpolation(pose3.getHeading(), pose3.getHeading())
-                .build();
-        pathChain3 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(pose3), new Point(pose0)))
-                .setLinearHeadingInterpolation(pose0.getHeading(), pose0.getHeading())
-                //.setPathEndVelocityConstraint(4)
-                .build();
+//    public void buildPaths() {
+//        path0 = new Path(new BezierLine(new Point(pose0), new Point(pose1)));
+//        path0.setLinearHeadingInterpolation(pose0.getHeading(), pose1.getHeading());
+//                //path0.setPathEndVelocityConstraint(4);
+//        pathChain1 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(pose1), new Point(pose2)))
+//                .setLinearHeadingInterpolation(pose1.getHeading(), pose2.getHeading())
+//                //.setPathEndVelocityConstraint(4)
+//                .build();
+//        pathChain2 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(pose2), new Point(pose3)))
+//                //.setPathEndVelocityConstraint(4)
+//                .setLinearHeadingInterpolation(pose3.getHeading(), pose3.getHeading())
+//                .build();
+//        pathChain3 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(pose3), new Point(pose0)))
+//                .setLinearHeadingInterpolation(pose0.getHeading(), pose0.getHeading())
+//                //.setPathEndVelocityConstraint(4)
+//                .build();
+//    }
+
+    public void GeneratedPath() {
+        builder = new PathBuilder();
+        builder
+                .addPath(
+                        // Line 1
+                        new BezierLine(
+                                new Point(9.757, 65.000, Point.CARTESIAN),
+                                new Point(34.668, 65.000, Point.CARTESIAN)
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .addPath(
+                        // Line 2
+                        new BezierLine(
+                                new Point(34.668, 65.000, Point.CARTESIAN),
+                                new Point(34.668, 35.000, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .addPath(
+                        // Line 3
+                        new BezierLine(
+                                new Point(34.668, 35.000, Point.CARTESIAN),
+                                new Point(60.000, 35.000, Point.CARTESIAN)
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .addPath(
+                        // Line 4
+                        new BezierLine(
+                                new Point(60.000, 35.000, Point.CARTESIAN),
+                                new Point(60.000, 25.000, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .addPath(
+                        // Line 5
+                        new BezierLine(
+                                new Point(60.000, 25.000, Point.CARTESIAN),
+                                new Point(20.000, 25.000, Point.CARTESIAN)
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .setReversed(true)
+                .addPath(
+                        // Line 6
+                        new BezierLine(
+                                new Point(20.000, 25.000, Point.CARTESIAN),
+                                new Point(60.000, 25.000, Point.CARTESIAN)
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .addPath(
+                        // Line 7
+                        new BezierLine(
+                                new Point(60.000, 25.000, Point.CARTESIAN),
+                                new Point(60.000, 15.000, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .addPath(
+                        // Line 8
+                        new BezierLine(
+                                new Point(60.000, 15.000, Point.CARTESIAN),
+                                new Point(20.000, 15.000, Point.CARTESIAN)
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .setReversed(true)
+                .addPath(
+                        // Line 9
+                        new BezierLine(
+                                new Point(20.000, 15.000, Point.CARTESIAN),
+                                new Point(60.000, 15.000, Point.CARTESIAN)
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .addPath(
+                        // Line 10
+                        new BezierLine(
+                                new Point(60.000, 15.000, Point.CARTESIAN),
+                                new Point(60.000, 10.000, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .addPath(
+                        // Line 11
+                        new BezierLine(
+                                new Point(60.000, 10.000, Point.CARTESIAN),
+                                new Point(20.000, 10.000, Point.CARTESIAN)
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .setReversed(true);
+    }
+
+    public void autonomousPathUpdate() {
+        switch (pathState) {
+            case 0:
+                follower.followPath(builder.build());
+                setPathState(-1);
+                telemetry.addData("PATHSTATE: ", pathState);
+                break;
+        }
     }
 
     public void setPathState(int pState) {
@@ -51,44 +160,44 @@ public class PathTest extends OpMode {
         //pathTimer.resetTimer();
     }
 
-    public void autonomousPathUpdate() {
-        switch (pathState) {
-            case 0:
-                follower.followPath(path0);
-                setPathState(1);
-                telemetry.addData("PATHSTATE: ", pathState);
-                break;
-            case 1:
-                if(follower.getPose().getX() > (pose1.getX() - 1) && follower.getPose().getY() > (pose1.getY() - 1)) {
-                    follower.followPath(pathChain1,true);
-                    setPathState(-1);
-                    telemetry.addData("PATHSTATE: ", pathState);
-                }
-                break;
-            case 2:
-                if(follower.getPose().getX() > (pose2.getX() - 1) && follower.getPose().getY() > (pose2.getY() - 1)) {
-                    follower.followPath(pathChain2,true);
-                    setPathState(3);
-                    telemetry.addData("PATHSTATE: ", pathState);
-                }
-                break;
-            case 3:
-                if(follower.getPose().getX() > (pose3.getX() - 1) && follower.getPose().getY() > (pose3.getY() - 1)) {
-                    follower.followPath(pathChain3,true);
-                    setPathState(4);
-                    telemetry.addData("PATHSTATE: ", pathState);
-                }
-                break;
-            case 4:
-                if(follower.getPose().getX() > (pose0.getX() - 1) && follower.getPose().getY() > (pose0.getY() - 1)) {
-                    setPathState(-1);
-                    telemetry.addData("PATHSTATE: ", pathState);
-                }
-                break;
-        }
-        telemetry.addData("Current X: ", follower.getPose().getX());
-        telemetry.addData("Target X: ", pose1.getX());
-    }
+//    public void autonomousPathUpdate() {
+//        switch (pathState) {
+//            case 0:
+//                follower.followPath(path0);
+//                setPathState(1);
+//                telemetry.addData("PATHSTATE: ", pathState);
+//                break;
+//            case 1:
+//                if(follower.getPose().getX() > (pose1.getX() - 1) && follower.getPose().getY() > (pose1.getY() - 1)) {
+//                    follower.followPath(pathChain1,true);
+//                    setPathState(-1);
+//                    telemetry.addData("PATHSTATE: ", pathState);
+//                }
+//                break;
+//            case 2:
+//                if(follower.getPose().getX() > (pose2.getX() - 1) && follower.getPose().getY() > (pose2.getY() - 1)) {
+//                    follower.followPath(pathChain2,true);
+//                    setPathState(3);
+//                    telemetry.addData("PATHSTATE: ", pathState);
+//                }
+//                break;
+//            case 3:
+//                if(follower.getPose().getX() > (pose3.getX() - 1) && follower.getPose().getY() > (pose3.getY() - 1)) {
+//                    follower.followPath(pathChain3,true);
+//                    setPathState(4);
+//                    telemetry.addData("PATHSTATE: ", pathState);
+//                }
+//                break;
+//            case 4:
+//                if(follower.getPose().getX() > (pose0.getX() - 1) && follower.getPose().getY() > (pose0.getY() - 1)) {
+//                    setPathState(-1);
+//                    telemetry.addData("PATHSTATE: ", pathState);
+//                }
+//                break;
+//        }
+//        telemetry.addData("Current X: ", follower.getPose().getX());
+//        telemetry.addData("Target X: ", pose1.getX());
+//    }
 
     @Override
     public void loop() {
@@ -116,7 +225,7 @@ public class PathTest extends OpMode {
         follower.setStartingPose(pose0);
         follower.setMaxPower(0.5);
 
-        buildPaths();
+        GeneratedPath();
     }
 
     @Override

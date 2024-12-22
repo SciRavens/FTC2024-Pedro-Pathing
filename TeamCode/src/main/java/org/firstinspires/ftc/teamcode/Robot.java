@@ -43,7 +43,7 @@ public class Robot {
 
     // Claw positions
     public double claw_open = 0.15;
-    public double claw_close = 0.4;
+    public double claw_close = 0.425;
 
     //ClawAngle positions
     public double claw_horizontal = 0.18;
