@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.example;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import  com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathBuilder;
 
 
-@Autonomous(name = "PathTest", group = "Examples")
+@Autonomous(name = "PPSpec", group = "Examples")
 public class PathTest extends OpMode {
 
     private Follower follower;
