@@ -15,11 +15,10 @@ public class Slider extends EncoderMotorOps {
 
 
 
-    public Slider(Robot robot, Gamepad gamepad)
+    public Slider(Robot robot)
     {
         super(robot, robot.motorSlider, pos_min, pos_max, auto_power, true);
         this.robot = robot;
-        this.gamepad = gamepad;
     }
 
     public void setPower(double power) {

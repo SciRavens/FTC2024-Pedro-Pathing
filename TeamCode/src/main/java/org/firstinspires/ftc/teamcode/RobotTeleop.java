@@ -24,7 +24,7 @@ public class RobotTeleop extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap, telemetry);
         robot.follower.startTeleopDrive();
-        slider = new Slider(robot, gamepad2);
+        slider = new Slider(robot);
         arm = new Arm(robot);
         wrist = new Wrist(robot);
         claw = new Claw(robot);

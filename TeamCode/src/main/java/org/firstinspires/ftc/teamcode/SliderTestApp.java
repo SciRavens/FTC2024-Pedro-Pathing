@@ -20,7 +20,7 @@ private int cur = 1;
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap, telemetry);
         DT = new DriveTrain(robot, gamepad1);
-        slider = new Slider(robot, gamepad2);
+        slider = new Slider(robot);
         arm = new Arm(robot);
         wrist = new Wrist(robot);
         claw = new Claw(robot);
