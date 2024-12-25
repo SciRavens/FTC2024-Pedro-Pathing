@@ -25,6 +25,13 @@ public class Arm {
             robot.servoArm.setPosition(robot.arm_pos_starting);
         }
     }
+    public void setPosFold(boolean sc_on){
+        if (sc_on) {
+            setSCTarget(robot.arm_pos_fold);
+        } else {
+            robot.servoArm.setPosition(robot.arm_pos_fold);
+        }
+    }
     public void setPosSample(boolean sc_on) {
         if (sc_on) {
             setSCTarget(robot.arm_pos_sample);

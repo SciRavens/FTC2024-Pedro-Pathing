@@ -60,7 +60,7 @@ public class DriveTrain {
     public void drive() {
         if (gamepad.left_stick_x != 0 || gamepad.left_stick_y != 0 || gamepad.right_stick_x != 0) {
             if (gamepad.left_trigger > 0 || gamepad.right_trigger > 0) {
-                drive_medium();
+                drive_slow();
             } else {
                 drive_normal();
             }

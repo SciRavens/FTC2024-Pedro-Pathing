@@ -60,26 +60,29 @@ public class RobotTeleop extends LinearOpMode {
     private void arm_wrist_operate()
     {
         if (gamepad2.dpad_down) {
-            arm.setPosSample(true);
-            wrist.setPosSample(true);
+            arm.setPosSampleTwo(true);
+            wrist.setPosSampleTwo(true);
         } else if (gamepad2.y) {
             arm.setPosBasket(true);
             wrist.setPosBasket(true);
+            slider.HighBasket();
         } else if(gamepad2.x) {
-            arm.setPosStarting(false);
-            wrist.setPosStarting(false);
+            arm.setPosFold(false);
+            wrist.setPosFold(false);
         } else if(gamepad2.b) {
             arm.setPosSpecimen(true);
             wrist.setPosSpecimen(true);
         }
         else if(gamepad2.a){
-            arm.setPosSampleTwo(true);
-            wrist.setPosSampleTwo(true);
+            arm.setPosSample(true);
+            wrist.setPosSample(true);
+
         }
         else if(gamepad2.dpad_up) {
             // TBD: fix this
             arm.setSCTarget(robot.arm_pos_chamber);
             wrist.setSCTarget(robot.wrist_pos_high_chamber);
+            slider.HighChamber();
         }
         else if(gamepad2.dpad_right) {
             clawAngle.setHorizontal();

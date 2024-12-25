@@ -35,7 +35,7 @@ private int cur = 1;
             DT.drive();
 //            slider_operate();
             slider_joystick();
-            //arm_wrist_operate();
+            arm_wrist_operate();
 //            claw_operate();
 //            leds_operate();
         }

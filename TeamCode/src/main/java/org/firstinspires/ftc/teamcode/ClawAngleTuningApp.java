@@ -8,7 +8,7 @@ public class ClawAngleTuningApp extends LinearOpMode {
     public Robot robot;
     public double start_pos = 0.5;
     public double cur_pos = start_pos;
-    public double claw_inc = 0.05;
+    public double claw_inc = 0.01;
     public boolean buttonPressed = false;
 
     @Override

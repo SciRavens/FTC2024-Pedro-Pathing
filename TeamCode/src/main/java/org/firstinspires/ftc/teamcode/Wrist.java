@@ -25,6 +25,13 @@ public class Wrist {
             robot.servoWrist.setPosition(robot.wrist_pos_starting);
         }
     }
+    public void setPosFold(boolean sc_on){
+        if (sc_on) {
+            setSCTarget(robot.wrist_pos_fold);
+        } else {
+            robot.servoWrist.setPosition(robot.wrist_pos_fold);
+        }
+    }
     public void setPosSample(boolean sc_on)
     {
         if (sc_on) {
