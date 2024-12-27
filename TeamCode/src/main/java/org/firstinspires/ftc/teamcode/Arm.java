@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 public class Arm {
     private Robot robot;
+    private double left_neutral, right_neutral;
     //    static private double pos_whitepixel = 0.215;
     public double target;
     public boolean speed_control = false;
@@ -16,84 +17,94 @@ public class Arm {
     private final double P = 0.01;
     public Arm(Robot robot) {
         this.robot = robot;
-        this.target = robot.servoArm.getPosition();
+        this.left_neutral = robot.servoArmLeft.getPosition();
+        this.right_neutral = robot.servoArmRight.getPosition();
+        this.target = robot.servoArmLeft.getPosition();
+
+    }
+
+    private boolean is_valid_position(double pos) {
+//        double right_pos = get_right_pos(pos);
+//        if (right_pos < 0.0 || right_pos > 1.0)
+//            return false;
+        return true;
+    }
+
+    private void setPosforBoth(double pos, boolean sc_on) {
+        if (sc_on) {
+            setSCTarget(pos);
+        } else {
+            robot.servoArmLeft.setPosition(pos);
+            robot.servoArmRight.setPosition(get_right_pos(pos));
+            robot.telemetry.addData(" Left Neutral Value : ", left_neutral);
+            robot.telemetry.addData("Right Neutral value  ", right_neutral);
+            robot.telemetry.addData(" Current Left Neutral Value : ", robot.servoArmLeft.getPosition());
+            robot.telemetry.addData("Current Right Neutral value  ", robot.servoArmRight.getPosition());
+            robot.telemetry.addData("Left Pos: ", pos);
+            robot.telemetry.addData("Right pos: ", get_right_pos(pos));
+           // robot.telemetry.update();
+        }
+    }
+
+    private double get_right_pos(double pos) {
+        return (1.0 - pos);
     }
     public void setPosStarting(boolean sc_on){
-        if (sc_on) {
-            setSCTarget(robot.arm_pos_starting);
-        } else {
-            robot.servoArm.setPosition(robot.arm_pos_starting);
-        }
+        setPosforBoth(robot.arm_pos_starting, sc_on);
     }
     public void setPosFold(boolean sc_on){
-        if (sc_on) {
-            setSCTarget(robot.arm_pos_fold);
-        } else {
-            robot.servoArm.setPosition(robot.arm_pos_fold);
-        }
+        setPosforBoth(robot.arm_pos_fold, sc_on);
     }
     public void setPosSample(boolean sc_on) {
-        if (sc_on) {
-            setSCTarget(robot.arm_pos_sample);
-        } else {
-            robot.servoArm.setPosition(robot.arm_pos_sample);
+        setPosforBoth(robot.arm_pos_fold, sc_on);
+
         }
-    }
     public void setPosSampleTwo(boolean sc_on) {
-        if (sc_on) {
-            setSCTarget(robot.arm_pos_sample_two);
-        } else {
-            robot.servoArm.setPosition(robot.arm_pos_sample_two);
-        }
+        setPosforBoth(robot.arm_pos_sample_two, sc_on);
     }
     public void setPosChamber(boolean sc_on) {
-        if (sc_on) {
-            setSCTarget(robot.arm_pos_chamber);
-        } else {
-            robot.servoArm.setPosition(robot.arm_pos_chamber);
-        }
+        setPosforBoth(robot.arm_pos_chamber, sc_on);
     }
     public void setPosSpecimen(boolean sc_on) {
-        if (sc_on) {
-            setSCTarget(robot.arm_pos_specimen);
-        } else {
-            robot.servoArm.setPosition(robot.arm_pos_specimen);
-        }
+        setPosforBoth(robot.arm_pos_specimen, sc_on);
     }
     public void setPosBasket(boolean sc_on){
-        if (sc_on) {
-            setSCTarget(robot.arm_pos_basket);
-        } else {
-            robot.servoArm.setPosition(robot.arm_pos_basket);
+        setPosforBoth(robot.arm_pos_basket, sc_on);
         }
-    }
     public void setPosAbsolute(double pos) {
-        robot.servoArm.setPosition(pos);
+        setPosforBoth(pos, false);
     }
 
     public void setSCTarget(double target) {
+        if (!is_valid_position(target)) {
+            return;
+        }
         speed_control = true;
         this.target = target;
     }
+    /*
     public void setChamberPush() {
-        robot.servoArm.setPosition(robot.arm_pos_autonomous_chamber);
+        robot.servoArmLeft.setPosition(1 - robot.arm_pos_autonomous_chamber);
+        robot.servoArmRight.setPosition(robot.arm_pos_autonomous_chamber);
+
     }
 
+     */
     public void operate() {
         if (speed_control) {
-            double curr_pos = robot.servoArm.getPosition();
+            double curr_pos = robot.servoArmLeft.getPosition();
             double diff = target - curr_pos;
             if (Math.abs(diff) > threshold) {
                 double next_speed = Math.max(Math.min(diff * P, max_speed), -max_speed);
                 double next_pos = curr_pos + next_speed;
-                robot.servoArm.setPosition(next_pos);
+                setPosforBoth(next_pos, false);
             } else {
                 speed_control = false;
             }
         }
-        robot.telemetry.addData("Arm Curr Pos:", robot.servoArm.getPosition());
-        robot.telemetry.addData("Arm Target:", this.target);
-        robot.telemetry.addData("Arm Speed Control: ", speed_control);
+        //robot.telemetry.addData("Arm Curr Pos:", robot.servoArmLeft.getPosition());
+        //robot.telemetry.addData("Arm Target:", this.target);
+        //robot.telemetry.addData("Arm Speed Control: ", speed_control);
         //robot.telemetry.update();
     }
 }

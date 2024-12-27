@@ -29,7 +29,7 @@ public class Slider extends EncoderMotorOps {
     }
 
 //  Move slider to Intial Pose
-    public void InitialPose() {autoOp(robot.slider_Intial_Pose_ticks);}
+    public void InitialPose() {autoOp(robot.slider_Initial_Pose_ticks);}
     public void LowBasket() {autoOp(robot.slider_LowBasket_ticks);}
 //    Move slider height to Low basket
     public void LowChamber() {autoOp(robot.slider_LowChamber_ticks);}

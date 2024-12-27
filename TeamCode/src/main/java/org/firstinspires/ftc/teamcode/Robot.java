@@ -30,7 +30,9 @@ public class Robot {
     public DcMotor leftRear = null; // Back Left
 
     public DcMotorEx motorSlider; // Slider
-    public Servo servoArm; // Elbow or Arm
+    public Servo servoArmLeft; // Elbow or Arm
+    public Servo servoArmRight; // Elbow or Arm
+
     //public CRServo servoArm; // Elbow or Arm
     public Servo servoWrist; // Wrist
 
@@ -71,7 +73,7 @@ public class Robot {
     public double wrist_pos_basket = 0.68;
 
     // Slider positions
-    public int slider_Intial_Pose_ticks = 2;
+    public int slider_Initial_Pose_ticks = 0;
     public int slider_LowBasket_ticks = 1000;
     public int slider_HighBasket_ticks = 1500; // finished needs testing
     public int slider_LowChamber_ticks = 1004;
@@ -101,7 +103,8 @@ public class Robot {
 
 
         motorSlider = hardwareMap.get(DcMotorEx.class, "sliders");
-        servoArm = hardwareMap.get(Servo.class, "arm");
+        servoArmLeft = hardwareMap.get(Servo.class, "left_arm");
+        servoArmRight = hardwareMap.get(Servo.class, "right_arm");
         servoWrist = hardwareMap.get(Servo.class, "claw_arm");
         servoCL = hardwareMap.get(Servo.class, "claw_left");
         servoCR = hardwareMap.get(Servo.class, "claw_right");
