@@ -36,12 +36,12 @@ public class RightArmTestApp extends LinearOpMode {
                 robot.servoArmRight.setPosition(0.0);
             }
             if (gamepad2.y){
-                robot.servoArmRight.setPosition(1.0);
-                robot.servoArmLeft.setPosition(1.0);
+                robot.servoArmRight.setPosition(0.5);
+                robot.servoArmLeft.setPosition(0.5);
             }
             if (gamepad2.a){
-                robot.servoArmRight.setPosition(1.0);
-                robot.servoArmLeft.setPosition(1.0);
+                robot.servoArmRight.setPosition(0.5);
+                robot.servoArmLeft.setPosition(0.5);
             }
         }
     }

@@ -38,7 +38,7 @@ public class Arm {
         setPosforBoth(robot.arm_pos_fold, sc_on);
     }
     public void setPosSample(boolean sc_on) {
-        setPosforBoth(robot.arm_pos_fold, sc_on);
+        setPosforBoth(robot.arm_pos_sample, sc_on);
     }
     public void setPosSampleTwo(boolean sc_on) {
         setPosforBoth(robot.arm_pos_sample_two, sc_on);

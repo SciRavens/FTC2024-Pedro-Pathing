@@ -34,6 +34,7 @@ public class RobotTeleop extends LinearOpMode {
 //        leds.setPattern(0);
         arm.setPosStarting(false);
         wrist.setPosStarting(false);
+        clawAngle.setHorizontal();
         waitForStart();
 //        leds.setPattern(led_cur);
         while(opModeIsActive()) {
