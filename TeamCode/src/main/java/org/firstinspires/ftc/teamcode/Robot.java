@@ -52,8 +52,8 @@ public class Robot {
     public double claw_vertical = 0.555;
 
     // Arm positions
-    public double arm_pos_starting = 0.67;
-    public double arm_pos_fold = 0.67;
+    public double arm_pos_starting = 1.0;
+    public double arm_pos_fold = arm_pos_starting;
     public  double arm_pos_sample = 0.1;
     public double arm_pos_sample_two = 0.1475;
     public double arm_pos_basket = 0.43; //0.55
