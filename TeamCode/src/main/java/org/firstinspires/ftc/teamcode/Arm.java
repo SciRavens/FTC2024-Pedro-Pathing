@@ -47,7 +47,7 @@ public class Arm {
     }
 
     private double get_right_pos(double pos) {
-        return (1.0 - pos);
+        return (pos);
     }
     public void setPosStarting(boolean sc_on){
         setPosforBoth(robot.arm_pos_starting, sc_on);
