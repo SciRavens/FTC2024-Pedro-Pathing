@@ -4,7 +4,7 @@ import android.util.Log;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
+@Disabled
 @TeleOp(name = "ArmWristTuning")
 public class ArmWristTuningApp extends LinearOpMode {
     public Robot robot;

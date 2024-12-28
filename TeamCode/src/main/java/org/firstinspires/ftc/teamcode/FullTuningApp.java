@@ -42,6 +42,7 @@ public class FullTuningApp extends LinearOpMode {
 
         waitForStart();
         while(opModeIsActive()) {
+            robot.telemetry.addData("ARM: x, WRIST: y, CLAW: a, CLAW_ANGLE: B", 0);
             slider_operate();
             if (gamepad2.x) {
                 arm_tuning = true;
@@ -80,6 +81,7 @@ public class FullTuningApp extends LinearOpMode {
             if (claw_tuning || claw_angle_tuning || wrist_tuning || arm_tuning) {
                 claw_operate1();
             }
+            robot.telemetry.update();
         }
     }
     private void arm_operate()
@@ -103,7 +105,6 @@ public class FullTuningApp extends LinearOpMode {
         //if (arm_cur_pos < 0.9)
         //   Log.e("FTC: ", "Inc:" + arm_inc + " Butt:" + buttonPressed + "cur: " + arm_cur_pos);
         robot.telemetry.addData("Arm Current Value:", arm_cur_pos);
-        robot.telemetry.update();
     }
     private void wrist_operate()
     {
@@ -123,7 +124,6 @@ public class FullTuningApp extends LinearOpMode {
         }
         wrist.setPosAbsolute(wrist_cur_pos);
         robot.telemetry.addData("Wrist Current Value:", wrist_cur_pos);
-        robot.telemetry.update();
     }
     private void claw_angle_operate()
     {
@@ -143,7 +143,6 @@ public class FullTuningApp extends LinearOpMode {
         }
         robot.servoCR.setPosition(claw_angle_cur_pos);
         robot.telemetry.addData("Claw Angle Current Value:", claw_angle_cur_pos);
-        robot.telemetry.update();
     }
     private void claw_operate1() {
         if (gamepad2.right_trigger > 0.9) {
@@ -170,7 +169,6 @@ public class FullTuningApp extends LinearOpMode {
         }
         robot.servoCL.setPosition(claw_cur_pos);
         robot.telemetry.addData("Claw Current Value:", claw_cur_pos);
-        robot.telemetry.update();
     }
 
     public void slider_operate() {
@@ -181,6 +179,5 @@ public class FullTuningApp extends LinearOpMode {
         }
         double pos = robot.motorSlider.getCurrentPosition();
         robot.telemetry.addData("Slider Current Position:", pos);
-        robot.telemetry.update();
     }
 }
