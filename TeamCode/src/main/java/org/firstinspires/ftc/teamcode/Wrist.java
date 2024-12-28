@@ -7,88 +7,56 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class Wrist {
     private Robot robot;
-    public double target;
+    private double target;
     private double speed = 0.005;
 
-    public boolean speed_control = false;
+    private boolean speed_control = false;
+    private double cur_pos = 0.0;
 
     public Wrist(Robot robot) {
 
         this.robot = robot;
         this.target = robot.servoWrist.getPosition();
+        cur_pos = target;
+
+    }
+
+    private void setPos(double pos, boolean sc_on)
+    {
+        if (sc_on) {
+            setSCTarget(pos);
+        } else {
+            robot.servoWrist.setPosition(pos);
+            cur_pos = pos;
+        }
     }
 
     public void setPosStarting(boolean sc_on){
-        if (sc_on) {
-            setSCTarget(robot.wrist_pos_starting);
-        } else {
-            robot.servoWrist.setPosition(robot.wrist_pos_starting);
-        }
+        setPos(robot.wrist_pos_starting, sc_on);
     }
     public void setPosFold(boolean sc_on){
-        if (sc_on) {
-            setSCTarget(robot.wrist_pos_fold);
-        } else {
-            robot.servoWrist.setPosition(robot.wrist_pos_fold);
-        }
+        setPos(robot.wrist_pos_fold, sc_on);
     }
     public void setPosSample(boolean sc_on)
     {
-        if (sc_on) {
-            setSCTarget(robot.wrist_pos_sample);
-        } else {
-            robot.servoWrist.setPosition(robot.wrist_pos_sample);
-        }
+        setPos(robot.wrist_pos_sample, sc_on);
     }
     public void setPosSampleTwo(boolean sc_on)
     {
-        if (sc_on) {
-            setSCTarget(robot.wrist_pos_sample_two);
-        } else {
-            robot.servoWrist.setPosition(robot.wrist_pos_sample_two);
-        }
+        setPos(robot.arm_pos_sample_two, sc_on);
     }
     public void setPosSpecimen(boolean sc_on)
     {
-        if (sc_on) {
-            setSCTarget(robot.wrist_pos_specimen);
-        } else {
-            robot.servoWrist.setPosition(robot.wrist_pos_specimen);
-        }
+        setPos(robot.arm_pos_specimen, sc_on);
     }
     public void setPosHighChamber(boolean sc_on) {
-        if (sc_on) {
-            setSCTarget(robot.wrist_pos_high_chamber);
-        } else {
-            robot.servoWrist.setPosition(robot.wrist_pos_high_chamber);
-        }
+        setPos(robot.arm_pos_chamber, sc_on);
     }
    // public void setPosLowChamber() {robot.servoWrist.setPosition(robot.wrist_pos_low_chamber);}
 
     public void setPosBasket(boolean sc_on)
     {
-        if (sc_on) {
-            setSCTarget(robot.wrist_pos_basket);
-        } else {
-            robot.servoWrist.setPosition(robot.wrist_pos_basket);
-        }
-    }
-
-    public void setPosChamberAuton(boolean sc_on)
-    {
-        if (sc_on) {
-            setSCTarget(robot.wrist_pos_chamber_auton);
-        } else {
-            robot.servoWrist.setPosition(robot.wrist_pos_chamber_auton);
-        }
-    }
-
-    public void setChamberWristPush(boolean sc_on) {
-        if (sc_on) {
-            setSCTarget(robot.wrist_pos_autonomous_chamber);
-        } else {
-            robot.servoWrist.setPosition(robot.wrist_pos_autonomous_chamber);
-        }
+        setPos(robot.arm_pos_basket, sc_on);
     }
 
     public void setPosAbsolute(double pos)
@@ -96,7 +64,7 @@ public class Wrist {
         robot.servoWrist.setPosition(pos);
     }
 
-    public void setSCTarget(double target) {
+    private void setSCTarget(double target) {
         speed_control = true;
         this.target = target;
     }
@@ -115,5 +83,7 @@ public class Wrist {
         robot.telemetry.addData("Wrist Target:", this.target);
         robot.telemetry.addData("Wrist Speed Control: ", speed_control);
     }
-
+    public double getCurPos() {
+        return cur_pos;
+    }
 }

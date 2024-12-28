@@ -8,15 +8,18 @@ import androidx.annotation.NonNull;
 public class Arm {
     private Robot robot;
     //    static private double pos_whitepixel = 0.215;
-    public double target;
-    public boolean speed_control = false;
+    private double target;
+    private boolean speed_control = false;
     private double max_speed = 0.1;
     private double threshold = 0.005;
-
     private final double P = 0.01;
+
+    private double cur_pos = 0.0;
+
     public Arm(Robot robot) {
         this.robot = robot;
-        this.target = robot.servoArmLeft.getPosition();
+        cur_pos = robot.servoArmLeft.getPosition();
+        target = cur_pos;
     }
 
     private void setPosforBoth(double pos, boolean sc_on) {
@@ -25,12 +28,14 @@ public class Arm {
         } else {
             robot.servoArmLeft.setPosition(pos);
             robot.servoArmRight.setPosition(pos);
+            cur_pos = pos;
         }
     }
-
-    private double get_right_pos(double pos) {
-        return (pos);
+    public double getCurPos()
+    {
+        return cur_pos;
     }
+
     public void setPosStarting(boolean sc_on){
         setPosforBoth(robot.arm_pos_starting, sc_on);
     }
@@ -55,6 +60,7 @@ public class Arm {
     public void setPosAbsolute(double pos) {
         setPosforBoth(pos, false);
     }
+
 
     private void setSCTarget(double target) {
         speed_control = true;

@@ -12,6 +12,7 @@ public class Claw {
     private boolean closed = true;
     double close_pos;
     double open_pos;
+    private double cur_pos = 0.0;
 
 
     public Claw(Robot robot) {
@@ -20,27 +21,33 @@ public class Claw {
         this.servo = robot.servoCL;
         this.servo.setPosition(close_pos);
         closed = true;
+        cur_pos = close_pos;
+
     }
 
-    public void open()
-    {
-        if(closed) {
+    public void open() {
+        if (closed) {
             servo.setPosition(open_pos);
+            cur_pos = open_pos;
             closed = false;
-
         }
     }
-    public void close()
-    {
+
+    public void close() {
         if (!closed) {
             servo.setPosition(close_pos);
+            cur_pos = close_pos;
             closed = true;
         }
     }
 
-
+    public double getCurPos() {
+        return cur_pos;
+    }
     public void setPosAbsolute(double pos) {
         servo.setPosition(pos);
+        cur_pos = pos;
     }
+
 
 }

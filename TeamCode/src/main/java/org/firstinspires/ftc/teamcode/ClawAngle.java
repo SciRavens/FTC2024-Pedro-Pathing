@@ -11,6 +11,7 @@ public class ClawAngle {
     private boolean horizontal = true;
     double horizontal_pos;
     double vertical_pos;
+    private double cur_pos = 0.0;
 
 
     public ClawAngle(Robot robot) {
@@ -18,26 +19,33 @@ public class ClawAngle {
         this.vertical_pos = robot.claw_vertical;
         this.servo = robot.servoCR;
         this.servo.setPosition(horizontal_pos);
+        cur_pos = horizontal_pos;
         horizontal = true;
     }
 
-    public void setHorizontal()
-    {
-        if(!horizontal) {
+    public void setHorizontal() {
+        if (!horizontal) {
             servo.setPosition(horizontal_pos);
+            cur_pos = horizontal_pos;
             horizontal = true;
         }
     }
-    public void setVertical()
-    {
+
+    public void setVertical() {
         if (horizontal) {
             servo.setPosition(vertical_pos);
+            cur_pos = vertical_pos;
             horizontal = false;
         }
     }
 
+    public double getCurPos() {
+        return cur_pos;
+    }
+
     public void setPosAbsolute(double pos) {
         servo.setPosition(pos);
+        cur_pos = pos;
     }
 
 }
