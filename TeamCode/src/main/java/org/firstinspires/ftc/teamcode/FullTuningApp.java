@@ -10,12 +10,12 @@ public class FullTuningApp extends LinearOpMode {
     public Claw claw;
     public Claw rightClaw;
     public Claw leftClaw;
-    public double arm_start_pos = 0.0;
+    public double arm_start_pos = 0.9;
     public double arm_cur_pos = arm_start_pos;
-    public double arm_inc = 0.05;
+    public double arm_inc = 0.01;
     public double wrist_start_pos = 0.0;
     public double wrist_cur_pos = wrist_start_pos;
-    public double wrist_inc = 0.05;
+    public double wrist_inc = 0.01;
     public double claw_angle_start_pos = 0.0;
     public double claw_angle_cur_pos = claw_angle_start_pos;
     public double claw_inc = 0.05;
@@ -34,24 +34,33 @@ public class FullTuningApp extends LinearOpMode {
         robot = new Robot(hardwareMap, telemetry);
         arm = new Arm(robot);
         wrist = new Wrist(robot);
+        claw = new Claw(robot);
         rightClaw = new Claw(robot);
         leftClaw = new Claw(robot);
 
         waitForStart();
         while(opModeIsActive()) {
-            if (gamepad2.dpad_left) {
+            if (gamepad2.x) {
                 arm_tuning = true;
                 wrist_tuning = false;
-            } else if (gamepad2.dpad_right) {
-                wrist_tuning = true;
-                arm_tuning = false;
-            }
-            if (gamepad2.x) {
-                claw_angle_tuning = true;
+                claw_angle_tuning = false;
                 claw_tuning = false;
-            } else if (gamepad2.b) {
+            } else if (gamepad2.y) {
+                arm_tuning = false;
+                wrist_tuning = true;
+                claw_angle_tuning = false;
+                claw_tuning = false;
+            }
+            if (gamepad2.a) {
+                arm_tuning = false;
+                wrist_tuning = false;
                 claw_angle_tuning = false;
                 claw_tuning = true;
+            } else if (gamepad2.b) {
+                arm_tuning = false;
+                wrist_tuning = false;
+                claw_angle_tuning = true;
+                claw_tuning = false;
             }
             if (arm_tuning) {
                 arm_operate();
@@ -64,6 +73,9 @@ public class FullTuningApp extends LinearOpMode {
             }
             if (claw_tuning) {
                 claw_operate();
+            }
+            if (claw_tuning || claw_angle_tuning || wrist_tuning || arm_tuning) {
+                claw_operate1();
             }
         }
     }
@@ -112,12 +124,12 @@ public class FullTuningApp extends LinearOpMode {
     }
     private void claw_angle_operate()
     {
-        if (gamepad2.y && !buttonPressed) {
+        if (gamepad2.dpad_up && !buttonPressed) {
             if (claw_angle_cur_pos < 0.9) {
                 claw_angle_cur_pos += wrist_inc;
             }
             buttonPressed = true;
-        } else if (gamepad2.a && !buttonPressed) {
+        } else if (gamepad2.dpad_down && !buttonPressed) {
             if (claw_angle_cur_pos > 0.1) {
                 claw_angle_cur_pos -= wrist_inc;
             }
@@ -130,16 +142,23 @@ public class FullTuningApp extends LinearOpMode {
         robot.telemetry.addData("Claw Angle Current Value:", claw_angle_cur_pos);
         robot.telemetry.update();
     }
+    private void claw_operate1() {
+        if (gamepad2.right_trigger > 0.9) {
+            claw.open();
+        } else {
+            claw.close();
+        }
+    }
     private void claw_operate()
     {
-        if (gamepad2.y && !buttonPressed) {
+        if (gamepad2.dpad_up && !buttonPressed) {
             if (claw_cur_pos < 0.9) {
-                claw_cur_pos += wrist_inc;
+                claw_cur_pos += claw_inc;
             }
             buttonPressed = true;
-        } else if (gamepad2.a && !buttonPressed) {
+        } else if (gamepad2.dpad_down && !buttonPressed) {
             if (claw_cur_pos > 0.1) {
-                claw_cur_pos -= wrist_inc;
+                claw_cur_pos -= claw_inc;
             }
             buttonPressed = true;
         } else {

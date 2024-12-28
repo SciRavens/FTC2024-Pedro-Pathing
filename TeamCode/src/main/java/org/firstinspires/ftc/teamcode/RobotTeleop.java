@@ -58,44 +58,38 @@ public class RobotTeleop extends LinearOpMode {
         robot.follower.update();
     }
 
-    private void arm_wrist_operate()
-    {
+    private void arm_wrist_operate() {
         if (gamepad2.dpad_down) {
-            arm.setPosSampleTwo(true);
-            wrist.setPosSampleTwo(true);
+            arm.setPosSampleTwo(false);
+            wrist.setPosSampleTwo(false);
         } else if (gamepad2.y) {
-            arm.setPosBasket(true);
-            wrist.setPosBasket(true);
+            arm.setPosBasket(false);
+            wrist.setPosBasket(false);
+            clawAngle.setHorizontal();
             slider.HighBasket();
-        } else if(gamepad2.x) {
+        } else if (gamepad2.x) {
+            clawAngle.setHorizontal();
             arm.setPosFold(false);
             wrist.setPosFold(false);
             slider.InitialPose();
-        } else if(gamepad2.b) {
-            arm.setPosSpecimen(true);
-            wrist.setPosSpecimen(true);
-            slider.InitialPose();
-        }
-        else if(gamepad2.a){
+        } else if (gamepad2.b) {
+            arm.setPosSpecimen(false);
+            wrist.setPosSpecimen(false);
+        } else if (gamepad2.a) {
             arm.setPosSample(true);
             wrist.setPosSample(true);
-            slider.InitialPose();
 
-        }
-        else if(gamepad2.dpad_up) {
+        } else if (gamepad2.dpad_up) {
             // TBD: fix this
-            arm.setSCTarget(robot.arm_pos_chamber);
-            wrist.setSCTarget(robot.wrist_pos_high_chamber);
+            arm.setPosChamber(false);
+            wrist.setPosHighChamber(false);
             slider.HighChamber();
-        }
-        else if(gamepad2.dpad_right) {
+        } else if (gamepad2.dpad_left) {
             clawAngle.setHorizontal();
-        }
-        else if(gamepad2.dpad_left) {
+        } else if (gamepad2.dpad_right) {
             clawAngle.setVertical();
         }
     }
-
 
     public void get_ticks() {
         slider_pos = slider.getCurrentPosition();
