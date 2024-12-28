@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import  com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.sun.tools.javac.jvm.Gen;
+
 import org.firstinspires.ftc.teamcode.pedroPathing.follower.*;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierCurve;
@@ -40,6 +42,7 @@ public class PPSpecimenTest extends OpMode {
     public Claw claw;
     public ClawAngle clawAngle;
     private boolean initSliders_done = false;
+    private PathChain pushSamplesPathChain;
     public void buildPaths() {
         scoreSpecimen = new Path(new BezierLine(new Point(startPose), new Point(chamberPose)));
         scoreSpecimen.setLinearHeadingInterpolation(startPose.getHeading(), chamberPose.getHeading());
@@ -53,69 +56,154 @@ public class PPSpecimenTest extends OpMode {
                 .setLinearHeadingInterpolation(alignPose.getHeading(), strafePose.getHeading())
                 //.setPathEndVelocityConstraint(4)
                 .build();
-//        pathChain2 = follower.pathBuilder()
-//                .addPath(new BezierLine(new Point(alignPose), new Point(pose3)))
-//                //.setPathEndVelocityConstraint(4)
-//                .setLinearHeadingInterpolation(pose3.getHeading(), pose3.getHeading())
-//                .build();
-//        pathChain3 = follower.pathBuilder()
-//                .addPath(new BezierLine(new Point(pose3), new Point(startPose)))
-//                .setLinearHeadingInterpolation(startPose.getHeading(), startPose.getHeading())
-//                //.setPathEndVelocityConstraint(4)
-//                .build();
+
+        pushSamplesPathChain = GeneratPushSamplesPath();
+
+    }
+
+    public PathChain GeneratPushSamplesPath() {
+        builder = new PathBuilder();
+        builder.addPath(
+                        // Line 2
+                        new BezierLine(
+                                new Point(alignPose.getX(), alignPose.getY(), Point.CARTESIAN),
+                                new Point(alignPose.getX(), 35.000, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .addPath(
+                        // Line 3
+                        new BezierLine(
+                                new Point(alignPose.getX(), 35.000, Point.CARTESIAN),
+                                new Point(60.000, 35.000, Point.CARTESIAN)
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .addPath(
+                        // Line 4
+                        new BezierLine(
+                                new Point(60.000, 35.000, Point.CARTESIAN),
+                                new Point(60.000, 25.000, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .addPath(
+                        // Line 5
+                        new BezierLine(
+                                new Point(60.000, 25.000, Point.CARTESIAN),
+                                new Point(20.000, 25.000, Point.CARTESIAN)
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .setReversed(true)
+                .addPath(
+                        // Line 6
+                        new BezierLine(
+                                new Point(20.000, 25.000, Point.CARTESIAN),
+                                new Point(60.000, 25.000, Point.CARTESIAN)
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .addPath(
+                        // Line 7
+                        new BezierLine(
+                                new Point(60.000, 25.000, Point.CARTESIAN),
+                                new Point(60.000, 15.000, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .addPath(
+                        // Line 8
+                        new BezierLine(
+                                new Point(60.000, 15.000, Point.CARTESIAN),
+                                new Point(20.000, 15.000, Point.CARTESIAN)
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .setReversed(true)
+                .addPath(
+                        // Line 9
+                        new BezierLine(
+                                new Point(20.000, 15.000, Point.CARTESIAN),
+                                new Point(60.000, 15.000, Point.CARTESIAN)
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .addPath(
+                        // Line 10
+                        new BezierLine(
+                                new Point(60.000, 15.000, Point.CARTESIAN),
+                                new Point(60.000, 10.000, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .addPath(
+                        // Line 11
+                        new BezierLine(
+                                new Point(60.000, 10.000, Point.CARTESIAN),
+                                new Point(20.000, 10.000, Point.CARTESIAN)
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .setReversed(true);
+
+        return builder.build();
     }
 
     public void autonomousPathUpdate() {
         switch (pathState) {
             case 0:
-                // Beginning stuff .. raise slider, arm and wrist positions
-               if (!initSliders_done) {
-                   clawAngle.setHorizontal();
-                   slider.HighChamber();
-                   arm.setPosChamber(false);
-                   wrist.setPosHighChamber(false);
-                   initSliders_done = true;
-               }
-                if (opmodeTimer.getElapsedTimeSeconds() < 1)
-                    break;
-                follower.followPath(scoreSpecimen);
-                setPathState(1);
-                telemetry.addData("PATHSTATE: ", pathState);
-                break;
-            case 1:
-                /* This case checks the robot's position and will wait until the robot position is close (1 inch away) from the chamberPose's position */
-                if(follower.getPose().getX() > (chamberPose.getX() - 1)) {
-                    follower.followPath(backUp,true);
-                claw.open();
-                    setPathState(2);
+                // Set the Arm, Wrist, Slider ready for pushing specimen
+                arm.setPosChamber(false);
+                wrist.setPosHighChamber(false);
+                slider.HighChamber();
+                //Now wait for 1sec
+                if (pathTimer.getElapsedTimeSeconds() > 1) {
+                    setPathState(1);
                 }
                 break;
+            case 1:
+                follower.followPath(scoreSpecimen);
+                setPathState(2);
+                telemetry.addData("PATHSTATE: ", pathState);
+                break;
             case 2:
-                if(follower.getPose().getX() > (alignPose.getX() - 1)) {
-
-                    // claw and slider stuff here to put the specimen
-                    telemetry.addData("PATHSTATE", pathState);
-                    if (opmodeTimer.getElapsedTimeSeconds() < 4)
-                        break;
+                if(follower.getPose().getX() > (chamberPose.getX() - 1)) {
+                    // Now we pushed it, release the claw and backup
+                    claw.open();
+                    follower.followPath(backUp,true);
                     setPathState(3);
                 }
                 break;
-            case 3:
-                if(follower.getPose().getX() > (strafePose.getX() - 1)) {
 
+            case 3:
+                if(follower.getPose().getX() < (alignPose.getX() - 1)) {
+                    // We are now at the align pose, so fold all things and move to next path
+                    arm.setPosFold(false);
+                    wrist.setPosFold(false);
+                    slider.InitialPose();
+                   // wait for 1 sec to fold
+                    if (pathTimer.getElapsedTimeSeconds() > 1) {
+                        follower.followPath(pushSamplesPathChain);
+                        setPathState(4);
+                    }
+                }
+                telemetry.addData("PATHSTATE", pathState);
+                break;
+
+            case 4:
+                if(!follower.isBusy()) {
                     // claw and slider stuff here to put the specimen
                     telemetry.addData("PATHSTATE", pathState);
-                    if (opmodeTimer.getElapsedTimeSeconds() < 4)
-                        break;
-
                     setPathState(-1);
-        }       }
+                }
+        }
 
     }
 
     public void setPathState(int pState) {
         pathState = pState;
-        //pathTimer.resetTimer();
+        pathTimer.resetTimer();
     }
 
     @Override
@@ -146,16 +234,15 @@ public class PPSpecimenTest extends OpMode {
 
         arm.setPosStarting(false);
         wrist.setPosStarting(false);
-        clawAngle.setVertical();
-
-        opmodeTimer.resetTimer();
-
+        clawAngle.setHorizontal();
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
         follower.setMaxPower(0.5);
 
         buildPaths();
+        opmodeTimer.resetTimer();
+        pathTimer.resetTimer();
     }
 
     @Override

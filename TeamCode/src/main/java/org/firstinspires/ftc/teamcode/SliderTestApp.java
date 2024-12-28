@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name = "SliderTestApp")
 public class SliderTestApp extends LinearOpMode {
     public Robot robot;
-    public DriveTrain DT;
     public Slider slider;
     public Arm arm;
     public Wrist wrist;
@@ -20,7 +19,6 @@ private int cur = 1;
     @Override
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap, telemetry);
-        DT = new DriveTrain(robot, gamepad1);
         slider = new Slider(robot);
         arm = new Arm(robot);
         wrist = new Wrist(robot);
@@ -33,7 +31,6 @@ private int cur = 1;
         waitForStart();
         leds.setPattern(cur);
         while(opModeIsActive()) {
-            DT.drive();
 //            slider_operate();
             slider_joystick();
             arm_wrist_operate();
