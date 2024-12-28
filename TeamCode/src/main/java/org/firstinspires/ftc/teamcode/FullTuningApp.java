@@ -10,6 +10,7 @@ public class FullTuningApp extends LinearOpMode {
     public Claw claw;
     public Claw rightClaw;
     public Claw leftClaw;
+    public Slider slider;
     public double arm_start_pos = 0.9;
     public double arm_cur_pos = arm_start_pos;
     public double arm_inc = 0.01;
@@ -37,9 +38,11 @@ public class FullTuningApp extends LinearOpMode {
         claw = new Claw(robot);
         rightClaw = new Claw(robot);
         leftClaw = new Claw(robot);
+        slider = new Slider(robot);
 
         waitForStart();
         while(opModeIsActive()) {
+            slider_operate();
             if (gamepad2.x) {
                 arm_tuning = true;
                 wrist_tuning = false;
@@ -167,6 +170,17 @@ public class FullTuningApp extends LinearOpMode {
         }
         robot.servoCL.setPosition(claw_cur_pos);
         robot.telemetry.addData("Claw Current Value:", claw_cur_pos);
+        robot.telemetry.update();
+    }
+
+    public void slider_operate() {
+        if (gamepad2.left_stick_y != 0) {
+            robot.motorSlider.setPower(-gamepad2.left_stick_y);
+        } else {
+            robot.motorSlider.setPower(0);
+        }
+        double pos = robot.motorSlider.getCurrentPosition();
+        robot.telemetry.addData("Slider Current Position:", pos);
         robot.telemetry.update();
     }
 }
