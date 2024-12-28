@@ -21,12 +21,15 @@ public class PPSpecimenTest extends OpMode {
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState = 0;
     private final Pose startPose = new Pose(9.757, 65.000, Math.toRadians(0));
-    private final Pose chamberPose = new Pose(38, 65.0, Math.toRadians(00));
-    private final Pose alignPose = new Pose(39, 65.0, Math.toRadians(00));
+    private final Pose chamberPose = new Pose(42.5, 65.0, Math.toRadians(00));
+    private final Pose alignPose = new Pose(30, 65.0, Math.toRadians(00));
+    private final Pose strafePose = new Pose(30, 32.0, Math.toRadians(00));
+
 
 
     private Path scoreSpecimen, path1, path2, path3;
     private PathChain backUp, pathChain2, pathChain3;
+    private PathChain strafeToSamples;
     PathBuilder builder;
 
     public Robot robot;
@@ -37,14 +40,17 @@ public class PPSpecimenTest extends OpMode {
     public Claw claw;
     public ClawAngle clawAngle;
     private boolean initSliders_done = false;
-
     public void buildPaths() {
         scoreSpecimen = new Path(new BezierLine(new Point(startPose), new Point(chamberPose)));
         scoreSpecimen.setLinearHeadingInterpolation(startPose.getHeading(), chamberPose.getHeading());
                 //path0.setPathEndVelocityConstraint(4);
         backUp = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(chamberPose), new Point(alignPose)))
-                .setLinearHeadingInterpolation(chamberPose.getHeading(), alignPose.getHeading())
+                .setLinearHeadingInterpolation(chamberPose.getHeading(), alignPose.getHeading()).build();
+
+        strafeToSamples = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(alignPose), new Point(strafePose)))
+                .setLinearHeadingInterpolation(alignPose.getHeading(), strafePose.getHeading())
                 //.setPathEndVelocityConstraint(4)
                 .build();
 //        pathChain2 = follower.pathBuilder()
@@ -59,12 +65,12 @@ public class PPSpecimenTest extends OpMode {
 //                .build();
     }
 
-//
     public void autonomousPathUpdate() {
         switch (pathState) {
             case 0:
                 // Beginning stuff .. raise slider, arm and wrist positions
                if (!initSliders_done) {
+                   clawAngle.setHorizontal();
                    slider.HighChamber();
                    arm.setPosChamber(false);
                    wrist.setPosHighChamber(false);
@@ -73,13 +79,14 @@ public class PPSpecimenTest extends OpMode {
                 if (opmodeTimer.getElapsedTimeSeconds() < 1)
                     break;
                 follower.followPath(scoreSpecimen);
-                setPathState(2);
+                setPathState(1);
                 telemetry.addData("PATHSTATE: ", pathState);
                 break;
             case 1:
                 /* This case checks the robot's position and will wait until the robot position is close (1 inch away) from the chamberPose's position */
                 if(follower.getPose().getX() > (chamberPose.getX() - 1)) {
                     follower.followPath(backUp,true);
+                claw.open();
                     setPathState(2);
                 }
                 break;
@@ -87,16 +94,23 @@ public class PPSpecimenTest extends OpMode {
                 if(follower.getPose().getX() > (alignPose.getX() - 1)) {
 
                     // claw and slider stuff here to put the specimen
-                    slider.InitialPose();
                     telemetry.addData("PATHSTATE", pathState);
                     if (opmodeTimer.getElapsedTimeSeconds() < 4)
                         break;
-                    claw.open();
+                    setPathState(3);
+                }
+                break;
+            case 3:
+                if(follower.getPose().getX() > (strafePose.getX() - 1)) {
+
+                    // claw and slider stuff here to put the specimen
+                    telemetry.addData("PATHSTATE", pathState);
+                    if (opmodeTimer.getElapsedTimeSeconds() < 4)
+                        break;
 
                     setPathState(-1);
-                    break;
-                }
-        }
+        }       }
+
     }
 
     public void setPathState(int pState) {
@@ -128,6 +142,11 @@ public class PPSpecimenTest extends OpMode {
         slider = new Slider(robot);
         pathTimer = new Timer();
         opmodeTimer = new Timer();
+        clawAngle = new ClawAngle(robot);
+
+        arm.setPosStarting(false);
+        wrist.setPosStarting(false);
+        clawAngle.setVertical();
 
         opmodeTimer.resetTimer();
 

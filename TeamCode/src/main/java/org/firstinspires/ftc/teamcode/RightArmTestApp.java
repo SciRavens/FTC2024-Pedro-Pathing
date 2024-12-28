@@ -21,7 +21,6 @@ public class RightArmTestApp extends LinearOpMode {
     public boolean arm_tuning = true;
     public boolean wrist_tuning = false;
     public int count = 0;
-
     @Override
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap, telemetry);
