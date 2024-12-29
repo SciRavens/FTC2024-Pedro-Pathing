@@ -31,10 +31,10 @@ private int cur = 1;
         waitForStart();
         leds.setPattern(cur);
         while(opModeIsActive()) {
-//            slider_operate();
+//          slider_operate();
             slider_joystick();
             arm_wrist_operate();
-//            claw_operate();
+//           claw_operate();
 //            leds_operate();
         }
     }

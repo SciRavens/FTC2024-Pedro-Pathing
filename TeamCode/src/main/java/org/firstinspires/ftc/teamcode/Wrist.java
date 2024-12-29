@@ -43,20 +43,20 @@ public class Wrist {
     }
     public void setPosSampleTwo(boolean sc_on)
     {
-        setPos(robot.arm_pos_sample_two, sc_on);
+        setPos(robot.wrist_pos_sample_two, sc_on);
     }
     public void setPosSpecimen(boolean sc_on)
     {
-        setPos(robot.arm_pos_specimen, sc_on);
+        setPos(robot.wrist_pos_specimen, sc_on);
     }
     public void setPosHighChamber(boolean sc_on) {
-        setPos(robot.arm_pos_chamber, sc_on);
+        setPos(robot.wrist_pos_high_chamber, sc_on);
     }
    // public void setPosLowChamber() {robot.servoWrist.setPosition(robot.wrist_pos_low_chamber);}
 
     public void setPosBasket(boolean sc_on)
     {
-        setPos(robot.arm_pos_basket, sc_on);
+        setPos(robot.wrist_pos_basket, sc_on);
     }
 
     public void setPosAbsolute(double pos)

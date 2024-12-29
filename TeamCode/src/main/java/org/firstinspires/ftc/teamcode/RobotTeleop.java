@@ -74,8 +74,8 @@ public class RobotTeleop extends LinearOpMode {
             slider.HighBasket();
         } else if (gamepad2.x) {
             clawAngle.setHorizontal();
-            arm.setPosFold(false);
-            wrist.setPosFold(false);
+            arm.setPosStarting(false);
+            wrist.setPosStarting(false);
             slider.InitialPose();
         } else if (gamepad2.b) {
             arm.setPosSpecimen(false);

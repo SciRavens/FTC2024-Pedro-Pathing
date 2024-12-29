@@ -153,12 +153,15 @@ public class PPSpecimenTest extends OpMode {
     public void autonomousPathUpdate() {
         switch (pathState) {
             case 0:
-                // Set the Arm, Wrist, Slider ready for pushing specimen
-                arm.setPosChamber(false);
-                wrist.setPosHighChamber(false);
-                slider.HighChamber();
+                if (!initSliders_done) {
+                    // Set the Arm, Wrist, Slider ready for pushing specimen
+                    arm.setPosChamber(false);
+                    wrist.setPosHighChamber(false);
+                    slider.HighChamber();
+                    initSliders_done = true;
+                }
                 //Now wait for 1sec
-                if (pathTimer.getElapsedTimeSeconds() > 1) {
+                if (pathTimer.getElapsedTimeSeconds() > 2) {
                     setPathState(1);
                 }
                 break;
