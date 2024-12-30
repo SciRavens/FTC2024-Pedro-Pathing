@@ -64,6 +64,34 @@ public class PPSpecimenTest extends OpMode {
     public PathChain GeneratPushSamplesPath() {
         builder = new PathBuilder();
         builder.addPath(
+                        // Line 3
+                        new BezierCurve(
+                                new Point(30.000, 65.000, Point.CARTESIAN),
+                                new Point(26.000, 28.000, Point.CARTESIAN),
+                                new Point(63.000, 39.000, Point.CARTESIAN),
+                                new Point(60.000, 25.000, Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180))
+                .addPath(
+                        // Line 5
+                        new BezierLine(
+                                new Point(60.000, 25.000, Point.CARTESIAN),
+                                new Point(20.000, 25.000, Point.CARTESIAN)
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .addPath(
+                        // Line 5
+                        new BezierCurve(
+                                new Point(20.000, 25.000, Point.CARTESIAN),
+                                new Point(114.684, 16.410, Point.CARTESIAN),
+                                new Point(19.729, 14.750, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180));;
+                /*
+                .addPath(
                         // Line 2
                         new BezierLine(
                                 new Point(alignPose.getX(), alignPose.getY(), Point.CARTESIAN),
@@ -146,6 +174,7 @@ public class PPSpecimenTest extends OpMode {
                 )
                 .setTangentHeadingInterpolation()
                 .setReversed(true);
+                 */
 
         return builder.build();
     }
