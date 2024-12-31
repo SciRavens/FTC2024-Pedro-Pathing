@@ -53,11 +53,11 @@ public class PushTest extends OpMode {
 
     public void buildPaths() {
         scoreSpecimen = new Path(new BezierLine(new Point(startPose), new Point(chamberPose)));
-        scoreSpecimen.setLinearHeadingInterpolation(startPose.getHeading(), chamberPose.getHeading());
+        scoreSpecimen.setConstantHeadingInterpolation(Math.toRadians(0));
         //path0.setPathEndVelocityConstraint(4);
         backUp = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(chamberPose), new Point(backup1Pose)))
-                .setLinearHeadingInterpolation(chamberPose.getHeading(), backup1Pose.getHeading())
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .build();
 
         pushSamplesPathChain = GeneratePushSamplesPath();
@@ -67,8 +67,8 @@ public class PushTest extends OpMode {
     }
 
     public PathChain GeneratePushSamplesPath() {
-        builder = new PathBuilder();
-        builder.addPath(
+        PathChain p = follower.pathBuilder()
+                    .addPath(
                         new BezierCurve(
                                 new Point(backup1Pose.getX(), backup1Pose.getY(), Point.CARTESIAN),
                                 new Point(push1Pose.getX(), push1Pose.getY(), Point.CARTESIAN),
@@ -76,41 +76,42 @@ public class PushTest extends OpMode {
                                 new Point(push3Pose.getX(), push3Pose.getY(), Point.CARTESIAN),
                                 new Point(push4Pose.getX(), push4Pose.getY(), Point.CARTESIAN)
                         )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180))
-                .addPath(
+                    )
+                    .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180))
+                    .addPath(
                         // Line 4
                         new BezierCurve(
                                 new Point(push4Pose.getX(), push4Pose.getY(), Point.CARTESIAN),
                                 new Point(push5Pose.getX(), push5Pose.getY(), Point.CARTESIAN),
                                 new Point(push6Pose.getX(), push6Pose.getY(), Point.CARTESIAN)
                         )
-                )
-                .setConstantHeadingInterpolation(Math.toRadians(180));
-        return builder.build();
+                    )
+                    .setConstantHeadingInterpolation(Math.toRadians(180))
+                    .build();
+        return p;
     }
 
     public PathChain IntakeSecondSpecimen() {
         // Change this to a path
-        builder = new PathBuilder();
-        builder.addPath(
+        PathChain p = follower.pathBuilder()
+                    .addPath(
                         new BezierLine(
                                 new Point(push6Pose.getX(), push6Pose.getY(), Point.CARTESIAN),
                                 new Point(pickup2Pose.getX(), pickup2Pose.getY(), Point.CARTESIAN)
                         )
                 )
-                .setConstantHeadingInterpolation(Math.toRadians(180));
-        return builder.build();
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+        return p;
     }
 
     public PathChain GoTowardsChamberForSecondSpecimen() {
-        builder = new PathBuilder();
-        builder.addPath(
+        PathChain p = follower.pathBuilder()
+                    .addPath(
                 new BezierLine(
                         new Point(pickup2Pose.getX(), pickup2Pose.getY(), Point.CARTESIAN),
                         new Point(chamber2Pose.getX(), chamber2Pose.getY(), Point.CARTESIAN)
-                )
-        )
+                ))
                 .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(0))
                 .addPath(
                 // Line 7
@@ -119,12 +120,13 @@ public class PushTest extends OpMode {
                         new Point(score2Pose.getX(), score2Pose.getY(), Point.CARTESIAN)
                 )
         )
-                .setConstantHeadingInterpolation(Math.toRadians(0));
-        return builder.build();
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+        return p;
     }
     public PathChain BackUpFromPlacingSecondSpecimen() {
-        builder = new PathBuilder();
-        builder.addPath(                    // Line 8
+        PathChain p = follower.pathBuilder()
+                    .addPath(                    // Line 8
                     new BezierLine(
                             new Point(score2Pose.getX(), score2Pose.getY(), Point.CARTESIAN),
                             new Point(backup2Pose.getX(), backup2Pose.getY(), Point.CARTESIAN)
@@ -138,8 +140,9 @@ public class PushTest extends OpMode {
                         new Point(pickup3Pose.getX(), pickup3Pose.getY(), Point.CARTESIAN)
                 )
             )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180));
-        return builder.build();
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180))
+                .build();
+        return p;
     }
 
     public void autonomousPathUpdate() {
