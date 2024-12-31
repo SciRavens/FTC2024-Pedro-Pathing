@@ -64,34 +64,6 @@ public class PPSpecimenTest extends OpMode {
     public PathChain GeneratPushSamplesPath() {
         builder = new PathBuilder();
         builder.addPath(
-                        // Line 3
-                        new BezierCurve(
-                                new Point(30.000, 65.000, Point.CARTESIAN),
-                                new Point(26.000, 28.000, Point.CARTESIAN),
-                                new Point(63.000, 39.000, Point.CARTESIAN),
-                                new Point(60.000, 25.000, Point.CARTESIAN)
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180))
-                .addPath(
-                        // Line 5
-                        new BezierLine(
-                                new Point(60.000, 25.000, Point.CARTESIAN),
-                                new Point(20.000, 25.000, Point.CARTESIAN)
-                        )
-                )
-                .setTangentHeadingInterpolation()
-                .addPath(
-                        // Line 5
-                        new BezierCurve(
-                                new Point(20.000, 25.000, Point.CARTESIAN),
-                                new Point(114.684, 16.410, Point.CARTESIAN),
-                                new Point(19.729, 14.750, Point.CARTESIAN)
-                        )
-                )
-                .setConstantHeadingInterpolation(Math.toRadians(180));;
-                /*
-                .addPath(
                         // Line 2
                         new BezierLine(
                                 new Point(alignPose.getX(), alignPose.getY(), Point.CARTESIAN),
@@ -122,59 +94,66 @@ public class PPSpecimenTest extends OpMode {
                                 new Point(20.000, 25.000, Point.CARTESIAN)
                         )
                 )
-                .setTangentHeadingInterpolation()
-                .setReversed(true)
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
                 .addPath(
-                        // Line 6
+                        // Line 5
                         new BezierLine(
                                 new Point(20.000, 25.000, Point.CARTESIAN),
-                                new Point(60.000, 25.000, Point.CARTESIAN)
-                        )
-                )
-                .setTangentHeadingInterpolation()
-                .addPath(
-                        // Line 7
-                        new BezierLine(
-                                new Point(60.000, 25.000, Point.CARTESIAN),
-                                new Point(60.000, 15.000, Point.CARTESIAN)
+                                new Point(25.000, 25.000, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
-                .addPath(
-                        // Line 8
-                        new BezierLine(
-                                new Point(60.000, 15.000, Point.CARTESIAN),
-                                new Point(20.000, 15.000, Point.CARTESIAN)
-                        )
-                )
-                .setTangentHeadingInterpolation()
-                .setReversed(true)
-                .addPath(
-                        // Line 9
-                        new BezierLine(
-                                new Point(20.000, 15.000, Point.CARTESIAN),
-                                new Point(60.000, 15.000, Point.CARTESIAN)
-                        )
-                )
-                .setTangentHeadingInterpolation()
-                .addPath(
-                        // Line 10
-                        new BezierLine(
-                                new Point(60.000, 15.000, Point.CARTESIAN),
-                                new Point(60.000, 10.000, Point.CARTESIAN)
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
-                .addPath(
-                        // Line 11
-                        new BezierLine(
-                                new Point(60.000, 10.000, Point.CARTESIAN),
-                                new Point(20.000, 10.000, Point.CARTESIAN)
-                        )
-                )
+
+//                .addPath(
+//                        // Line 6
+//                        new BezierLine(
+//                                new Point(20.000, 25.000, Point.CARTESIAN),
+//                                new Point(60.000, 25.000, Point.CARTESIAN)
+//                        )
+//                )
+//                .setTangentHeadingInterpolation()
+//                .addPath(
+//                        // Line 7
+//                        new BezierLine(
+//                                new Point(60.000, 25.000, Point.CARTESIAN),
+//                                new Point(60.000, 15.000, Point.CARTESIAN)
+//                        )
+//                )
+//                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+//                .addPath(
+//                        // Line 8
+//                        new BezierLine(
+//                                new Point(60.000, 15.000, Point.CARTESIAN),
+//                                new Point(20.000, 15.000, Point.CARTESIAN)
+//                        )
+//                )
+//                .setTangentHeadingInterpolation()
+//                .setReversed(true)
+//                .addPath(
+//                        // Line 9
+//                        new BezierLine(
+//                                new Point(20.000, 15.000, Point.CARTESIAN),
+//                                new Point(60.000, 15.000, Point.CARTESIAN)
+//                        )
+//                )
+//                .setTangentHeadingInterpolation()
+//                .addPath(
+//                        // Line 10
+//                        new BezierLine(
+//                                new Point(60.000, 15.000, Point.CARTESIAN),
+//                                new Point(60.000, 10.000, Point.CARTESIAN)
+//                        )
+//                )
+//                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+//                .addPath(
+//                        // Line 11
+//                        new BezierLine(
+//                                new Point(60.000, 10.000, Point.CARTESIAN),
+//                                new Point(20.000, 10.000, Point.CARTESIAN)
+//                        )
+//                )
                 .setTangentHeadingInterpolation()
                 .setReversed(true);
-                 */
 
         return builder.build();
     }
@@ -222,13 +201,23 @@ public class PPSpecimenTest extends OpMode {
                 }
                 telemetry.addData("PATHSTATE", pathState);
                 break;
-
             case 4:
                 if(!follower.isBusy()) {
                     // claw and slider stuff here to put the specimen
                     telemetry.addData("PATHSTATE", pathState);
+                    arm.setPosSpecimen(false);
+                    wrist.setPosSpecimen(false);
+                    claw.open();
+                    setPathState(5);
+                }
+                break;
+            case 5:
+                if(!follower.isBusy()) {
+                    telemetry.addData("PATHSTATE", pathState);
+                    claw.close();
                     setPathState(-1);
                 }
+                break;
         }
 
     }
