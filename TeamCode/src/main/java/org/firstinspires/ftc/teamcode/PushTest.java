@@ -33,11 +33,12 @@ public class PushTest extends OpMode {
 
     private final Pose push6Pose = new Pose(63.000, 13.000, Math.toRadians(0));
     private final Pose push7Pose = new Pose(16.000, 13.000, Math.toRadians(0));
-    private final Pose pickup2Pose = new Pose(16.000, 7.000, Math.toRadians(0));
-    private final Pose chamber2Pose = new Pose(30.000, 67.500, Math.toRadians(0));
-    private final Pose score2Pose = new Pose( 42.500, 67.500, Math.toRadians(0));
-    private final Pose backup2Pose = new Pose(30.000, 67.500, Math.toRadians(0));
-    private final Pose pickup3Pose = new Pose(20.000, 20.000, Math.toRadians(0));
+    private final Pose push8Pose = new Pose(24, 13, Math.toRadians(0));
+    private final Pose pickup2Pose = new Pose(22.000, 13.000, Math.toRadians(0));
+    private final Pose chamber2Pose = new Pose(22.000, 65.500, Math.toRadians(0));
+    private final Pose score2Pose = new Pose( 42.500, 65.500, Math.toRadians(0));
+    private final Pose backup2Pose = new Pose(30.000, 65.500, Math.toRadians(0));
+    private final Pose pickup3Pose = new Pose(22.000, 20.000, Math.toRadians(0));
 
 
     private Path scoreSpecimen;
@@ -110,6 +111,14 @@ public class PushTest extends OpMode {
                         )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
+                .addPath(
+                        // Line 8
+                        new BezierLine(
+                                new Point(push7Pose.getX(), push7Pose.getY(), Point.CARTESIAN),
+                                new Point(push8Pose.getX(), push8Pose.getY(), Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
                     .build();
         return p;
     }
@@ -119,7 +128,7 @@ public class PushTest extends OpMode {
         PathChain p = follower.pathBuilder()
                     .addPath(
                         new BezierLine(
-                                new Point(push6Pose.getX(), push6Pose.getY(), Point.CARTESIAN),
+                                new Point(push8Pose.getX(), push8Pose.getY(), Point.CARTESIAN),
                                 new Point(pickup2Pose.getX(), pickup2Pose.getY(), Point.CARTESIAN)
                         )
                 )
@@ -198,53 +207,72 @@ public class PushTest extends OpMode {
                     arm.setPosFold(false);
                     wrist.setPosFold(false);
                     slider.InitialPose();
+                    setPathState(4);
+                    }
+                    break;
+            case 4:
                     // wait for 1 sec to fold
                     if (pathTimer.getElapsedTimeSeconds() > 1) {
+                        slider.stop();
                         follower.followPath(pushSamplesPathChain);
-                        setPathState(4);
+                        setPathState(5);
                     }
-                }
-                break;
-            case 4:
+                    break;
+            case 5:
                 if (!follower.isBusy()) {
                     // claw and slider stuff here to put the specimen
                     arm.setPosSpecimen(false);
                     wrist.setPosSpecimen(false);
                     claw.open();
-                    setPathState(-1);
+                    slider.stop();
+                    setPathState(6);
                 }
                 break;
-            case 5:
+            case 6:
                     if (pathTimer.getElapsedTimeSeconds() > 1) {
                         follower.followPath(pickup2Specimen);
-                        claw.close();
-                        setPathState(6);
+                        setPathState(61);
                     }
                     break;
-            case 6:
-                if (!follower.isBusy()) {
+            case 61:
+                    if (!follower.isBusy()) {
+                        claw.close();
+                        setPathState(7);
+                    }
+                    break;
+            case 7:
+                if (pathTimer.getElapsedTimeSeconds() > 1) {
                     slider.HighChamber();
                     arm.setPosChamber(false);
                     wrist.setPosHighChamber(false);
-                    setPathState(7);
-                }
-                break;
-            case 7:
-                if (pathTimer.getElapsedTimeSeconds() > 1) {
-                        follower.followPath(push2Specimen);
-                        setPathState(8);
+                    setPathState(8);
                 }
                 break;
             case 8:
+                if (pathTimer.getElapsedTimeSeconds() > 1) {
+                        follower.followPath(push2Specimen);
+                        setPathState(9);
+                }
+                break;
+            case 9:
                 if (!follower.isBusy()) {
                     claw.open();
+                    setPathState(10);
+                }
+                break;
+            case 10:
                     if (pathTimer.getElapsedTimeSeconds() > 1) {
                         follower.followPath(backupGotoThirdSpecimen);
                         slider.InitialPose();
                         arm.setPosSpecimen(false);
                         wrist.setPosSpecimen(false);
-                        setPathState(-1);
+                        setPathState(11);
                     }
+                break;
+            case 11:
+                if (!follower.isBusy()) {
+                    slider.stop();
+                    setPathState(-1);
                 }
                 break;
         }
@@ -288,7 +316,7 @@ public class PushTest extends OpMode {
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
-        follower.setMaxPower(0.5);
+        follower.setMaxPower(0.75);
 
         buildPaths();
         opmodeTimer.resetTimer();
