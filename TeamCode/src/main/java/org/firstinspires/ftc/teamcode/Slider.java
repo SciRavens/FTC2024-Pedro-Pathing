@@ -49,7 +49,7 @@ public class Slider extends EncoderMotorOps {
     }
 
     public void stop() {
-        manualOp(0);
+        //manualOp(0);
     }
 
     public void controlOp(double power)

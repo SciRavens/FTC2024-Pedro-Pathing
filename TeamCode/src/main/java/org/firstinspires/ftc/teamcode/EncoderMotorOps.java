@@ -4,17 +4,19 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class EncoderMotorOps {
     private Robot robot;
+    private Telemetry telemetry;
     private DcMotorEx motor = null;
     private boolean verbose = false;
     private int motor_ticks = 1425;
-    private int rev_ticks = 250;
     private boolean inAutoOp = false;
     private int auto_ticks  = 0;
     private int tolerance = 10;
     private int pos_min = 0;
-    private int pos_max = 0;
+    private int pos_max;
     private double auto_power = 0.5;
     private double cur_manual_power = 0.5;
     private int cur_position = 0;
@@ -22,6 +24,7 @@ public class EncoderMotorOps {
     public EncoderMotorOps(Robot robot, DcMotorEx motor, int pos_min, int pos_max, double auto_power, boolean verbose)
     {
         this.robot = robot;
+        this.telemetry = robot.telemetry;
         this.motor = motor;
         this.pos_min = pos_min;
         this.pos_max = pos_max;
@@ -37,18 +40,13 @@ public class EncoderMotorOps {
     {
         if (!verbose)
             return;
-        robot.telemetry.addData("AutoOp: ", inAutoOp);
-        robot.telemetry.addData("AutoOp Ticks: ", auto_ticks);
-        robot.telemetry.addData("Current Position: ", cur_position);
-        robot.telemetry.addData("AutoOp Power: ", auto_power);
-        robot.telemetry.addData("ManualOp: ", !inAutoOp);
-        robot.telemetry.addData("Manual Power: ", cur_manual_power);
-        robot.telemetry.update();
+        telemetry.addData("AutoOp: ", inAutoOp);
+        telemetry.addData("AutoOp Ticks: ", auto_ticks);
+        telemetry.addData("Current Position: ", cur_position);
+        telemetry.addData("AutoOp Power: ", auto_power);
+        telemetry.addData("Manual Power: ", cur_manual_power);
+        //telemetry.update();
 
-    }
-    public void log(String s, Double d)
-    {
-        if (verbose) { robot.telemetry.addData(s, d); }
     }
     private boolean limitCheck(boolean up) {
         cur_position = motor.getCurrentPosition();
@@ -60,7 +58,6 @@ public class EncoderMotorOps {
             motor.setPower(0);
         }
         if (!up && cur_position <= 0) {
-            //log("Reached Bottom: Stopping the Slider", 0.0);
             return true;
         }
         /*
@@ -95,15 +92,18 @@ public class EncoderMotorOps {
 
     public void autoOp(int target)
     {
+        double power = -auto_power;
         cur_position = motor.getCurrentPosition();
-
         if (in_tolerance(cur_position, target)) {
             return;
+        }
+        if (cur_position > target) {
+            power = auto_power;
         }
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setTargetPosition(target);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setPower(-auto_power);
+        motor.setPower(power);
         inAutoOp = true;
         auto_ticks = target;
     }
