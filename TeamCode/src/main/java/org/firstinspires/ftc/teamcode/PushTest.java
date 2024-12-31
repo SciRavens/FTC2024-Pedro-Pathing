@@ -25,14 +25,15 @@ public class PushTest extends OpMode {
     private final Pose startPose = new Pose(9.757, 65.000, Math.toRadians(0));
     private final Pose chamberPose = new Pose(42.5, 65.0, Math.toRadians(0));
     private final Pose backup1Pose = new Pose(30, 65.0, Math.toRadians(0));
-    private final Pose push1Pose = new Pose(25.000, 22.000, Math.toRadians(0));
-    private final Pose push2Pose = new Pose(76.000, 38.000, Math.toRadians(0));
-    private final Pose push3Pose = new Pose(98.000, 20.000, Math.toRadians(0));
-    private final Pose push4Pose = new Pose(20.000, 20.000, Math.toRadians(0));
-    private final Pose push5Pose = new Pose(113.000, 9.000, Math.toRadians(0));
+    private final Pose push1Pose = new Pose(19.0, 26.0, Math.toRadians(0));
+    private final Pose push2Pose = new Pose(65.0, 42.0, Math.toRadians(0));
+    private final Pose push3Pose = new Pose(63.000, 24.000, Math.toRadians(0));
+    private final Pose push4Pose = new Pose(16.000, 24.000, Math.toRadians(0));
+    private final Pose push5Pose = new Pose(63.000, 24.000, Math.toRadians(0));
 
-    private final Pose push6Pose = new Pose(20.000, 7.000, Math.toRadians(0));
-    private final Pose pickup2Pose = new Pose(15.000, 7.000, Math.toRadians(0));
+    private final Pose push6Pose = new Pose(63.000, 13.000, Math.toRadians(0));
+    private final Pose push7Pose = new Pose(16.000, 13.000, Math.toRadians(0));
+    private final Pose pickup2Pose = new Pose(16.000, 7.000, Math.toRadians(0));
     private final Pose chamber2Pose = new Pose(30.000, 67.500, Math.toRadians(0));
     private final Pose score2Pose = new Pose( 42.500, 67.500, Math.toRadians(0));
     private final Pose backup2Pose = new Pose(30.000, 67.500, Math.toRadians(0));
@@ -66,6 +67,7 @@ public class PushTest extends OpMode {
         backupGotoThirdSpecimen = BackUpFromPlacingSecondSpecimen();
     }
 
+
     public PathChain GeneratePushSamplesPath() {
         PathChain p = follower.pathBuilder()
                     .addPath(
@@ -73,17 +75,38 @@ public class PushTest extends OpMode {
                                 new Point(backup1Pose.getX(), backup1Pose.getY(), Point.CARTESIAN),
                                 new Point(push1Pose.getX(), push1Pose.getY(), Point.CARTESIAN),
                                 new Point(push2Pose.getX(), push2Pose.getY(), Point.CARTESIAN),
-                                new Point(push3Pose.getX(), push3Pose.getY(), Point.CARTESIAN),
-                                new Point(push4Pose.getX(), push4Pose.getY(), Point.CARTESIAN)
+                                new Point(push3Pose.getX(), push3Pose.getY(), Point.CARTESIAN)
                         )
                     )
                     .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180))
                     .addPath(
-                        // Line 4
-                        new BezierCurve(
+                        new BezierLine(
+                                new Point(push3Pose.getX(), push3Pose.getY(), Point.CARTESIAN),
+                                new Point(push4Pose.getX(), push4Pose.getY(), Point.CARTESIAN)
+                        )
+                    )
+                    .setConstantHeadingInterpolation(Math.toRadians(180))
+                    .addPath(
+                            // Line 5
+                        new BezierLine(
                                 new Point(push4Pose.getX(), push4Pose.getY(), Point.CARTESIAN),
+                                new Point(push5Pose.getX(), push5Pose.getY(), Point.CARTESIAN)
+                        )
+                    )
+                    .setConstantHeadingInterpolation(Math.toRadians(180))
+                    .addPath(
+                        // Line 6
+                        new BezierLine(
                                 new Point(push5Pose.getX(), push5Pose.getY(), Point.CARTESIAN),
                                 new Point(push6Pose.getX(), push6Pose.getY(), Point.CARTESIAN)
+                        )
+                    )
+                    .setConstantHeadingInterpolation(Math.toRadians(180))
+                    .addPath(
+                        // Line 7
+                        new BezierLine(
+                                new Point(push6Pose.getX(), push6Pose.getY(), Point.CARTESIAN),
+                                new Point(push7Pose.getX(), push7Pose.getY(), Point.CARTESIAN)
                         )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -188,7 +211,7 @@ public class PushTest extends OpMode {
                     arm.setPosSpecimen(false);
                     wrist.setPosSpecimen(false);
                     claw.open();
-                    setPathState(5);
+                    setPathState(-1);
                 }
                 break;
             case 5:
