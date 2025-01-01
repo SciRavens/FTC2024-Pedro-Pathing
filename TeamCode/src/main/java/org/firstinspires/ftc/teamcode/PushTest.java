@@ -236,7 +236,6 @@ public class PushTest extends OpMode {
             case 4:
                     // wait for 1 sec to fold
                     if (pathTimer.getElapsedTimeSeconds() > 1) {
-                        slider.stop();
                         follower.followPath(pushSamplesPathChain);
                         setPathState(5);
                     }
@@ -247,7 +246,6 @@ public class PushTest extends OpMode {
                     arm.setPosSpecimen(false);
                     wrist.setPosSpecimen(false);
                     claw.open();
-                    slider.stop();
                     setPathState(6);
                 }
                 break;
@@ -294,7 +292,6 @@ public class PushTest extends OpMode {
                 break;
             case 11:
                 if (!follower.isBusy()) {
-                    slider.stop();
                     claw.close();
                     setPathState(12);
                     telemetry.addData("I am here", 0);
@@ -326,7 +323,6 @@ public class PushTest extends OpMode {
     public void setPathState(int pState) {
         pathState = pState;
         pathTimer.resetTimer();
-        telemetry.addData("PATHSTATE: ", pathState);
     }
 
     @Override
@@ -334,6 +330,7 @@ public class PushTest extends OpMode {
 
         // These loop the movements of the robot
         follower.update();
+        slider.autoOpCompletionCheck();
         autonomousPathUpdate();
 
         // Feedback to Driver Hub
