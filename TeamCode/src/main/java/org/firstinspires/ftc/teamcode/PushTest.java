@@ -22,25 +22,24 @@ public class PushTest extends OpMode {
     private Follower follower;
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState = 0;
-    private final Pose startPose = new Pose(9.757, 65.000, Math.toRadians(0));
+    private final Pose startPose = new Pose(9.757, 65.000, Math.toRadians(0)); // starting position
     private final Pose chamberPose = new Pose(42.5, 65.0, Math.toRadians(0));
     private final Pose backup1Pose = new Pose(30, 65.0, Math.toRadians(0));
     private final Pose push1Pose = new Pose(19.0, 26.0, Math.toRadians(0));
     private final Pose push2Pose = new Pose(65.0, 42.0, Math.toRadians(0));
-    private final Pose push3Pose = new Pose(63.000, 24.000, Math.toRadians(0));
-    private final Pose push4Pose = new Pose(19.000, 24.000, Math.toRadians(0));
-    private final Pose push5Pose = new Pose(63.000, 24.000, Math.toRadians(0));
-
-    private final Pose push6Pose = new Pose(63.000, 13.000, Math.toRadians(0));
-    private final Pose push7Pose = new Pose(19.000, 13.000, Math.toRadians(0));
+    private final Pose push3Pose = new Pose(55.000, 24.000, Math.toRadians(0));
+    private final Pose push4Pose = new Pose(21.000, 24.000, Math.toRadians(0));
+    private final Pose push5Pose = new Pose(53.000, 24.000, Math.toRadians(0));
+    private final Pose push6Pose = new Pose(53.000, 13.000, Math.toRadians(0));
+    private final Pose push7Pose = new Pose(21.000, 13.000, Math.toRadians(0));
     private final Pose push8Pose = new Pose(24.000, 13.000, Math.toRadians(0));
     private final Pose pickup2Pose = new Pose(22.000, 13.000, Math.toRadians(0));
     private final Pose chamber2Pose = new Pose(22.000, 67.500, Math.toRadians(0)); //change back to 65.5 if needed
-    private final Pose score2Pose = new Pose( 40.500, 67.500, Math.toRadians(0)); //
+    private final Pose score2Pose = new Pose( 42.500, 67.500, Math.toRadians(0)); //
     private final Pose backup2Pose = new Pose(30.000, 67.500, Math.toRadians(0)); //
-    private final Pose pickup3Pose = new Pose(22.000, 28.000, Math.toRadians(0));
+    private final Pose pickup3Pose = new Pose(22.000, 32.000, Math.toRadians(0));
     private final Pose chamber3Pose = new Pose(22.000, 70.00, Math.toRadians(0));
-    private final Pose score3Pose = new Pose(40.500, 70.00, Math.toRadians(0));
+    private final Pose score3Pose = new Pose(42.500, 70.00, Math.toRadians(0));
 
 
     private Path scoreSpecimen;
@@ -273,12 +272,15 @@ public class PushTest extends OpMode {
                 break;
             case 8:
                 if (pathTimer.getElapsedTimeSeconds() > 1) {
-                        follower.followPath(push2Specimen);
-                        setPathState(9);
+                    follower.setMaxPower(1.0);
+                    // Now push the second specimen
+                    follower.followPath(push2Specimen);
+                    setPathState(9);
                 }
                 break;
             case 9:
-                if (!follower.isBusy()) {
+                if (follower.getPose().getX() > (score2Pose.getX() - 1)) {
+                    follower.setMaxPower(0.6);
                     claw.open();
                     follower.followPath(backupGotoThirdSpecimen);
                     setPathState(10);
