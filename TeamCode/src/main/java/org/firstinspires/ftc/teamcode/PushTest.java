@@ -35,10 +35,10 @@ public class PushTest extends OpMode {
     private final Pose push7Pose = new Pose(16.000, 13.000, Math.toRadians(0));
     private final Pose push8Pose = new Pose(24, 13, Math.toRadians(0));
     private final Pose pickup2Pose = new Pose(22.000, 13.000, Math.toRadians(0));
-    private final Pose chamber2Pose = new Pose(22.000, 65.500, Math.toRadians(0));
-    private final Pose score2Pose = new Pose( 42.500, 65.500, Math.toRadians(0));
+    private final Pose chamber2Pose = new Pose(22.000, 67.500, Math.toRadians(0));
+    private final Pose score2Pose = new Pose( 40.500, 65.500, Math.toRadians(0));
     private final Pose backup2Pose = new Pose(30.000, 65.500, Math.toRadians(0));
-    private final Pose pickup3Pose = new Pose(22.000, 20.000, Math.toRadians(0));
+    private final Pose pickup3Pose = new Pose(26.000, 24.000, Math.toRadians(0));
 
 
     private Path scoreSpecimen;
@@ -257,12 +257,12 @@ public class PushTest extends OpMode {
             case 9:
                 if (!follower.isBusy()) {
                     claw.open();
+                    follower.followPath(backupGotoThirdSpecimen);
                     setPathState(10);
                 }
                 break;
             case 10:
-                    if (pathTimer.getElapsedTimeSeconds() > 1) {
-                        follower.followPath(backupGotoThirdSpecimen);
+                    if (pathTimer.getElapsedTimeSeconds() > 2) {
                         slider.InitialPose();
                         arm.setPosSpecimen(false);
                         wrist.setPosSpecimen(false);
@@ -316,7 +316,7 @@ public class PushTest extends OpMode {
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
-        follower.setMaxPower(0.75);
+        follower.setMaxPower(0.7);
 
         buildPaths();
         opmodeTimer.resetTimer();
