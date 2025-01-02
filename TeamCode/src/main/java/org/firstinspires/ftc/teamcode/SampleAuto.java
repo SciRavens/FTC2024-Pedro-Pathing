@@ -41,17 +41,6 @@ public class SampleAuto extends OpMode {
     private final Pose goToParkControlPoint = new Pose(60, 110, Math.toRadians(0));
     private final Pose goToParkPose = new Pose(63, 97, Math.toRadians(0));
 
-
-
-
-
-
-
-
-
-
-
-
     private Path scoreSpecimen;
     private PathChain backUp, StrafeToFirstSample, GoToDeliverFirstSample, BackUpFromDroppingFirstSample, GoToPickUpSecondSample, AlignWithBasketToDeliverSecondSample,GoForwardToDeliverSecondSample, BackUpFromDroppingSecondSample, AlignWithThirdSample, GotoPickUpThirdSample, BackUpFromPickingTheThirdSampleUp, GoToDeliverThirdSample, GoToPark;
     PathBuilder builder;
@@ -339,7 +328,7 @@ public class SampleAuto extends OpMode {
                 }
                 break;
             case 11:
-                if (pathTimer.getElapsedTimeSeconds() > 2) {
+                if (pathTimer.getElapsedTimeSeconds() > 1) {
                     claw.close();
                     arm.setPosBasket(false);
                     wrist.setPosBasket(false);
@@ -350,8 +339,13 @@ public class SampleAuto extends OpMode {
             case 12:
                 if (pathTimer.getElapsedTimeSeconds() > 2) {
                     follower.followPath(AlignWithBasketToDeliverSecondSample);
+                    setPathState(121);
+                }
+                break;
+            case 121:
+                if (!follower.isBusy()) {
                     follower.followPath(GoForwardToDeliverSecondSample);
-                    setPathState(12);
+                    setPathState(13);
                 }
                 break;
             case 13:
@@ -377,7 +371,7 @@ public class SampleAuto extends OpMode {
                 }
                 break;
             case 16:
-                if(!follower.isBusy()) {
+                if(pathTimer.getElapsedTimeSeconds() > 1) {
                     follower.followPath(GotoPickUpThirdSample);
                     setPathState(17);
                 }
@@ -399,16 +393,21 @@ public class SampleAuto extends OpMode {
                 if(!follower.isBusy()) {
                     claw.open();
                     follower.followPath(GoToPark);
-                    slider.InitialPose();
                     setPathState(20);
                 }
                 break;
             case 20:
+                if(pathTimer.getElapsedTimeSeconds() > 0.5) {
+                    slider.InitialPose();
+                    setPathState(21);
+                }
+                break;
+            case 21:
                 if(!follower.isBusy()) {
                     setPathState(-1);
                 }
                 break;
-                }
+            }
     }
 
     public void setPathState(int pState) {
