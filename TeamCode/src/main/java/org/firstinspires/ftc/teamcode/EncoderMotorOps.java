@@ -21,6 +21,8 @@ public class EncoderMotorOps {
     private double cur_manual_power = 0.5;
     private int cur_position = 0;
 
+    private int count = 0, stopped = 0;
+
     public EncoderMotorOps(Robot robot, DcMotorEx motor, int pos_min, int pos_max, double auto_power, boolean verbose)
     {
         this.robot = robot;
@@ -95,6 +97,8 @@ public class EncoderMotorOps {
         double power = -auto_power;
         cur_position = motor.getCurrentPosition();
         if (in_tolerance(cur_position, target)) {
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motor.setPower(0);
             return;
         }
         if (cur_position > target) {
@@ -122,6 +126,9 @@ public class EncoderMotorOps {
             return;
         }
         cur_position = motor.getCurrentPosition();
+        telemetry.addData("Autoop CHECK Count: ", count++);
+        telemetry.addData("Autoop TICKS: ", cur_position);
+        telemetry.addData("Autoop TARGET: ", auto_ticks);
         if (in_tolerance(cur_position, auto_ticks)) {
             inAutoOp = false;
             // set the motor back to manual control
@@ -130,6 +137,7 @@ public class EncoderMotorOps {
             }
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             motor.setPower(0);
+            telemetry.addData("Autoop CHECK, STOPPED THE MOTOR:", stopped++);
         }
     }
     public void manualDefaultStop() {

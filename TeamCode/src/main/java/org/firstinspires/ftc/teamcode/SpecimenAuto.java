@@ -284,18 +284,17 @@ public class SpecimenAuto extends OpMode {
                 }
                 break;
             case 10:
-                    if (pathTimer.getElapsedTimeSeconds() > 2) {
-                        slider.InitialPose();
-                        arm.setPosSpecimen(false);
-                        wrist.setPosSpecimen(false);
-                        setPathState(11);
-                    }
+                if (!follower.isBusy()) {
+                    slider.InitialPose();
+                    arm.setPosSpecimen(false);
+                    wrist.setPosSpecimen(false);
+                    setPathState(11);
+                }
                 break;
             case 11:
-                if (!follower.isBusy()) {
+                if (pathTimer.getElapsedTimeSeconds() > 1) {
                     claw.close();
                     setPathState(12);
-                    telemetry.addData("I am here", 0);
                 }
                 break;
             case 12:
