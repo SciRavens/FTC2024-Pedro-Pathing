@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import  com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.sun.tools.javac.jvm.Gen;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.follower.*;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
@@ -16,8 +15,8 @@ import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathBuilder;
 
 
-@Autonomous(name = "PushTest", group = "Examples")
-public class PushTest extends OpMode {
+@Autonomous(name = "SpecimenAuto", group = "Examples")
+public class SpecimenAuto extends OpMode {
 
     private Follower follower;
     private Timer pathTimer, actionTimer, opmodeTimer;
