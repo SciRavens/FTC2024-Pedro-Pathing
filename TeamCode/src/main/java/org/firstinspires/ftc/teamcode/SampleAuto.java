@@ -53,7 +53,7 @@ public class SampleAuto extends OpMode {
 
 
     private Path scoreSpecimen;
-    private PathChain backUp, StrafeToFirstSample, GoToDeliverFirstSample, BackUpFromDroppingFirstSample, GoToPickUpSecondSample, GoToDeliverSecondSample, BackUpFromDroppingSecondSample, GotoPickUpThirdSample, GoForwardToPickUpTheThirdSample, BackUpFromPickingTheThirdSampleUp, GoToDeliverThirdSample, GoToPark;
+    private PathChain backUp, StrafeToFirstSample, GoToDeliverFirstSample, BackUpFromDroppingFirstSample, GoToPickUpSecondSample, AlignWithBasketToDeliverSecondSample,GoForwardToDeliverSecondSample, BackUpFromDroppingSecondSample, AlignWithThirdSample, GotoPickUpThirdSample, BackUpFromPickingTheThirdSampleUp, GoToDeliverThirdSample, GoToPark;
     PathBuilder builder;
 
     public void buildPaths() {
@@ -68,10 +68,11 @@ public class SampleAuto extends OpMode {
         GoToDeliverFirstSample = GoToDeliverFirstSample();
         BackUpFromDroppingFirstSample = BackUpFromDroppingFirstSample();
         GoToPickUpSecondSample = GoToPickUpSecondSample();
-        GoToDeliverSecondSample = GoToDeliverSecondSample();
+        AlignWithBasketToDeliverSecondSample = AlignWithBasketToDeliverSecondSample();
+        GoForwardToDeliverSecondSample = GoForwardToDeliverSecondSample();
         BackUpFromDroppingSecondSample = BackUpFromDroppingSecondSample();
+        AlignWithThirdSample = AlignWithThirdSample();
         GotoPickUpThirdSample = GotoPickUpThirdSample();
-        GoForwardToPickUpTheThirdSample = GoForwardToPickUpTheThirdSample();
         BackUpFromPickingTheThirdSampleUp = BackUpFromPickingTheThirdSampleUp();
         GoToDeliverThirdSample = GoToDeliverThirdSample();
         GoToPark = GoToPark();
@@ -348,7 +349,8 @@ public class SampleAuto extends OpMode {
                 break;
             case 12:
                 if (pathTimer.getElapsedTimeSeconds() > 2) {
-                    follower.followPath(GoToDeliverSecondSample);
+                    follower.followPath(AlignWithBasketToDeliverSecondSample);
+                    follower.followPath(GoForwardToDeliverSecondSample);
                     setPathState(12);
                 }
                 break;
@@ -362,7 +364,7 @@ public class SampleAuto extends OpMode {
             case 14:
                 if(pathTimer.getElapsedTimeSeconds() > 1) {
                     slider.InitialPose();
-                    follower.followPath(GotoPickUpThirdSample);
+                    follower.followPath(AlignWithThirdSample);
                     setPathState(15);
                 }
                 break;
@@ -376,7 +378,7 @@ public class SampleAuto extends OpMode {
                 break;
             case 16:
                 if(!follower.isBusy()) {
-                    follower.followPath(GoForwardToPickUpTheThirdSample);
+                    follower.followPath(GotoPickUpThirdSample);
                     setPathState(17);
                 }
                 break;
@@ -419,6 +421,7 @@ public class SampleAuto extends OpMode {
 
         // These loop the movements of the robot
         follower.update();
+        slider.autoOpCompletionCheck();
         autonomousPathUpdate();
 
         // Feedback to Driver Hub
