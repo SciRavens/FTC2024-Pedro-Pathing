@@ -25,12 +25,12 @@ public class SampleAuto extends OpMode {
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState = 0;
     private final Pose startPose = new Pose(9.757, 79, Math.toRadians(0));
-    private final Pose chamberPose = new Pose(42.5, 79, Math.toRadians(00));
-    private final Pose backup1Pose = new Pose(26, 79, Math.toRadians(0));
-    private final Pose strafetofirstsamplePose = new Pose(26, 121, Math.toRadians(0));
+    private final Pose chamberPose = new Pose(41.5, 79, Math.toRadians(00));
+    private final Pose backup1Pose = new Pose(23.25, 79, Math.toRadians(0));
+    private final Pose strafetofirstsamplePose = new Pose(23.25, 108.5, Math.toRadians(0));
     private final Pose deliverfirstsamplePose = new Pose(15, 130, Math.toRadians(0));
     private final Pose backUpFromDroppingFirstSamplePose = new Pose(19, 127, Math.toRadians(0));
-    private final Pose goToPickUpSecondSamplePose = new Pose(26, 132, Math.toRadians(0));
+    private final Pose goToPickUpSecondSamplePose = new Pose(23, 125, Math.toRadians(0));
     private final Pose alignWithTheBasketToDeliverTheSecondSamplePose = new Pose(19, 127, Math.toRadians(0));
     private final Pose deliversecondsamplePose = new Pose(15, 130, Math.toRadians(0));
     private final Pose backUpFromDroppingSecondSamplePose = new Pose(19, 127, Math.toRadians(0));
@@ -91,7 +91,7 @@ public class SampleAuto extends OpMode {
                                 new Point(deliverfirstsamplePose.getX(), deliverfirstsamplePose.getY(), Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(135))
+                .setLinearHeadingInterpolation(Math.toRadians(10), Math.toRadians(155))
                 .build();
         return p;
     }
@@ -277,6 +277,7 @@ public class SampleAuto extends OpMode {
                 break;
             case 4:
                 if (pathTimer.getElapsedTimeSeconds() > 1) {
+                    follower.setMaxPower(0.75);
                     follower.followPath(StrafeToFirstSample);
                     setPathState(5);
                 }
@@ -284,6 +285,7 @@ public class SampleAuto extends OpMode {
             case 5:
                 if (!follower.isBusy()) {
                     // claw and slider stuff here to put the specimen
+                    follower.setMaxPower(0.4);
                     arm.setPosSample(false);
                     claw.open();
                     wrist.setPosSample(false);
@@ -309,14 +311,27 @@ public class SampleAuto extends OpMode {
             case 8:
                 if (pathTimer.getElapsedTimeSeconds() > 1) {
                     follower.followPath(BackUpFromDroppingFirstSample);
-                    slider.InitialPose();
-                    setPathState(9);
+                    setPathState(81);
+                }
+                break;
+            case 81:
+                    if (!follower.isBusy()) {
+                        arm.setPosFold(false);
+                        wrist.setPosFold(false);
+                        slider.InitialPose();
+                        setPathState(9);
                     }
                 break;
             case 9:
-                if (pathTimer.getElapsedTimeSeconds() > 1) {
+                if (pathTimer.getElapsedTimeSeconds() > 5) {
                     // Now push the second specimen
                     follower.followPath(GoToPickUpSecondSample);
+                    setPathState(91);
+                }
+                break;
+            case 91:
+                telemetry.addData("TURNING...", follower.getHeadingOffset());
+                if (pathTimer.getElapsedTimeSeconds() > 5) {
                     setPathState(10);
                 }
                 break;
@@ -333,7 +348,7 @@ public class SampleAuto extends OpMode {
                     arm.setPosBasket(false);
                     wrist.setPosBasket(false);
                     slider.HighBasket();
-                    setPathState(12);
+                    setPathState(-1);
                 }
                 break;
             case 12:
@@ -448,7 +463,7 @@ public class SampleAuto extends OpMode {
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
-        follower.setMaxPower(0.6);
+        follower.setMaxPower(0.4);
 
         buildPaths();
         opmodeTimer.resetTimer();

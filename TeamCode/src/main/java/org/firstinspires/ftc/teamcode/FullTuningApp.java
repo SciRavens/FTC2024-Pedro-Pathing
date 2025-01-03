@@ -7,6 +7,7 @@ public class FullTuningApp extends LinearOpMode {
     public Robot robot;
     public Arm arm;
     public Wrist wrist;
+    public Slider slider;
     public Claw claw;
     public ClawAngle clawAngle;
     public double arm_cur_pos = 0.0;
@@ -31,6 +32,7 @@ public class FullTuningApp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap, telemetry);
         arm = new Arm(robot);
+        slider = new Slider(robot);
         wrist = new Wrist(robot);
         claw = new Claw(robot);
         clawAngle = new ClawAngle(robot);
@@ -76,10 +78,11 @@ public class FullTuningApp extends LinearOpMode {
             if (claw_tuning) {
                 claw_operate();
             }
-            if (gamepad2.left_trigger > 0.9) {
+            if (gamepad2.left_trigger > 0.9 || gamepad1.left_trigger > 0.9) {
                 slider_operate();
             }
             robot.telemetry.update();
+
         }
     }
 
@@ -89,6 +92,12 @@ public class FullTuningApp extends LinearOpMode {
             robot.motorSlider.setPower(-gamepad2.left_stick_y);
         } else {
             robot.motorSlider.setPower(0);
+        }
+        if (gamepad1.x) {
+            slider.HighChamber();
+        }
+        if (gamepad1.y) {
+            slider.HighBasket();
         }
         double pos = robot.motorSlider.getCurrentPosition();
         robot.telemetry.addData("Slider Current Position:", pos);
@@ -175,6 +184,6 @@ public class FullTuningApp extends LinearOpMode {
                 if (!gamepad2.dpad_up && !gamepad2.dpad_down)
                     buttonPressed = false;
         }
-        robot.telemetry.addData("Claw Current Value:", claw.getCurPos());
+        robot.telemetry.addData("Claw Current Value:", claw_cur_pos);
     }
 }
