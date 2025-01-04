@@ -252,7 +252,6 @@ public class SampleAuto extends OpMode {
                 wrist.setPosHighChamber(false);
                 slider.HighChamber();
                 setPathState(1);
-                telemetry.addData("PATHSTATE", pathState);
                 break;
             case 1:
                 if (pathTimer.getElapsedTimeSeconds() > 2) {
@@ -277,7 +276,7 @@ public class SampleAuto extends OpMode {
                 break;
             case 4:
                 if (pathTimer.getElapsedTimeSeconds() > 1) {
-                    follower.setMaxPower(0.75);
+                    follower.setMaxPower(1.0);
                     follower.followPath(StrafeToFirstSample);
                     setPathState(5);
                 }
@@ -304,6 +303,7 @@ public class SampleAuto extends OpMode {
                 break;
             case 7:
                 if (!follower.isBusy()) {
+                    // drop the sample
                     claw.open();
                     setPathState(8);
                 }
@@ -315,23 +315,17 @@ public class SampleAuto extends OpMode {
                 }
                 break;
             case 81:
-                    if (!follower.isBusy()) {
-                        arm.setPosFold(false);
-                        wrist.setPosFold(false);
-                        slider.InitialPose();
-                        setPathState(9);
-                    }
-                break;
-            case 9:
-                if (pathTimer.getElapsedTimeSeconds() > 5) {
-                    // Now push the second specimen
-                    follower.followPath(GoToPickUpSecondSample);
-                    setPathState(91);
+                if (!follower.isBusy()) {
+                    arm.setPosFold(false);
+                    wrist.setPosFold(false);
+                    slider.InitialPose();
+                    setPathState(9);
                 }
                 break;
-            case 91:
-                telemetry.addData("TURNING...", follower.getHeadingOffset());
-                if (pathTimer.getElapsedTimeSeconds() > 5) {
+            case 9:
+                if (pathTimer.getElapsedTimeSeconds() > 2) {
+                    follower.setMaxPower(1.0);
+                    follower.followPath(GoToPickUpSecondSample);
                     setPathState(10);
                 }
                 break;
@@ -345,20 +339,31 @@ public class SampleAuto extends OpMode {
             case 11:
                 if (pathTimer.getElapsedTimeSeconds() > 1) {
                     claw.close();
+                    setPathState(111);
+                }
+                break;
+            case 111:
+                if (pathTimer.getElapsedTimeSeconds() > 1) {
                     arm.setPosBasket(false);
                     wrist.setPosBasket(false);
-                    slider.HighBasket();
                     setPathState(-1);
                 }
                 break;
             case 12:
-                if (pathTimer.getElapsedTimeSeconds() > 2) {
+                if (pathTimer.getElapsedTimeSeconds() > 1) {
                     follower.followPath(AlignWithBasketToDeliverSecondSample);
                     setPathState(121);
                 }
                 break;
             case 121:
                 if (!follower.isBusy()) {
+                    slider.HighBasket();
+                    setPathState(122);
+                }
+                break;
+            case 122:
+                if (pathTimer.getElapsedTimeSeconds() > 2) {
+                    follower.setMaxPower(0.5);
                     follower.followPath(GoForwardToDeliverSecondSample);
                     setPathState(13);
                 }
@@ -366,13 +371,26 @@ public class SampleAuto extends OpMode {
             case 13:
                 if (!follower.isBusy()) {
                     claw.open();
+                    setPathState(131);
+                }
+                break;
+            case 131:
+                if (pathTimer.getElapsedTimeSeconds() > 1) {
+                    // NEED TO FIX THIS... back and then turn
+                    follower.setMaxPower(1.0);
                     follower.followPath(BackUpFromDroppingSecondSample);
                     setPathState(14);
                 }
                 break;
             case 14:
-                if(pathTimer.getElapsedTimeSeconds() > 1) {
+                if(!follower.isBusy()) {
                     slider.InitialPose();
+                    setPathState(141);
+                }
+                break;
+            case 141:
+                if (pathTimer.getElapsedTimeSeconds() > 1) {
+                    follower.setMaxPower(0.5);
                     follower.followPath(AlignWithThirdSample);
                     setPathState(15);
                 }
@@ -400,25 +418,34 @@ public class SampleAuto extends OpMode {
                 break;
             case 18:
                 if(!follower.isBusy()) {
+                    follower.setMaxPower(1.0);
                     follower.followPath(GoToDeliverThirdSample);
                     setPathState(19);
                 }
                 break;
             case 19:
                 if(!follower.isBusy()) {
+                    // SLIDER NEED TO GO UP...
                     claw.open();
-                    follower.followPath(GoToPark);
+                    setPathState(191);
+                }
+                break;
+            case 191:
+                if(pathTimer.getElapsedTimeSeconds() > 1) {
+                    // Backup here
                     setPathState(20);
                 }
                 break;
             case 20:
-                if(pathTimer.getElapsedTimeSeconds() > 0.5) {
+                if(!follower.isBusy()) {
                     slider.InitialPose();
                     setPathState(21);
                 }
                 break;
             case 21:
-                if(!follower.isBusy()) {
+                if(pathTimer.getElapsedTimeSeconds() > 1) {
+                    follower.setMaxPower(1.0);
+                    follower.followPath(GoToPark);
                     setPathState(-1);
                 }
                 break;
