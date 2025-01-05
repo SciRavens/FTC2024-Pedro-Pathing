@@ -132,9 +132,9 @@ public class EncoderMotorOps {
         if (in_tolerance(cur_position, auto_ticks)) {
             inAutoOp = false;
             // set the motor back to manual control
-            if (cur_position < 0) {
-                motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            }
+            //if (cur_position < 0) {
+            //    motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //}
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             motor.setPower(0);
             telemetry.addData("Autoop CHECK, STOPPED THE MOTOR:", stopped++);

@@ -10,9 +10,9 @@ public class Arm {
     //    static private double pos_whitepixel = 0.215;
     private double target;
     private boolean speed_control = false;
-    private double max_speed = 0.1;
+    private double max_speed = 0.5; //0.1
     private double threshold = 0.005;
-    private final double P = 0.01;
+    private final double P = 0.05;
 
     private double cur_pos = 0.0;
 
@@ -84,10 +84,9 @@ public class Arm {
                 speed_control = false;
             }
         }
-        robot.telemetry.addData("Arm Curr Pos:", robot.servoArmLeft.getPosition());
-        robot.telemetry.addData("Arm Target:", this.target);
-        robot.telemetry.addData("Arm Speed Control: ", speed_control);
-        robot.telemetry.update();
+        //robot.telemetry.addData("Arm Curr Pos:", robot.servoArmLeft.getPosition());
+        //robot.telemetry.addData("Arm Target:", this.target);
+        //robot.telemetry.addData("Arm Speed Control: ", speed_control);
     }
 }
 

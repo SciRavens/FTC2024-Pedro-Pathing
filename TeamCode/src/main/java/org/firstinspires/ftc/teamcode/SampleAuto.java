@@ -27,15 +27,15 @@ public class SampleAuto extends OpMode {
     private final Pose startPose = new Pose(9.757, 79, Math.toRadians(0));
     private final Pose chamberPose = new Pose(41.5, 79, Math.toRadians(00));
     private final Pose backup1Pose = new Pose(23.25, 79, Math.toRadians(0));
-    private final Pose strafetofirstsamplePose = new Pose(23.25, 108.5, Math.toRadians(0));
+    private final Pose strafetofirstsamplePose = new Pose(23.25, 109.25, Math.toRadians(0));
     private final Pose deliverfirstsamplePose = new Pose(15, 130, Math.toRadians(0));
     private final Pose backUpFromDroppingFirstSamplePose = new Pose(19, 127, Math.toRadians(0));
-    private final Pose goToPickUpSecondSamplePose = new Pose(23, 125, Math.toRadians(0));
+    private final Pose goToPickUpSecondSamplePose = new Pose(22, 124, Math.toRadians(0));
     private final Pose alignWithTheBasketToDeliverTheSecondSamplePose = new Pose(19, 127, Math.toRadians(0));
     private final Pose deliversecondsamplePose = new Pose(15, 130, Math.toRadians(0));
     private final Pose backUpFromDroppingSecondSamplePose = new Pose(19, 127, Math.toRadians(0));
     private final Pose alignWithTheThirdSamplePose = new Pose(45.5, 127, Math.toRadians(0));
-    private final Pose goToPickUpThirdSamplePose = new Pose(45.5, 131, Math.toRadians(0));
+    private final Pose goToPickUpThirdSamplePose = new Pose(45.5, 137, Math.toRadians(0));
     private final Pose backUpFromPickingUpThirdSamplePose = new Pose(45.5, 127, Math.toRadians(0));
     private final Pose deliverthirdsamplePose = new Pose(15, 130, Math.toRadians(0));
     private final Pose goToParkControlPoint = new Pose(60, 110, Math.toRadians(0));
@@ -284,19 +284,30 @@ public class SampleAuto extends OpMode {
             case 5:
                 if (!follower.isBusy()) {
                     // claw and slider stuff here to put the specimen
-                    follower.setMaxPower(0.4);
-                    arm.setPosSample(false);
+                    arm.setPosSample(true);
                     claw.open();
                     wrist.setPosSample(false);
+                    slider.setPower(0);
                     setPathState(6);
                 }
                 break;
             case 6:
-                if (pathTimer.getElapsedTimeSeconds() > 1) {
+                if (pathTimer.getElapsedTimeSeconds() > 2) {
                     claw.close();
+                    setPathState(61);
+                }
+                break;
+            case 61:
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                     arm.setPosBasket(false);
                     wrist.setPosBasket(false);
                     slider.HighBasket();
+                    follower.setMaxPower(0.4);
+                    setPathState(62);
+                }
+                break;
+            case 62:
+                if (pathTimer.getElapsedTimeSeconds() > 2) {
                     follower.followPath(GoToDeliverFirstSample);
                     setPathState(7);
                 }
@@ -318,12 +329,13 @@ public class SampleAuto extends OpMode {
                 if (!follower.isBusy()) {
                     arm.setPosFold(false);
                     wrist.setPosFold(false);
-                    slider.InitialPose();
+                    slider.InitialPose(); // Making sound
                     setPathState(9);
                 }
                 break;
             case 9:
                 if (pathTimer.getElapsedTimeSeconds() > 2) {
+                    slider.setPower(0);
                     follower.setMaxPower(1.0);
                     follower.followPath(GoToPickUpSecondSample);
                     setPathState(10);
@@ -331,22 +343,23 @@ public class SampleAuto extends OpMode {
                 break;
             case 10:
                 if (!follower.isBusy()) {
-                    arm.setPosSample(false);
-                    wrist.setPosSample(false);
+                    arm.setPosSample(true);
+                    wrist.setPosSample(true);
                     setPathState(11);
                 }
                 break;
             case 11:
-                if (pathTimer.getElapsedTimeSeconds() > 1) {
+                if (pathTimer.getElapsedTimeSeconds() > 2) {
                     claw.close();
                     setPathState(111);
                 }
                 break;
             case 111:
                 if (pathTimer.getElapsedTimeSeconds() > 1) {
+                    follower.setMaxPower(0.5);
                     arm.setPosBasket(false);
                     wrist.setPosBasket(false);
-                    setPathState(-1);
+                    setPathState(12);
                 }
                 break;
             case 12:
@@ -463,6 +476,8 @@ public class SampleAuto extends OpMode {
         // These loop the movements of the robot
         follower.update();
         slider.autoOpCompletionCheck();
+        arm.operate();
+        wrist.operate();
         autonomousPathUpdate();
 
         // Feedback to Driver Hub
@@ -487,6 +502,7 @@ public class SampleAuto extends OpMode {
         arm.setPosStarting(false);
         wrist.setPosStarting(false);
         clawAngle.setHorizontal();
+        claw.close();
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);

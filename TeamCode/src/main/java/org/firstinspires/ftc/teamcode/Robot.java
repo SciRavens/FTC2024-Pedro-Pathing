@@ -44,8 +44,8 @@ public class Robot {
     public Follower follower;
 
     // Claw positions
-    public double claw_open = 0.75;
-    public double claw_close = 0.26;
+    public double claw_open = 0;
+    public double claw_close = 0.6;
 
     //ClawAngle positions
     public double claw_horizontal = 0.38;
@@ -54,7 +54,7 @@ public class Robot {
     // Arm positions
     public double arm_pos_starting = 0.98;
     public double arm_pos_fold = arm_pos_starting;
-    public  double arm_pos_sample = 0.39;
+    public  double arm_pos_sample = 0.4;
     public double arm_pos_sample_two = 0.43;
     public double arm_pos_basket = 0.75; //0.55
     public double arm_pos_specimen = 0.38;
@@ -64,7 +64,7 @@ public class Robot {
     // Wrist positions
     public double wrist_pos_starting = 0.66;
     public double wrist_pos_fold = 0.9;
-    public double wrist_pos_sample  = 0.62;
+    public double wrist_pos_sample  = 0.69;//0.64
     public double wrist_pos_sample_two = 0.19;
     public double wrist_pos_specimen = 0.35;
     public double wrist_pos_high_chamber = 0.25; //0.5
@@ -75,8 +75,8 @@ public class Robot {
     public int slider_Initial_Pose_ticks = 0;
     public int slider_LowBasket_ticks = 2050;
     public int slider_HighBasket_ticks = 1900; // finished needs testing
-    public int slider_LowChamber_ticks = 1004;
-    public int slider_HighChamber_ticks = 675; // finished needs testing
+    public int slider_LowChamber_ticks = 300;
+    public int slider_HighChamber_ticks = 675; // 675 finished needs testing
 
     public int slider_ChamberAuton_ticks = 10;
 

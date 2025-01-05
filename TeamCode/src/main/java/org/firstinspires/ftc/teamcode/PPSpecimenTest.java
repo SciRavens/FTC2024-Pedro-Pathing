@@ -161,63 +161,15 @@ public class PPSpecimenTest extends OpMode {
     public void autonomousPathUpdate() {
         switch (pathState) {
             case 0:
-                if (!initSliders_done) {
-                    // Set the Arm, Wrist, Slider ready for pushing specimen
-                    arm.setPosChamber(false);
-                    wrist.setPosHighChamber(false);
-                    slider.HighChamber();
-                    initSliders_done = true;
-                }
-                //Now wait for 1sec
                 if (pathTimer.getElapsedTimeSeconds() > 2) {
-                    setPathState(1);
-                }
-                break;
-            case 1:
-                follower.followPath(scoreSpecimen);
-                setPathState(2);
-                telemetry.addData("PATHSTATE: ", pathState);
-                break;
-            case 2:
-                if(follower.getPose().getX() > (chamberPose.getX() - 1)) {
-                    // Now we pushed it, release the claw and backup
                     claw.open();
-                    follower.followPath(backUp,true);
-                    setPathState(3);
-                }
-                break;
-
-            case 3:
-                if(follower.getPose().getX() < (alignPose.getX() - 1)) {
-                    // We are now at the align pose, so fold all things and move to next path
-                    arm.setPosFold(false);
-                    wrist.setPosFold(false);
-                    slider.InitialPose();
-                   // wait for 1 sec to fold
-                    if (pathTimer.getElapsedTimeSeconds() > 1) {
-                        follower.followPath(pushSamplesPathChain);
-                        setPathState(4);
-                    }
-                }
-                telemetry.addData("PATHSTATE", pathState);
-                break;
-            case 4:
-                if(!follower.isBusy()) {
-                    // claw and slider stuff here to put the specimen
-                    telemetry.addData("PATHSTATE", pathState);
-                    arm.setPosSpecimen(false);
-                    wrist.setPosSpecimen(false);
-                    claw.open();
-                    setPathState(5);
-                }
-                break;
-            case 5:
-                if(!follower.isBusy()) {
-                    telemetry.addData("PATHSTATE", pathState);
-                    claw.close();
+                    arm.setPosSample(false);
+                    wrist.setPosSample(false);
+                //Now wait for 1sec
                     setPathState(-1);
+               break;
                 }
-                break;
+
         }
 
     }

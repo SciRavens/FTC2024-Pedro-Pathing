@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 public class Wrist {
     private Robot robot;
     private double target;
-    private double speed = 0.005;
+    private double speed = 0.05;
 
     private boolean speed_control = false;
     private double cur_pos = 0.0;
