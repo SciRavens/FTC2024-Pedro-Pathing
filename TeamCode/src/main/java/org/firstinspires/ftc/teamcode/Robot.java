@@ -74,7 +74,7 @@ public class Robot {
     // Slider positions
     public int slider_Initial_Pose_ticks = 0;
     public int slider_LowBasket_ticks = 2050;
-    public int slider_HighBasket_ticks = 1900; // finished needs testing
+    public int slider_HighBasket_ticks = 2100; // finished needs testing
     public int slider_LowChamber_ticks = 300;
     public int slider_HighChamber_ticks = 675; // 675 finished needs testing
 
