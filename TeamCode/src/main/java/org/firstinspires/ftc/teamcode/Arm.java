@@ -12,7 +12,7 @@ public class Arm {
     private boolean speed_control = false;
     private double max_speed = 0.5; //0.1
     private double threshold = 0.005;
-    private final double P = 0.05;
+    private final double P = 0.03;
 
     private double cur_pos = 0.0;
 
@@ -81,6 +81,7 @@ public class Arm {
                 double next_pos = curr_pos + next_speed;
                 setPosforBoth(next_pos, false);
             } else {
+                setPosforBoth(target, false);
                 speed_control = false;
             }
         }

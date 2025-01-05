@@ -13,6 +13,10 @@ public class Wrist {
     private boolean speed_control = false;
     private double cur_pos = 0.0;
 
+    private double max_speed = 0.2; //0.1
+    private double threshold = 0.005;
+    private final double P = 0.01;
+
     public Wrist(Robot robot) {
 
         this.robot = robot;
@@ -72,10 +76,13 @@ public class Wrist {
     public void operate() {
         if (speed_control) {
             double curr_pos = robot.servoWrist.getPosition();
-            if (Math.abs(target - curr_pos) > speed) {
-                double next_pos = curr_pos + speed * ((target > curr_pos) ? 1 : -1);
+            double diff = target - curr_pos;
+            if (Math.abs(diff) > threshold) {
+                double next_speed = Math.max(Math.min(diff * P, max_speed), -max_speed);
+                double next_pos = curr_pos + next_speed;
                 robot.servoWrist.setPosition(next_pos);
             } else {
+                robot.servoWrist.setPosition(target);
                 speed_control = false;
             }
         }

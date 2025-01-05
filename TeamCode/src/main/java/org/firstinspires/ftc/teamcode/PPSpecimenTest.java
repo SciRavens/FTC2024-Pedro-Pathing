@@ -162,13 +162,13 @@ public class PPSpecimenTest extends OpMode {
         switch (pathState) {
             case 0:
                 if (pathTimer.getElapsedTimeSeconds() > 2) {
+                    arm.setPosSample(true);
+                    wrist.setPosSample(true);
                     claw.open();
-                    arm.setPosSample(false);
-                    wrist.setPosSample(false);
                 //Now wait for 1sec
                     setPathState(-1);
-               break;
                 }
+                break;
 
         }
 
@@ -184,6 +184,8 @@ public class PPSpecimenTest extends OpMode {
 
         // These loop the movements of the robot
         follower.update();
+        arm.operate();
+        wrist.operate();
         autonomousPathUpdate();
 
         // Feedback to Driver Hub
