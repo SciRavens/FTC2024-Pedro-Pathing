@@ -66,6 +66,7 @@ public class Wrist {
     public void setPosAbsolute(double pos)
     {
         robot.servoWrist.setPosition(pos);
+        cur_pos = pos;
     }
 
     private void setSCTarget(double target) {

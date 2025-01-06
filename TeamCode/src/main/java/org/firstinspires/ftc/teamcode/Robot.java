@@ -54,7 +54,7 @@ public class Robot {
     // Arm positions
     public double arm_pos_starting = 0.98;
     public double arm_pos_fold = arm_pos_starting;
-    public  double arm_pos_sample = 0.4;
+    public  double arm_pos_sample = 0.39;//0.39
     public double arm_pos_sample_two = 0.43;
     public double arm_pos_basket = 0.75; //0.55
     public double arm_pos_specimen = 0.38;
@@ -64,7 +64,7 @@ public class Robot {
     // Wrist positions
     public double wrist_pos_starting = 0.66;
     public double wrist_pos_fold = 0.9;
-    public double wrist_pos_sample  = 0.69;//0.64
+    public double wrist_pos_sample  = 0.67;//0.69
     public double wrist_pos_sample_two = 0.19;
     public double wrist_pos_specimen = 0.35;
     public double wrist_pos_high_chamber = 0.25; //0.5
