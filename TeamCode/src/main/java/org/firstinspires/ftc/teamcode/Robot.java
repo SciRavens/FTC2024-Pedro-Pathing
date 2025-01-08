@@ -60,6 +60,8 @@ public class Robot {
     public double arm_pos_specimen = 0.38;
     public double arm_pos_autonomous_chamber = 0.225;//0.425
     public double arm_pos_chamber = 0.48; //0.65
+    public double arm_pos_chamber_back = 0.9; //0.65
+
 
     // Wrist positions
     public double wrist_pos_starting = 0.66;
@@ -68,6 +70,8 @@ public class Robot {
     public double wrist_pos_sample_two = 0.19;
     public double wrist_pos_specimen = 0.35;
     public double wrist_pos_high_chamber = 0.25; //0.5
+    public double wrist_pos_high_chamber_back = 0.35; //0.5
+
     public double wrist_pos_autonomous_chamber = 0.15;
     public double wrist_pos_basket = 0.72;
 
@@ -75,8 +79,10 @@ public class Robot {
     public int slider_Initial_Pose_ticks = 0;
     public int slider_LowBasket_ticks = 2050;
     public int slider_HighBasket_ticks = 2100; // finished needs testing
-    public int slider_LowChamber_ticks = 300;
-    public int slider_HighChamber_ticks = 675; // 675 finished needs testing
+    public int slider_LowChamber_ticks = 500;
+    public int slider_HighChamber_ticks = 685; // 675 finished needs testing
+    public int slider_HighChamberBack_ticks = 2000; // 675 finished needs testing
+
 
     public int slider_ChamberAuton_ticks = 10;
 

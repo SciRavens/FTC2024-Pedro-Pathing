@@ -17,7 +17,7 @@ public class EncoderMotorOps {
     private int tolerance = 10;
     private int pos_min = 0;
     private int pos_max;
-    private double auto_power = 0.5;
+    private double auto_power = 1.0;
     private double cur_manual_power = 0.5;
     private int cur_position = 0;
 

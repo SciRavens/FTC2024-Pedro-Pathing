@@ -39,6 +39,10 @@ public class Slider extends EncoderMotorOps {
     public void HighChamber() {
         autoOp(robot.slider_HighChamber_ticks);
     }
+    public void HighChamberBack() {
+        autoOp(robot.slider_HighChamberBack_ticks);
+    }
+
 
     public void setPosAbsolute(int ticks) {
         autoOp(ticks);

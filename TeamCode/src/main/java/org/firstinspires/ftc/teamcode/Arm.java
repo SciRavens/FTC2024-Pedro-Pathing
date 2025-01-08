@@ -57,6 +57,9 @@ public class Arm {
     public void setPosBasket(boolean sc_on){
         setPosforBoth(robot.arm_pos_basket, sc_on);
         }
+    public void setPosChamberBack(boolean sc_on){
+        setPosforBoth(robot.arm_pos_chamber_back, sc_on);
+    }
     public void setPosAbsolute(double pos) {
         setPosforBoth(pos, false);
     }
@@ -66,6 +69,7 @@ public class Arm {
         speed_control = true;
         this.target = target;
     }
+
     /*
     public void setChamberPush() {
         setPosforBoth(robot.arm_pos_autonomous_chamber);

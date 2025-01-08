@@ -93,6 +93,9 @@ public class RobotTeleop extends LinearOpMode {
             clawAngle.setHorizontal();
         } else if (gamepad2.dpad_right) {
             clawAngle.setVertical();
+        } else if (gamepad1.x) {
+            arm.setPosChamberBack(false);
+            wrist.setPosChamberBack(false);
         }
     }
 

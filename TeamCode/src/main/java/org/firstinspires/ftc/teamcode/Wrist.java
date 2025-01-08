@@ -62,6 +62,10 @@ public class Wrist {
     {
         setPos(robot.wrist_pos_basket, sc_on);
     }
+    public void setPosChamberBack(boolean sc_on)
+    {
+        setPos(robot.wrist_pos_high_chamber_back, sc_on);
+    }
 
     public void setPosAbsolute(double pos)
     {
