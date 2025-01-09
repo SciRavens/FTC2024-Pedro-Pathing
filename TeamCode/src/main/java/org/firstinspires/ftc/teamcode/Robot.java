@@ -57,7 +57,7 @@ public class Robot {
     public  double arm_pos_sample = 0.39;//0.39
     public double arm_pos_sample_two = 0.43;
     public double arm_pos_basket = 0.75; //0.55
-    public double arm_pos_specimen = 0.38;
+    public double arm_pos_specimen = 0.36; //0.38
     public double arm_pos_autonomous_chamber = 0.225;//0.425
     public double arm_pos_chamber = 0.48; //0.65
     public double arm_pos_chamber_back = 0.9; //0.65
@@ -80,7 +80,7 @@ public class Robot {
     public int slider_LowBasket_ticks = 2050;
     public int slider_HighBasket_ticks = 2100; // finished needs testing
     public int slider_LowChamber_ticks = 500;
-    public int slider_HighChamber_ticks = 685; // 675 finished needs testing
+    public int slider_HighChamber_ticks = 640; // 675 finished needs testing
     public int slider_HighChamberBack_ticks = 2000; // 675 finished needs testing
 
 
@@ -108,6 +108,7 @@ public class Robot {
 
 
         motorSlider = hardwareMap.get(DcMotorEx.class, "sliders");
+        motorSlider.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         servoArmLeft = hardwareMap.get(Servo.class, "left_arm");
         servoArmRight = hardwareMap.get(Servo.class, "right_arm");
         servoWrist = hardwareMap.get(Servo.class, "claw_arm");

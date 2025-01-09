@@ -22,25 +22,32 @@ public class SpecimenAuto2 extends OpMode {
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState = 0;
     private final Pose startPose = new Pose(9.757, 65.000, Math.toRadians(0)); // starting position
-    private final Pose chamberPose = new Pose(42.5, 64.0, Math.toRadians(0));
+    private final Pose chamberPose = new Pose(42.5, 65.0, Math.toRadians(0));
     private final Pose backup1Pose = new Pose(30, 65.0, Math.toRadians(0));
     private final Pose push1Pose = new Pose(19.0, 26.0, Math.toRadians(0));
     private final Pose push2Pose = new Pose(65.0, 42.0, Math.toRadians(0));
-    private final Pose push3Pose = new Pose(55.000, 24.000, Math.toRadians(0));
+    private final Pose push3Pose = new Pose(57.000, 24.000, Math.toRadians(0));
     private final Pose push4Pose = new Pose(21.000, 24.000, Math.toRadians(0));
     private final Pose push5Pose = new Pose(53.000, 24.000, Math.toRadians(0));
     private final Pose push6Pose = new Pose(53.000, 13.000, Math.toRadians(0));
     private final Pose push7Pose = new Pose(21.000, 13.000, Math.toRadians(0));
     private final Pose push8Pose = new Pose(24.000, 13.000, Math.toRadians(0));
     private final Pose alignwithsecondspecimenPose = new Pose(24, 24, Math.toRadians(0));
-    private final Pose pickup2Pose = new Pose(22, 24, Math.toRadians(0));
+    private final Pose pickupPose = new Pose(23, 24, Math.toRadians(0)); //22
     private final Pose deliversecondspecimenPose = new Pose(42.5, 67.5,Math.toRadians(0));
     private final Pose deliversecondspecimencontrolpoint = new Pose(20, 69,Math.toRadians(0));
+    private final Pose pickupthirdspecimencontrolpoint1 = new Pose(20,69, Math.toRadians(0));
+    private final Pose pickupthirdspecimencontrolpoint2 = new Pose(45,19, Math.toRadians(0));
+    private final Pose deliverthirdspecimenPose = new Pose(45.5,70, Math.toRadians(0));
+    private final Pose deliverfourthspecimenPose = new Pose(42.5,72.5, Math.toRadians(0));
+    private final Pose parkPose = new Pose(12,25, Math.toRadians(0));
+
+
 
 
 
     private Path scoreSpecimen;
-    private PathChain backUp, pushSamplesPathChain, IntakeSecondSpecimen, DeliverSecondSpecimen, backupGotoThirdSpecimen, push3Specimen;
+    private PathChain backUp, pushSamplesPathChain, IntakeSecondSpecimen, DeliverSecondSpecimen, IntakeThirdSpecimen, DeliverThirdSpecimen, DeliverFourthSpecimen, Park;
     PathBuilder builder;
 
     public Robot robot;
@@ -63,6 +70,10 @@ public class SpecimenAuto2 extends OpMode {
         pushSamplesPathChain = GeneratePushSamplesPath();
         IntakeSecondSpecimen = IntakeSecondSpecimen();
         DeliverSecondSpecimen = DeliverSecondSpecimen();
+        IntakeThirdSpecimen = IntakeThirdSpecimen();
+        DeliverThirdSpecimen = DeliverThirdSpecimen();
+        DeliverFourthSpecimen = DeliverFourthSpecimen();
+        Park = Park();
     }
 
 
@@ -134,7 +145,7 @@ public class SpecimenAuto2 extends OpMode {
                 .addPath(
                         new BezierLine(
                                 new Point(alignwithsecondspecimenPose.getX(), alignwithsecondspecimenPose.getY(), Point.CARTESIAN),
-                                new Point(pickup2Pose.getX(), pickup2Pose.getY(), Point.CARTESIAN)
+                                new Point(pickupPose.getX(), pickupPose.getY(), Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
@@ -147,12 +158,68 @@ public class SpecimenAuto2 extends OpMode {
                 .addPath(
                         // Line 11
                         new BezierCurve(
-                                new Point(pickup2Pose.getX(), pickup2Pose.getY(), Point.CARTESIAN),
+                                new Point(pickupPose.getX(), pickupPose.getY(), Point.CARTESIAN),
                                 new Point(deliversecondspecimencontrolpoint.getX(), deliversecondspecimencontrolpoint.getY(), Point.CARTESIAN),
                                 new Point(deliversecondspecimenPose.getX(), deliversecondspecimenPose.getY(), Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+        return p;
+    }
+    public PathChain IntakeThirdSpecimen() {
+        PathChain p = follower.pathBuilder()
+                .addPath(
+                        // Line 12
+                        new BezierCurve(
+                                new Point(deliversecondspecimenPose.getX(), deliversecondspecimenPose.getY(), Point.CARTESIAN),
+                                new Point(pickupthirdspecimencontrolpoint1.getX(), pickupthirdspecimencontrolpoint1.getY(), Point.CARTESIAN),
+                                new Point(pickupthirdspecimencontrolpoint2.getX(), pickupthirdspecimencontrolpoint2.getY(), Point.CARTESIAN),
+                                new Point(pickupPose.getX(), pickupPose.getY(), Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+        return p;
+    }
+    public PathChain DeliverThirdSpecimen() {
+        PathChain p = follower.pathBuilder()
+                .addPath(
+                        // Line 13
+                        new BezierCurve(
+                                new Point(pickupPose.getX(), pickupPose.getY(), Point.CARTESIAN),
+                                new Point(pickupthirdspecimencontrolpoint1.getX(), pickupthirdspecimencontrolpoint2.getY(), Point.CARTESIAN),
+                                new Point(deliverthirdspecimenPose.getX(), deliverthirdspecimenPose.getY(), Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+        return p;
+    }
+    public PathChain DeliverFourthSpecimen() {
+        PathChain p = follower.pathBuilder()
+                .addPath(
+                        // Line 15
+                        new BezierCurve(
+                                new Point(pickupPose.getX(), pickupPose.getY(), Point.CARTESIAN),
+                                new Point(pickupthirdspecimencontrolpoint1.getX(), pickupthirdspecimencontrolpoint1.getY(), Point.CARTESIAN),
+                                new Point(deliverfourthspecimenPose.getX(), deliverfourthspecimenPose.getY(), Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+        return p;
+    }
+    public PathChain Park() {
+        PathChain p = follower.pathBuilder()
+                .addPath(
+                        // Line 16
+                        new BezierLine(
+                                new Point(deliverfourthspecimenPose.getX(), deliverfourthspecimenPose.getY(), Point.CARTESIAN),
+                                new Point(parkPose.getX(), parkPose.getY(), Point.CARTESIAN)
+                        )
+                )
+                .setTangentHeadingInterpolation()
                 .build();
         return p;
     }
@@ -169,7 +236,7 @@ public class SpecimenAuto2 extends OpMode {
                     break;
                 case 1:
                     //Now wait for 1sec
-                    if (pathTimer.getElapsedTimeSeconds() > 2) {
+                    if (pathTimer.getElapsedTimeSeconds() > 1) {
                         follower.followPath(scoreSpecimen);
                         setPathState(2);
                     }
@@ -193,7 +260,9 @@ public class SpecimenAuto2 extends OpMode {
                     break;
                 case 4:
                     // wait for 1 sec to fold
+                    //now spline to pushing side
                     if (pathTimer.getElapsedTimeSeconds() > 1) {
+                        slider.setPower(0);
                         follower.followPath(pushSamplesPathChain);
                         setPathState(5);
                     }
@@ -212,7 +281,8 @@ public class SpecimenAuto2 extends OpMode {
                     }
                     break;
                 case 7:
-                    if (!follower.isBusy()) {
+                    if (pathTimer.getElapsedTimeSeconds() > 2) {
+                    //if (!follower.isBusy()) {
                         claw.close();
                         setPathState(8);
                     }
@@ -235,12 +305,91 @@ public class SpecimenAuto2 extends OpMode {
                 case 10:
                     if (pathTimer.getElapsedTimeSeconds() > 1.5) {
                         claw.open();
+                        follower.followPath(IntakeThirdSpecimen);
+                        arm.setPosSpecimen(false);
+                        wrist.setPosSpecimen(false);
+                        slider.InitialPose();
+                        setPathState(11);
+                    }
+                    break;
+                case 110:
+                    if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                        slider.setPower(0);
+                        setPathState(12);
+                    }
+                    break;
+                    // May need to add small stop and move here
+                case 11:
+                    if (!follower.isBusy()) {
+                        claw.close();
+                        setPathState(12);
+                    }
+                    break;
+                case 12:
+                    if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                        slider.LowChamber();
+                        follower.followPath(DeliverThirdSpecimen);
+                        arm.setPosChamberBack(false);
+                        wrist.setPosChamberBack(false);
+                        setPathState(13);
+                    }
+                    break;
+                case 13:
+                    if (!follower.isBusy()) {
+                        slider.HighChamberBack();
+                        setPathState(14);
+                    }
+                    break;
+                case 14:
+                    if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                        claw.open();
+                        follower.followPath(IntakeThirdSpecimen);
+                        arm.setPosSpecimen(false);
+                        wrist.setPosSpecimen(false);
+                        slider.InitialPose();
+                        setPathState(141);
+                    }
+                    break;
+                case 141:
+                    if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                        slider.setPower(0);
+                        setPathState(15);
+                    }
+                    break;
+                case 15:
+                    if (!follower.isBusy()) {
+                        claw.close();
+                        slider.setPower(0);
+                        setPathState(16);
+                    }
+                    break;
+                case 16:
+                    if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                        slider.LowChamber();
+                        follower.followPath(DeliverFourthSpecimen);
+                        arm.setPosChamberBack(false);
+                        wrist.setPosChamberBack(false);
+                        setPathState(17);
+                    }
+                    break;
+                case 17:
+                    if (!follower.isBusy()) {
+                        slider.HighChamberBack();
+                        setPathState(18);
+                    }
+                    break;
+                case 18:
+                    if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                        claw.open();
+                        follower.followPath(Park);
+                        arm.setPosFold(false);
+                        wrist.setPosFold(false);
+                        slider.InitialPose();
                         setPathState(-1);
                     }
                     break;
             }
         }
-
 
     public void setPathState(int pState) {
         pathState = pState;
@@ -280,7 +429,7 @@ public class SpecimenAuto2 extends OpMode {
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
-        follower.setMaxPower(0.6);
+        follower.setMaxPower(0.75);
 
         buildPaths();
         opmodeTimer.resetTimer();

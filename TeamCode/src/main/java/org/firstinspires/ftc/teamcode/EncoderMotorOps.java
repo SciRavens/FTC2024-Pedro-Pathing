@@ -125,6 +125,14 @@ public class EncoderMotorOps {
         if (!inAutoOp) {
             return;
         }
+        /*
+        if (!motor.isBusy()) {
+            motor.setPower(0);
+            inAutoOp = false;
+            return;
+        }
+
+         */
         cur_position = motor.getCurrentPosition();
         telemetry.addData("Autoop CHECK Count: ", count++);
         telemetry.addData("Autoop TICKS: ", cur_position);
@@ -135,7 +143,7 @@ public class EncoderMotorOps {
             //if (cur_position < 0) {
             //    motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             //}
-            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+           // motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             motor.setPower(0);
             telemetry.addData("Autoop CHECK, STOPPED THE MOTOR:", stopped++);
         }
