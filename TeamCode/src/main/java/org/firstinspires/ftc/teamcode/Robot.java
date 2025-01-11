@@ -45,7 +45,7 @@ public class Robot {
 
     // Claw positions
     public double claw_open = 0;
-    public double claw_close = 0.6;
+    public double claw_close = 0.85;
 
     //ClawAngle positions
     public double claw_horizontal = 0.38;
@@ -79,9 +79,9 @@ public class Robot {
     public int slider_Initial_Pose_ticks = 0;
     public int slider_LowBasket_ticks = 2050;
     public int slider_HighBasket_ticks = 2100; // finished needs testing
-    public int slider_LowChamber_ticks = 500;
+    public int slider_LowChamber_ticks = 1000;
     public int slider_HighChamber_ticks = 640; // 675 finished needs testing
-    public int slider_HighChamberBack_ticks = 2000; // 675 finished needs testing
+    public int slider_HighChamberBack_ticks = 2200; // 675 finished needs testing
 
 
     public int slider_ChamberAuton_ticks = 10;
