@@ -1,8 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
+
+import org.firstinspires.ftc.teamcode.pedroPathing.follower.*;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Path;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
+
+
+
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @TeleOp(name = "SciRavens-TeleOp")
@@ -14,11 +22,12 @@ public class RobotTeleop extends LinearOpMode {
     public Wrist wrist;
     public Claw claw;
     public ClawAngle clawAngle;
-
+    private Follower follower;
     RevBlinkinLedDriver.BlinkinPattern pattern;
     Leds leds;
     private int led_cur = 1;
     private double slider_pos;
+    Path turn, turn2;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -46,6 +55,7 @@ public class RobotTeleop extends LinearOpMode {
             //get_ticks();
             arm_wrist_operate();
             claw_operate();
+            turning();
             //leds_operate();
             //robot.telemetry.update();
         }
@@ -54,13 +64,27 @@ public class RobotTeleop extends LinearOpMode {
 
     private void follower_operate()
     {
-        if (gamepad1.left_trigger > 0.5 || gamepad1.right_trigger > 0.5) {
+        if (gamepad1.left_trigger > 0.5) {
             robot.follower.setMaxPower(0.25);
         } else {
             robot.follower.setMaxPower(1.0);
         }
         robot.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x);
         robot.follower.update();
+    }
+
+
+    private void turning() {
+        if(gamepad1.right_bumper) {
+            turn = new Path(new BezierLine(new Point(follower.getPose()), new Point(follower.getPose())));
+            turn.setLinearHeadingInterpolation(follower.getPose().getHeading(), follower.getPose().getHeading() + 90);
+            follower.followPath(turn);
+        }
+        if (gamepad1.left_bumper){
+            turn2 = new Path(new BezierLine(new Point(follower.getPose()), new Point(follower.getPose())));
+            turn2.setLinearHeadingInterpolation(follower.getPose().getHeading(), follower.getPose().getHeading() + 180);
+            follower.followPath(turn2);
+        }
     }
 
     private void arm_wrist_operate() {
@@ -98,6 +122,7 @@ public class RobotTeleop extends LinearOpMode {
             wrist.setPosChamberBack(false);
         }
     }
+
 
     public void get_ticks() {
         slider_pos = slider.getCurrentPosition();
