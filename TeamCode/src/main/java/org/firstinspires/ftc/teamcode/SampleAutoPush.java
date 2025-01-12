@@ -27,8 +27,9 @@ public class SampleAutoPush extends OpMode {
     private final Pose startPose = new Pose(9.757, 79, Math.toRadians(0));
     private final Pose chamberPose = new Pose(41.5, 79, Math.toRadians(00));
     private final Pose backup1Pose = new Pose(23.25, 79, Math.toRadians(0));
-    private final Pose strafetofirstsamplePose = new Pose(72, 120, Math.toRadians(0));
-    private final Pose strafetofirstsampleControlPoint = new Pose(1.5, 86, Math.toRadians(0));
+    private final Pose strafetofirstsamplePose = new Pose(63, 144, Math.toRadians(0)); // 63, 120
+    private final Pose strafetofirstsampleControlPoint = new Pose(19, 118, Math.toRadians(0));
+    private final Pose strafetofirstsampleControlPoint2 = new Pose(65, 102, Math.toRadians(0));
     private final Pose pushfirstsamplePose = new Pose(8.000,120.000, Math.toRadians(0));
     private final Pose strafetosecondsamplePose = new Pose(72, 132, Math.toRadians(0));
     private final Pose pushsecondsamplePose = new Pose(8,132, Math.toRadians(0));
@@ -66,6 +67,7 @@ public class SampleAutoPush extends OpMode {
                         new BezierCurve(
                                 new Point(backup1Pose.getX(), backup1Pose.getY(), Point.CARTESIAN),
                                 new Point(strafetofirstsampleControlPoint.getX(), strafetofirstsampleControlPoint.getY(), Point.CARTESIAN),
+                                new Point(strafetofirstsampleControlPoint2.getX(), strafetofirstsampleControlPoint2.getY(), Point.CARTESIAN),
                                 new Point(strafetofirstsamplePose.getX(), strafetofirstsamplePose.getY(), Point.CARTESIAN)
                         )
                 )
@@ -158,8 +160,8 @@ public class SampleAutoPush extends OpMode {
                 setPathState(1);
                 break;
             case 1:
-                if (pathTimer.getElapsedTimeSeconds() > 2) {
-                    follower.setMaxPower(0.4);
+                if (pathTimer.getElapsedTimeSeconds() > 1) {
+                    follower.setMaxPower(0.6);
 //                    slider.setPower(0);
                     follower.followPath(scoreSpecimen);
                     setPathState(2);
@@ -182,8 +184,9 @@ public class SampleAutoPush extends OpMode {
                 break;
             case 4:
                 if (pathTimer.getElapsedTimeSeconds() > 2) {
+                    follower.setMaxPower(0.75);
                     follower.followPath(PushSamplesPathChain);
-                    setPathState(5);
+                    setPathState(-1);
                 }
             case 5:
                 if (!follower.isBusy()) {

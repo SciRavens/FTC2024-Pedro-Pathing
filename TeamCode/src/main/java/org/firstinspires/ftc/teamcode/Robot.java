@@ -44,12 +44,12 @@ public class Robot {
     public Follower follower;
 
     // Claw positions
-    public double claw_open = 0;
-    public double claw_close = 0.85;
+    public double claw_open = 0.2;
+    public double claw_close = 0.55;
 
     //ClawAngle positions
-    public double claw_horizontal = 0.38;
-    public double claw_vertical = 0.7;
+    public double claw_horizontal = 0.71;
+    public double claw_vertical = 0.37;
 
     // Arm positions
     public double arm_pos_starting = 0.98;
