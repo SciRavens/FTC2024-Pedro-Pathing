@@ -39,7 +39,7 @@ public class SpecimenAuto extends OpMode {
     private final Pose pickupthirdspecimencontrolpoint1 = new Pose(20,69, Math.toRadians(0));
     private final Pose pickupthirdspecimencontrolpoint2 = new Pose(45,19, Math.toRadians(0));
     private final Pose deliverthirdspecimenPose = new Pose(49,70, Math.toRadians(0));
-    private final Pose deliverfourthspecimenPose = new Pose(48,72.5, Math.toRadians(0));
+    private final Pose deliverfourthspecimenPose = new Pose(47.5,72.5, Math.toRadians(0));
     private final Pose parkPose = new Pose(12,25, Math.toRadians(0));
 
 
@@ -281,7 +281,7 @@ public class SpecimenAuto extends OpMode {
                 }
                 break;
             case 7:
-                if (pathTimer.getElapsedTimeSeconds() > 1) {
+                if (pathTimer.getElapsedTimeSeconds() > 1.2) {
                     //if (!follower.isBusy()) {
                     claw.close();
                     setPathState(8);
