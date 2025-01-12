@@ -36,11 +36,6 @@ public class SampleAutoPush extends OpMode {
     private final Pose strafetothirdsamplePose = new Pose(72, 138, Math.toRadians(0));
     private final Pose pushthirdsamplePose = new Pose(8,138, Math.toRadians(0));
 
-
-
-
-
-
     private Path scoreSpecimen;
     private PathChain backUp, PushSamplesPathChain, GoToPark;
     PathBuilder builder;

@@ -22,7 +22,7 @@ public class SpecimenAuto2 extends OpMode {
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState = 0;
     private final Pose startPose = new Pose(9.757, 65.000, Math.toRadians(0)); // starting position
-    private final Pose chamberPose = new Pose(42.5, 65.0, Math.toRadians(0));
+    private final Pose chamberPose = new Pose(41.5, 65.0, Math.toRadians(0));
     private final Pose backup1Pose = new Pose(30, 65.0, Math.toRadians(0));
     private final Pose push1Pose = new Pose(19.0, 26.0, Math.toRadians(0));
     private final Pose push2Pose = new Pose(65.0, 42.0, Math.toRadians(0));
@@ -33,7 +33,7 @@ public class SpecimenAuto2 extends OpMode {
     private final Pose push7Pose = new Pose(21.000, 13.000, Math.toRadians(0));
     private final Pose push8Pose = new Pose(24.000, 13.000, Math.toRadians(0));
     private final Pose alignwithsecondspecimenPose = new Pose(24, 24, Math.toRadians(0));
-    private final Pose pickupPose = new Pose(23, 24, Math.toRadians(0)); //22
+    private final Pose pickupPose = new Pose(23.6, 24, Math.toRadians(0)); //22
     private final Pose deliversecondspecimenPose = new Pose(42.5, 67.5,Math.toRadians(0));
     private final Pose deliversecondspecimencontrolpoint = new Pose(20, 69,Math.toRadians(0));
     private final Pose pickupthirdspecimencontrolpoint1 = new Pose(20,69, Math.toRadians(0));
@@ -303,7 +303,7 @@ public class SpecimenAuto2 extends OpMode {
                     }
                     break;
                 case 10:
-                    if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                    if (pathTimer.getElapsedTimeSeconds() > 0.75) {
                         claw.open();
                         follower.followPath(IntakeThirdSpecimen);
                         arm.setPosSpecimen(false);
@@ -312,15 +312,10 @@ public class SpecimenAuto2 extends OpMode {
                         setPathState(11);
                     }
                     break;
-                case 110:
-                    if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                        slider.setPower(0);
-                        setPathState(12);
-                    }
-                    break;
                     // May need to add small stop and move here
                 case 11:
                     if (!follower.isBusy()) {
+                        slider.setPower(0);
                         claw.close();
                         setPathState(12);
                     }
@@ -341,7 +336,7 @@ public class SpecimenAuto2 extends OpMode {
                     }
                     break;
                 case 14:
-                    if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                    if (pathTimer.getElapsedTimeSeconds() > 0.75) {
                         claw.open();
                         follower.followPath(IntakeThirdSpecimen);
                         arm.setPosSpecimen(false);
@@ -359,7 +354,6 @@ public class SpecimenAuto2 extends OpMode {
                 case 15:
                     if (!follower.isBusy()) {
                         claw.close();
-                        slider.setPower(0);
                         setPathState(16);
                     }
                     break;
@@ -379,7 +373,7 @@ public class SpecimenAuto2 extends OpMode {
                     }
                     break;
                 case 18:
-                    if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                    if (pathTimer.getElapsedTimeSeconds() > 0.75) {
                         claw.open();
                         follower.followPath(Park);
                         arm.setPosFold(false);
@@ -429,7 +423,7 @@ public class SpecimenAuto2 extends OpMode {
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
-        follower.setMaxPower(0.6);
+        follower.setMaxPower(0.8);
 
         buildPaths();
         opmodeTimer.resetTimer();
