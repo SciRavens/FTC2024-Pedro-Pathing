@@ -13,8 +13,8 @@ import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathBuilder;
 
 
-@Autonomous(name = "SampleAuto", group = "Examples")
-public class SampleAuto extends OpMode {
+@Autonomous(name = "SampleBasketAuto", group = "Examples")
+public class SampleBasketAuto extends OpMode {
     public Robot robot;
     public Claw claw;
     public Arm arm;
@@ -27,24 +27,21 @@ public class SampleAuto extends OpMode {
     private final Pose startPose = new Pose(9.757, 79, Math.toRadians(0));
     private final Pose chamberPose = new Pose(41.5, 79, Math.toRadians(00));
     private final Pose backup1Pose = new Pose(23, 79, Math.toRadians(0));
-    private final Pose strafetofirstsamplePose = new Pose(23, 110, Math.toRadians(0));
-    private final Pose deliverfirstsamplePose = new Pose(15, 130, Math.toRadians(0));
-    private final Pose backUpFromDroppingFirstSamplePose = new Pose(17, 134, Math.toRadians(0));
-    private final Pose goToPickUpSecondSamplePose = new Pose(22, 128, Math.toRadians(0));
-    private final Pose deliversecondsamplePose = new Pose(15, 130, Math.toRadians(0));
-    private final Pose backUpFromDroppingSecondSamplePose = new Pose(19, 120, Math.toRadians(0));
-    private final Pose alignWithTheThirdSamplePose = new Pose(45.5, 120, Math.toRadians(0));
-    private final Pose goToPickUpThirdSamplePose = new Pose(45.5, 137, Math.toRadians(0));
-    private final Pose backUpFromPickingUpThirdSamplePose = new Pose(45.5, 127, Math.toRadians(0));
-    private final Pose deliverthirdsamplePose = new Pose(15, 130, Math.toRadians(0));
-    private final Pose backUpFromDroppingThirdSamplePose = new Pose(19,127, Math.toRadians(0));
-    private final Pose goToParkControlPoint = new Pose(60, 110, Math.toRadians(0));
-    private final Pose goToParkPose = new Pose(63, 97, Math.toRadians(0));
+    private final Pose strafetofirstsamplePose = new Pose(23,121);
+    private final Pose gotoscorefirstsamplePose = new Pose(15,130);
+    private final Pose backupafterscoringfirstsamplePose = new Pose(17,132);
+    private final Pose gotopickupsecondsamplePose = new Pose(26,132);
+    private final Pose gotoscoresecondsamplePose = new Pose(15,130);
+    private final Pose backupafterscoringsecondsamplePose = new Pose(17,132);
+    private final Pose gotopickupthirdsamplePose = new Pose(45.5, 132);
+    private final Pose forwardtopickupthirdsamplePose = new Pose(45.5, 135);
+    private final Pose gotosorethirdsamplePose = new Pose(15,130);
+    private final Pose backupafterscoringthirdsamplePose = new Pose(17,132);
+    private final Pose parkPose = new Pose(63,97);
+    private final Pose parkcontrolpointPose = new Pose(60,110);
 
     private Path scoreSpecimen;
-    private PathChain backUp, StrafeToFirstSample, GoToDeliverFirstSample, BackUpFromDroppingFirstSample, GoToPickUpSecondSample, AlignWithBasketToDeliverSecondSample,
-            GoForwardToDeliverSecondSample, BackUpFromDroppingSecondSample, AlignWithThirdSample, GotoPickUpThirdSample, BackUpFromPickingTheThirdSampleUp,
-            GoToDeliverThirdSample, BackUpFromDroppingThirdSample, GoToPark;
+    private PathChain backUp, StrafeToFirstSample, GoToDeliverFirstSample, BackUpFromDroppingFirstSample, GoToPickUpSecondSample, GoToDeliverSecondSample, BackUpFromDroppingSecondSample, GoToPickUpThirdSample, GoFowardToPickUpThirdSample, GoToDeliverThirdSample, BackUpFromDroppingThirdSample, GoToPark ;
     PathBuilder builder;
 
     public void buildPaths() {
@@ -55,16 +52,15 @@ public class SampleAuto extends OpMode {
                 .addPath(new BezierLine(new Point(chamberPose), new Point(backup1Pose)))
                 .setConstantHeadingInterpolation(Math.toRadians(0))
                 .build();
+
         StrafeToFirstSample = StrafeToFirstSample();
         GoToDeliverFirstSample = GoToDeliverFirstSample();
         BackUpFromDroppingFirstSample = BackUpFromDroppingFirstSample();
         GoToPickUpSecondSample = GoToPickUpSecondSample();
-//        AlignWithBasketToDeliverSecondSample = AlignWithBasketToDeliverSecondSample();
-        GoForwardToDeliverSecondSample = GoForwardToDeliverSecondSample();
+        GoToDeliverSecondSample = GoToScoreSecondSample();
         BackUpFromDroppingSecondSample = BackUpFromDroppingSecondSample();
-//        AlignWithThirdSample = AlignWithThirdSample();
-        GotoPickUpThirdSample = GotoPickUpThirdSample();
-//        BackUpFromPickingTheThirdSampleUp = BackUpFromPickingTheThirdSampleUp();
+        GoToPickUpThirdSample = GoToPickUpThirdSample();
+        GoFowardToPickUpThirdSample = GoFowardToPickUpThirdSample();
         GoToDeliverThirdSample = GoToDeliverThirdSample();
         BackUpFromDroppingThirdSample = BackUpFromDroppingThirdSample();
         GoToPark = GoToPark();
@@ -84,162 +80,138 @@ public class SampleAuto extends OpMode {
                 .build();
         return p;
     }
+
     public PathChain GoToDeliverFirstSample() {
         // Change this to a path
         PathChain p = follower.pathBuilder()
                 .addPath(
-                        // Line 4
+                        // Line 3
                         new BezierLine(
                                 new Point(strafetofirstsamplePose.getX(), strafetofirstsamplePose.getY(), Point.CARTESIAN),
-                                new Point(deliverfirstsamplePose.getX(), deliverfirstsamplePose.getY(), Point.CARTESIAN)
+                                new Point(gotoscorefirstsamplePose.getX(), gotoscorefirstsamplePose.getY(), Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(10), Math.toRadians(155))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(135))
                 .build();
         return p;
     }
+
     public PathChain BackUpFromDroppingFirstSample() {
         // Change this to a path
         PathChain p = follower.pathBuilder()
                 .addPath(
-                // Line 5
-                new BezierLine(
-                        new Point(deliverfirstsamplePose.getX(), deliverfirstsamplePose.getY(), Point.CARTESIAN),
-                        new Point(backUpFromDroppingFirstSamplePose.getX(), backUpFromDroppingFirstSamplePose.getY(), Point.CARTESIAN)
+                        // Line 3
+                        new BezierLine(
+                                new Point(gotoscorefirstsamplePose.getX(), gotoscorefirstsamplePose.getY(), Point.CARTESIAN),
+                                new Point(backupafterscoringfirstsamplePose.getX(), backupafterscoringfirstsamplePose.getY(), Point.CARTESIAN)
+                        )
                 )
-        )
-                .setConstantHeadingInterpolation(Math.toRadians(155))
+                .setConstantHeadingInterpolation(Math.toRadians(135))
                 .build();
         return p;
     }
+
     public PathChain GoToPickUpSecondSample() {
         // Change this to a path
         PathChain p = follower.pathBuilder()
                 .addPath(
-                        // Line 6
+                        // Line 3
                         new BezierLine(
-                                new Point(backUpFromDroppingFirstSamplePose.getX(), backUpFromDroppingFirstSamplePose.getY(), Point.CARTESIAN),
-                                new Point(goToPickUpSecondSamplePose.getX(), goToPickUpSecondSamplePose.getY(), Point.CARTESIAN)
+                                new Point(backupafterscoringfirstsamplePose.getX(), backupafterscoringfirstsamplePose.getY(), Point.CARTESIAN),
+                                new Point(gotopickupsecondsamplePose.getX(), gotopickupsecondsamplePose.getY(), Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(155), Math.toRadians(0))
+                .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(0))
                 .build();
         return p;
     }
-//    public PathChain AlignWithBasketToDeliverSecondSample() {
-//        // Change this to a path
-//        PathChain p = follower.pathBuilder()
-//                .addPath(
-//                        // Line 7
-//                        new BezierLine(
-//                                new Point(goToPickUpSecondSamplePose.getX(), goToPickUpSecondSamplePose.getY(), Point.CARTESIAN),
-//                                new Point(deliversecondsamplePose.getX(), (deliversecondsamplePose.getY(), Point.CARTESIAN)
-//                        )
-//                )
-//                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(115))
-//                .build();
-//        return p;
-//    }
-    public PathChain GoForwardToDeliverSecondSample() {
+
+    public PathChain GoToScoreSecondSample() {
         // Change this to a path
         PathChain p = follower.pathBuilder()
                 .addPath(
-                // Line 8
-                    new BezierLine(
-                            new Point(goToPickUpSecondSamplePose.getX(), goToPickUpSecondSamplePose.getY(), Point.CARTESIAN),
-                            new Point(deliversecondsamplePose.getX(), deliversecondsamplePose.getY(), Point.CARTESIAN)
-                    )
+                        // Line 3
+                        new BezierLine(
+                                new Point(gotopickupsecondsamplePose.getX(), gotopickupsecondsamplePose.getY(), Point.CARTESIAN),
+                                new Point(gotoscoresecondsamplePose.getX(), gotoscoresecondsamplePose.getY(), Point.CARTESIAN)
+                        )
                 )
-                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(135))
                 .build();
         return p;
     }
+
     public PathChain BackUpFromDroppingSecondSample() {
         // Change this to a path
         PathChain p = follower.pathBuilder()
                 .addPath(
-                        // Line 10
+                        // Line 3
                         new BezierLine(
-                                new Point(deliversecondsamplePose.getX(), deliversecondsamplePose.getY(), Point.CARTESIAN),
-                                new Point(backUpFromDroppingSecondSamplePose.getX(), backUpFromDroppingSecondSamplePose.getY(), Point.CARTESIAN)
+                                new Point(gotoscoresecondsamplePose.getX(), gotoscoresecondsamplePose.getY(), Point.CARTESIAN),
+                                new Point(backupafterscoringsecondsamplePose.getX(),backupafterscoringsecondsamplePose.getY(), Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(115), Math.toRadians(90))
+                .setConstantHeadingInterpolation(Math.toRadians(135))
                 .build();
         return p;
     }
-    public PathChain AlignWithThirdSample() {
+
+    public PathChain GoToPickUpThirdSample() {
         // Change this to a path
         PathChain p = follower.pathBuilder()
                 .addPath(
-                        // Line 11
+                        // Line 3
                         new BezierLine(
-                                new Point(backUpFromDroppingSecondSamplePose.getX(), backUpFromDroppingSecondSamplePose.getY(), Point.CARTESIAN),
-                                new Point(alignWithTheThirdSamplePose.getX(), alignWithTheThirdSamplePose.getY(), Point.CARTESIAN)
+                                new Point(backupafterscoringsecondsamplePose.getX(), backupafterscoringsecondsamplePose.getY(), Point.CARTESIAN),
+                                new Point(gotopickupthirdsamplePose.getX(), gotopickupthirdsamplePose.getY(), Point.CARTESIAN)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(90))
+                .build();
+        return p;
+    }
+
+    public PathChain GoFowardToPickUpThirdSample() {
+        // Change this to a path
+        PathChain p = follower.pathBuilder()
+                .addPath(
+                        // Line 3
+                        new BezierLine(
+                                new Point(gotopickupthirdsamplePose.getX(), gotopickupthirdsamplePose.getY(), Point.CARTESIAN),
+                                new Point(forwardtopickupthirdsamplePose.getX(), forwardtopickupthirdsamplePose.getY(), Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(90))
                 .build();
         return p;
-
     }
-    public PathChain GotoPickUpThirdSample() {
-        // Change this to a path
-        PathChain p = follower.pathBuilder()
-                .addPath(
-                        // Line 11
-                        new BezierLine(
-                                new Point(alignWithTheThirdSamplePose.getX(), alignWithTheThirdSamplePose.getY(), Point.CARTESIAN),
-                                new Point(goToPickUpThirdSamplePose.getX(), goToPickUpThirdSamplePose.getY(), Point.CARTESIAN)
-                        )
-                )
-                .setConstantHeadingInterpolation(Math.toRadians(90))
-                .build();
-        return p;
 
-    }
-    public PathChain BackUpFromPickingTheThirdSampleUp() {
-        // Change this to a path
-        PathChain p = follower.pathBuilder()
-                .addPath(
-                        // Line 13
-                        new BezierLine(
-                                new Point(goToPickUpThirdSamplePose.getX(), goToPickUpThirdSamplePose.getY(), Point.CARTESIAN),
-                                new Point(backUpFromPickingUpThirdSamplePose.getX(), backUpFromPickingUpThirdSamplePose.getY(), Point.CARTESIAN)
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(135))
-                .build();
-        return p;
-
-    }
     public PathChain GoToDeliverThirdSample() {
         // Change this to a path
         PathChain p = follower.pathBuilder()
                 .addPath(
-                // Line 13
-                new BezierLine(
-                        new Point(backUpFromPickingUpThirdSamplePose.getX(), backUpFromPickingUpThirdSamplePose.getY(), Point.CARTESIAN),
-                        new Point(deliverthirdsamplePose.getX(), deliverthirdsamplePose.getY(), Point.CARTESIAN)
+                        // Line 3
+                        new BezierLine(
+                                new Point(forwardtopickupthirdsamplePose.getX(), forwardtopickupthirdsamplePose.getY(), Point.CARTESIAN),
+                                new Point(gotosorethirdsamplePose.getX(), gotosorethirdsamplePose.getY(), Point.CARTESIAN)
+                        )
                 )
-        )
                 .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(135))
                 .build();
         return p;
-
     }
 
     public PathChain BackUpFromDroppingThirdSample() {
         // Change this to a path
         PathChain p = follower.pathBuilder()
                 .addPath(
-                        // Line 5
+                        // Line 3
                         new BezierLine(
-                                new Point(deliverthirdsamplePose.getX(), deliverthirdsamplePose.getY(), Point.CARTESIAN),
-                                new Point(backUpFromDroppingThirdSamplePose.getX(), backUpFromDroppingThirdSamplePose.getY(), Point.CARTESIAN)
+                                new Point(gotosorethirdsamplePose.getX(), gotosorethirdsamplePose.getY(), Point.CARTESIAN),
+                                new Point(backupafterscoringthirdsamplePose.getX(), backupafterscoringthirdsamplePose.getY(), Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(90))
+                .setConstantHeadingInterpolation(Math.toRadians(135))
                 .build();
         return p;
     }
@@ -248,17 +220,19 @@ public class SampleAuto extends OpMode {
         // Change this to a path
         PathChain p = follower.pathBuilder()
                 .addPath(
-                        // Line 14
+                        // Line 3
                         new BezierCurve(
-                                new Point(deliverthirdsamplePose.getX(), deliverthirdsamplePose.getY(), Point.CARTESIAN),
-                                new Point(goToParkControlPoint.getX(), goToParkControlPoint.getY(), Point.CARTESIAN),
-                                new Point(goToParkPose.getX(), goToParkPose.getY(), Point.CARTESIAN)
+                                new Point(backupafterscoringthirdsamplePose.getX(), backupafterscoringthirdsamplePose.getY(), Point.CARTESIAN),
+                                new Point(parkcontrolpointPose.getX(), parkcontrolpointPose.getY(), Point.CARTESIAN),
+                                new Point(parkPose.getX(), parkPose.getY(), Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(270))
+                .setConstantHeadingInterpolation(Math.toRadians(90))
                 .build();
         return p;
     }
+
+
 
 
 
@@ -297,7 +271,7 @@ public class SampleAuto extends OpMode {
                 if (pathTimer.getElapsedTimeSeconds() > 1) {
                     slider.setPower(0);
                     follower.setMaxPower(1.0);
-                    follower.followPath(StrafeToFirstSample);
+                    follower.followPath(GoToDeliverFirstSample);
                     setPathState(5);
                 }
                 break;
@@ -397,7 +371,7 @@ public class SampleAuto extends OpMode {
             case 122:
                 if (pathTimer.getElapsedTimeSeconds() > 2) {
                     follower.setMaxPower(0.5);
-                    follower.followPath(GoForwardToDeliverSecondSample);
+                    follower.followPath(GoToDeliverSecondSample);
                     setPathState(13);
                 }
                 break;
@@ -438,8 +412,14 @@ public class SampleAuto extends OpMode {
                 break;
             case 16:
                 if(pathTimer.getElapsedTimeSeconds() > 1) {
-                    follower.followPath(GotoPickUpThirdSample);
-                    setPathState(18);
+                    follower.followPath(GoToPickUpThirdSample);
+                    setPathState(161);
+                }
+                break;
+            case 161:
+                if(pathTimer.getElapsedTimeSeconds() > 1) {
+                    follower.followPath(GoFowardToPickUpThirdSample);
+                    setPathState(17);
                 }
                 break;
             case 17:
@@ -484,7 +464,7 @@ public class SampleAuto extends OpMode {
                     setPathState(-1);
                 }
                 break;
-            }
+        }
     }
 
     public void setPathState(int pState) {
@@ -555,3 +535,4 @@ public class SampleAuto extends OpMode {
     public void stop() {
     }
 }
+

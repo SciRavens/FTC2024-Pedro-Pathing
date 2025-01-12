@@ -27,14 +27,15 @@ public class SampleAutoPush extends OpMode {
     private final Pose startPose = new Pose(9.757, 79, Math.toRadians(0));
     private final Pose chamberPose = new Pose(41.5, 79, Math.toRadians(00));
     private final Pose backup1Pose = new Pose(23.25, 79, Math.toRadians(0));
-    private final Pose strafetofirstsamplePose = new Pose(63, 144, Math.toRadians(0)); // 63, 120
+    private final Pose strafetofirstsamplePose = new Pose(63, 118, Math.toRadians(0)); // 63, 120
     private final Pose strafetofirstsampleControlPoint = new Pose(19, 118, Math.toRadians(0));
     private final Pose strafetofirstsampleControlPoint2 = new Pose(65, 102, Math.toRadians(0));
-    private final Pose pushfirstsamplePose = new Pose(8.000,120.000, Math.toRadians(0));
-    private final Pose strafetosecondsamplePose = new Pose(72, 132, Math.toRadians(0));
-    private final Pose pushsecondsamplePose = new Pose(8,132, Math.toRadians(0));
-    private final Pose strafetothirdsamplePose = new Pose(72, 138, Math.toRadians(0));
-    private final Pose pushthirdsamplePose = new Pose(8,138, Math.toRadians(0));
+    private final Pose pushfirstsamplePose = new Pose(16,118.000, Math.toRadians(0));
+    private final Pose strafetosecondsamplePose = new Pose(60, 128, Math.toRadians(0));
+    private final Pose pushsecondsamplePose = new Pose(17,128, Math.toRadians(0));
+    private final Pose strafetothirdsamplePose = new Pose(60, 135, Math.toRadians(0));
+    private final Pose pushthirdsamplePose = new Pose(17,135, Math.toRadians(0));
+    private final Pose parking = new Pose(62,96,Math.toRadians(0));
 
     private Path scoreSpecimen;
     private PathChain backUp, PushSamplesPathChain, GoToPark;
@@ -50,7 +51,6 @@ public class SampleAutoPush extends OpMode {
                 .build();
 
         PushSamplesPathChain = PushSamplesPathChain();
-        GoToPark = GoToPark();
     }
 
 
@@ -67,7 +67,7 @@ public class SampleAutoPush extends OpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180))
-                /*
+
                 .addPath(
                         // Line 4
                         new BezierLine(
@@ -123,28 +123,21 @@ public class SampleAutoPush extends OpMode {
                                 new Point(pushthirdsamplePose.getX(), pushthirdsamplePose.getY(), Point.CARTESIAN)
                         )
                 )
-                /*
-                 */
-                //.setConstantHeadingInterpolation(Math.toRadians(180))
+                .setConstantHeadingInterpolation(Math.toRadians(180))
 
-                .build();
-
-        return p;
-    }
-
-    public PathChain GoToPark() {
-        PathChain p = follower.pathBuilder()
                 .addPath(
                         // Line 11
                         new BezierLine(
                                 new Point(pushthirdsamplePose.getX(), pushthirdsamplePose.getY(), Point.CARTESIAN),
-                                new Point(72.000, 96.000, Point.CARTESIAN)
+                                new Point(parking.getX(), parking.getY(), Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(270))
                 .build();
+
         return p;
     }
+
 
     public void autonomousPathUpdate() {
         switch (pathState) {
@@ -156,7 +149,6 @@ public class SampleAutoPush extends OpMode {
                 break;
             case 1:
                 if (pathTimer.getElapsedTimeSeconds() > 1) {
-                    follower.setMaxPower(0.6);
 //                    slider.setPower(0);
                     follower.followPath(scoreSpecimen);
                     setPathState(2);
@@ -179,13 +171,7 @@ public class SampleAutoPush extends OpMode {
                 break;
             case 4:
                 if (pathTimer.getElapsedTimeSeconds() > 2) {
-                    follower.setMaxPower(0.75);
                     follower.followPath(PushSamplesPathChain);
-                    setPathState(-1);
-                }
-            case 5:
-                if (!follower.isBusy()) {
-                    follower.followPath(GoToPark);
                     setPathState(-1);
                 }
         }
