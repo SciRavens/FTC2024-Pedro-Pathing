@@ -423,7 +423,7 @@ public class SpecimenAuto2 extends OpMode {
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
-        follower.setMaxPower(0.8);
+        follower.setMaxPower(0.6);
 
         buildPaths();
         opmodeTimer.resetTimer();
