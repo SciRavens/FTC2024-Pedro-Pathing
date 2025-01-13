@@ -474,12 +474,16 @@ public class SampleAuto extends OpMode {
             case 20:
                 if(!follower.isBusy()) {
                     slider.InitialPose();
+                    arm.setPosFold(false);
+                    wrist.setPosFold(false);
                     setPathState(21);
                 }
                 break;
             case 21:
                 if(pathTimer.getElapsedTimeSeconds() > 1) {
                     follower.setMaxPower(1.0);
+                    arm.setPosPark(true);
+                    wrist.setPosPark(true);
                     follower.followPath(GoToPark);
                     setPathState(-1);
                 }

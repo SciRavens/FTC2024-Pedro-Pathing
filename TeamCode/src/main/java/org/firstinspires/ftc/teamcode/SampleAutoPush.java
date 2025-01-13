@@ -25,16 +25,16 @@ public class SampleAutoPush extends OpMode {
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState = 0;
     private final Pose startPose = new Pose(9.757, 79, Math.toRadians(0));
-    private final Pose chamberPose = new Pose(41.5, 79, Math.toRadians(00));
+    private final Pose chamberPose = new Pose(41.75, 79, Math.toRadians(00));
     private final Pose backup1Pose = new Pose(23.25, 79, Math.toRadians(0));
-    private final Pose strafetofirstsamplePose = new Pose(63, 118, Math.toRadians(0)); // 63, 120
+    private final Pose strafetofirstsamplePose = new Pose(63, 117.5, Math.toRadians(0)); // 63, 120
     private final Pose strafetofirstsampleControlPoint = new Pose(19, 118, Math.toRadians(0));
     private final Pose strafetofirstsampleControlPoint2 = new Pose(65, 102, Math.toRadians(0));
-    private final Pose pushfirstsamplePose = new Pose(16,118.000, Math.toRadians(0));
+    private final Pose pushfirstsamplePose = new Pose(16,117.5, Math.toRadians(0));
     private final Pose strafetosecondsamplePose = new Pose(60, 128, Math.toRadians(0));
     private final Pose pushsecondsamplePose = new Pose(17,128, Math.toRadians(0));
-    private final Pose strafetothirdsamplePose = new Pose(60, 135, Math.toRadians(0));
-    private final Pose pushthirdsamplePose = new Pose(17,135, Math.toRadians(0));
+    private final Pose strafetothirdsamplePose = new Pose(60, 133.5, Math.toRadians(0));
+    private final Pose pushthirdsamplePose = new Pose(17,135.5, Math.toRadians(0));
     private final Pose parking = new Pose(62,96,Math.toRadians(0));
 
     private Path scoreSpecimen;
@@ -124,7 +124,6 @@ public class SampleAutoPush extends OpMode {
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
-
                 .addPath(
                         // Line 11
                         new BezierLine(
@@ -142,9 +141,9 @@ public class SampleAutoPush extends OpMode {
     public void autonomousPathUpdate() {
         switch (pathState) {
             case 0:
-//                arm.setPosChamber(false);
-//                wrist.setPosHighChamber(false);
-//                slider.HighChamber();
+                arm.setPosChamber(false);
+                wrist.setPosHighChamber(false);
+                slider.HighChamber();
                 setPathState(1);
                 break;
             case 1:
@@ -156,22 +155,24 @@ public class SampleAutoPush extends OpMode {
                 break;
             case 2:
                 if (follower.getPose().getX() > (chamberPose.getX() - 1)) {
-//                    claw.open();
+                    claw.open();
                     follower.followPath(backUp, true);
                     setPathState(3);
                 }
                 break;
             case 3:
                 if (follower.getPose().getX() < (backup1Pose.getX() - 1)) {
-//                    arm.setPosFold(false);
-//                    wrist.setPosFold(false);
-//                    slider.InitialPose();
+                    arm.setPosFold(false);
+                    wrist.setPosFold(false);
+                    slider.InitialPose();
                     setPathState(4);
                 }
                 break;
             case 4:
                 if (pathTimer.getElapsedTimeSeconds() > 2) {
                     follower.followPath(PushSamplesPathChain);
+                    arm.setPosPark(true);
+                    wrist.setPosPark(true);
                     setPathState(-1);
                 }
         }
@@ -218,7 +219,7 @@ public class SampleAutoPush extends OpMode {
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
-        follower.setMaxPower(0.6);
+        follower.setMaxPower(0.4);
 
         buildPaths();
         opmodeTimer.resetTimer();
