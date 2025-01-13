@@ -13,6 +13,7 @@ public class Slider extends EncoderMotorOps {
     static final private int pos_max = 7800;
     static final private int pos_min = 0;
 
+    private boolean checkLimitSwitch = false;
 
 
     public Slider(Robot robot)
@@ -29,7 +30,7 @@ public class Slider extends EncoderMotorOps {
     }
 
 //  Move slider to Intial Pose
-    public void InitialPose() {autoOp(robot.slider_Initial_Pose_ticks);}
+    public void InitialPose() {autoOp(robot.slider_Initial_Pose_ticks); checkLimitSwitch = true;}
     public void LowBasket() {autoOp(robot.slider_LowBasket_ticks);}
 //    Move slider height to Low basket
     public void LowChamber() {autoOp(robot.slider_LowChamber_ticks);}
@@ -43,6 +44,14 @@ public class Slider extends EncoderMotorOps {
         autoOp(robot.slider_HighChamberBack_ticks);
     }
 
+@Override
+public void autoOpCompletionCheck() {
+        super.autoOpCompletionCheck();
+        if (checkLimitSwitch && robot.limitSwitch.isPressed()) {
+            stopAndReset();
+            checkLimitSwitch = false;
+        }
+}
 
     public void setPosAbsolute(int ticks) {
         autoOp(ticks);

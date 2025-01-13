@@ -24,21 +24,21 @@ public class SpecimenAuto extends OpMode {
     private final Pose startPose = new Pose(9.757, 65.000, Math.toRadians(0)); // starting position
     private final Pose chamberPose = new Pose(41.5, 65.0, Math.toRadians(0));
     private final Pose backup1Pose = new Pose(30, 65.0, Math.toRadians(0));
-    private final Pose push1Pose = new Pose(19.0, 26.0, Math.toRadians(0));
-    private final Pose push2Pose = new Pose(65.0, 42.0, Math.toRadians(0));
-    private final Pose push3Pose = new Pose(57.000, 24.000, Math.toRadians(0));
-    private final Pose push4Pose = new Pose(21.000, 24.000, Math.toRadians(0));
-    private final Pose push5Pose = new Pose(53.000, 24.000, Math.toRadians(0));
-    private final Pose push6Pose = new Pose(53.000, 13.000, Math.toRadians(0));
+    private final Pose push1Pose = new Pose(19.0, 26.0, Math.toRadians(0)); // spline to align with 1st sample
+    private final Pose push2Pose = new Pose(65.0, 42.0, Math.toRadians(0)); // push 1st sample
+    private final Pose push3Pose = new Pose(57.000, 23.5, Math.toRadians(0)); // move back after pushing 1st sample
+    private final Pose push4Pose = new Pose(21.000, 23.5, Math.toRadians(0)); // strafe to alight with 2nd sample
+    private final Pose push5Pose = new Pose(53.000, 23.5, Math.toRadians(0)); // push 2nd sample
+    private final Pose push6Pose = new Pose(53.000, 13.000, Math.toRadians(0)); // move back after pushing 2nd sample
     private final Pose push7Pose = new Pose(21.000, 13.000, Math.toRadians(0));
     private final Pose push8Pose = new Pose(24.000, 13.000, Math.toRadians(0));
     private final Pose alignwithsecondspecimenPose = new Pose(24, 24, Math.toRadians(0));
     private final Pose pickupPose = new Pose(23.75, 24, Math.toRadians(0)); //22
-    private final Pose deliversecondspecimenPose = new Pose(45, 67.5,Math.toRadians(0));
+    private final Pose deliversecondspecimenPose = new Pose(49, 67.5,Math.toRadians(0));
     private final Pose deliversecondspecimencontrolpoint = new Pose(20, 69 ,Math.toRadians(0));
     private final Pose pickupthirdspecimencontrolpoint1 = new Pose(20,69, Math.toRadians(0));
     private final Pose pickupthirdspecimencontrolpoint2 = new Pose(45,19, Math.toRadians(0));
-    private final Pose deliverthirdspecimenPose = new Pose(49,70, Math.toRadians(0));
+    private final Pose deliverthirdspecimenPose = new Pose(53,70, Math.toRadians(0));
     private final Pose deliverfourthspecimenPose = new Pose(47.5,72.5, Math.toRadians(0));
     private final Pose parkPose = new Pose(12,25, Math.toRadians(0));
 
@@ -297,7 +297,10 @@ public class SpecimenAuto extends OpMode {
                 }
                 break;
             case 9:
+                telemetry.addData(" Delivering the Second Specimen:", follower.isBusy());
                 if (!follower.isBusy()) {
+                    telemetry.addData(" Delivering the Second Specimen -- Now delivering:", follower.isBusy());
+
                     slider.HighChamberBack();
                     setPathState(10);
                 }
@@ -323,7 +326,7 @@ public class SpecimenAuto extends OpMode {
             case 12:
                 if (pathTimer.getElapsedTimeSeconds() > 1.5) {
                     slider.LowChamber();
-                    follower.setMaxPower(1.0);
+                    follower.setMaxPower(0.8);
                     follower.followPath(DeliverThirdSpecimen);
                     arm.setPosChamberBack(false);
                     wrist.setPosChamberBack(false);
@@ -362,7 +365,7 @@ public class SpecimenAuto extends OpMode {
             case 16:
                 if (pathTimer.getElapsedTimeSeconds() > 1.25) {
                     slider.LowChamber();
-                    follower.setMaxPower(1.0);
+                    follower.setMaxPower(0.8);
                     follower.followPath(DeliverFourthSpecimen);
                     arm.setPosChamberBack(false);
                     wrist.setPosChamberBack(false);
