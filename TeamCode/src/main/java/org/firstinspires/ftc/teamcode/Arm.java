@@ -57,6 +57,9 @@ public class Arm {
     public void setPosBasket(boolean sc_on){
         setPosforBoth(robot.arm_pos_basket, sc_on);
         }
+    public void setPosPark(boolean sc_on){
+        setPosforBoth(robot.arm_pos_park, sc_on);
+    }
     public void setPosChamberBack(boolean sc_on){
         setPosforBoth(robot.arm_pos_chamber_back, sc_on);
     }

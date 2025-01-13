@@ -57,7 +57,9 @@ public class Wrist {
         setPos(robot.wrist_pos_high_chamber, sc_on);
     }
    // public void setPosLowChamber() {robot.servoWrist.setPosition(robot.wrist_pos_low_chamber);}
-
+   public void setPosPark(boolean sc_on){
+       setPos(robot.wrist_pos_park, sc_on);
+   }
     public void setPosBasket(boolean sc_on)
     {
         setPos(robot.wrist_pos_basket, sc_on);
