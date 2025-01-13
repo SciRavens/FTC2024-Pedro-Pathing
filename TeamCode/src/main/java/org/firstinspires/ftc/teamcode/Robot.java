@@ -7,6 +7,7 @@ import static org.firstinspires.ftc.teamcode.pedroPathing.tuning.FollowerConstan
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -14,6 +15,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -22,6 +24,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import java.security.PublicKey;
 
 public class Robot {
     public DcMotor rightFront = null; // Front Right
@@ -88,6 +92,7 @@ public class Robot {
 
     public RevBlinkinLedDriver led;
     public int wrist_pos_chamber_auton;
+    public TouchSensor limitSwitch;
 
 
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -109,6 +114,8 @@ public class Robot {
 
         motorSlider = hardwareMap.get(DcMotorEx.class, "sliders");
         motorSlider.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        limitSwitch = hardwareMap.get(TouchSensor.class, "limitSwitch");
+
         servoArmLeft = hardwareMap.get(Servo.class, "left_arm");
         servoArmRight = hardwareMap.get(Servo.class, "right_arm");
         servoWrist = hardwareMap.get(Servo.class, "claw_arm");

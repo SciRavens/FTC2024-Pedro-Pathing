@@ -323,6 +323,7 @@ public class SpecimenAuto extends OpMode {
             case 12:
                 if (pathTimer.getElapsedTimeSeconds() > 1.5) {
                     slider.LowChamber();
+                    follower.setMaxPower(1.0);
                     follower.followPath(DeliverThirdSpecimen);
                     arm.setPosChamberBack(false);
                     wrist.setPosChamberBack(false);
@@ -338,6 +339,7 @@ public class SpecimenAuto extends OpMode {
             case 14:
                 if (pathTimer.getElapsedTimeSeconds() > 0.75) {
                     claw.open();
+                    follower.setMaxPower(0.8);
                     follower.followPath(IntakeThirdSpecimen);
                     arm.setPosSpecimen(false);
                     wrist.setPosSpecimen(false);
@@ -360,6 +362,7 @@ public class SpecimenAuto extends OpMode {
             case 16:
                 if (pathTimer.getElapsedTimeSeconds() > 1.25) {
                     slider.LowChamber();
+                    follower.setMaxPower(1.0);
                     follower.followPath(DeliverFourthSpecimen);
                     arm.setPosChamberBack(false);
                     wrist.setPosChamberBack(false);

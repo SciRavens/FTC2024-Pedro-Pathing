@@ -64,12 +64,22 @@ public class RobotTeleop extends LinearOpMode {
 
     private void follower_operate()
     {
-        if (gamepad1.left_trigger > 0.5) {
+        boolean strafeOnly = false;
+
+        if (gamepad1.right_trigger > 0.5) {
             robot.follower.setMaxPower(0.25);
+        } else if (gamepad1.left_trigger > 0.5) {
+            // This will make the robot go only strafing...no forward or backward movement
+                strafeOnly = true;
         } else {
             robot.follower.setMaxPower(1.0);
         }
-        robot.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x);
+        if (strafeOnly == true) {
+            robot.follower.setTeleOpMovementVectors(0.0, -gamepad1.left_stick_x, 0.0);
+
+        } else {
+            robot.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x);
+        }
         robot.follower.update();
     }
 
