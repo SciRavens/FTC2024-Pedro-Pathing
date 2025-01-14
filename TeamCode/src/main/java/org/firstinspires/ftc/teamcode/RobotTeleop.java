@@ -118,16 +118,17 @@ public class RobotTeleop extends LinearOpMode {
             arm.setPosSample(true);
             wrist.setPosSample(true);
 
-        } else if (gamepad2.dpad_up) {
-            // TBD: fix this
-            arm.setPosChamber(false);
-            wrist.setPosHighChamber(false);
-            slider.HighChamber();
+//        } else if (gamepad2.dpad_up) {
+//            // TBD: fix this
+//            arm.setPosChamber(false);
+//            wrist.setPosHighChamber(false);
+//            slider.HighChamber();
         } else if (gamepad2.dpad_left) {
             clawAngle.setHorizontal();
         } else if (gamepad2.dpad_right) {
             clawAngle.setVertical();
-        } else if (gamepad1.x) {
+        } else if (gamepad2.dpad_up) {
+            slider.LowChamber();
             arm.setPosChamberBack(false);
             wrist.setPosChamberBack(false);
         }

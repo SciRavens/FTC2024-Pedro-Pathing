@@ -38,7 +38,7 @@ public class SpecimenAuto extends OpMode {
     private final Pose deliversecondspecimencontrolpoint = new Pose(20, 69 ,Math.toRadians(0));
     private final Pose pickupthirdspecimencontrolpoint1 = new Pose(20,69, Math.toRadians(0));
     private final Pose pickupthirdspecimencontrolpoint2 = new Pose(45,19, Math.toRadians(0));
-    private final Pose deliverthirdspecimenPose = new Pose(53,70, Math.toRadians(0));
+    private final Pose deliverthirdspecimenPose = new Pose(54,70, Math.toRadians(0));
     private final Pose deliverfourthspecimenPose = new Pose(47.5,72.5, Math.toRadians(0));
     private final Pose parkPose = new Pose(12,25, Math.toRadians(0));
 
@@ -263,12 +263,14 @@ public class SpecimenAuto extends OpMode {
                 //now spline to pushing side
                 if (pathTimer.getElapsedTimeSeconds() > 1) {
                     slider.setPower(0);
+                    follower.setMaxPower(0.6);
                     follower.followPath(pushSamplesPathChain);
                     setPathState(5);
                 }
                 break;
             case 5:
                 if (!follower.isBusy()) {
+                    follower.setMaxPower(0.8);
                     arm.setPosSpecimen(false);
                     wrist.setPosSpecimen(false);
                     setPathState(6);
