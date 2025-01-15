@@ -72,15 +72,19 @@ public class FullTuningApp extends LinearOpMode {
             }
             if (arm_tuning) {
                 arm_operate();
+                telemetry.addLine("RT: fold LT: sample LB: basket RB: chamback");
             }
             if (wrist_tuning) {
                 wrist_operate();
+                telemetry.addLine("RT: fold LT: sample LB: basket RB: chamback");
             }
             if (claw_angle_tuning) {
                 claw_angle_operate();
+                telemetry.addLine("LT: vertical  RT: horizontal");
             }
             if (claw_tuning) {
                 claw_operate();
+                telemetry.addLine("LT: Close  RT: Open");
             }
             if (gamepad2.left_trigger > 0.9 || gamepad1.left_trigger > 0.9) {
                 slider_operate();
@@ -111,6 +115,10 @@ public class FullTuningApp extends LinearOpMode {
             arm.setPosFold(false);
         } else if (gamepad2.left_trigger > 0.9) {
             arm.setPosSample(false);
+        } else if (gamepad2.left_bumper) {
+            arm.setPosBasket(false);
+        } else if (gamepad2.right_bumper) {
+            arm.setPosChamberBack(false);
         } else if (gamepad2.dpad_up && !buttonPressed) {
             if (arm_cur_pos < 0.99) {
                 arm_cur_pos += arm_inc;
@@ -135,6 +143,10 @@ public class FullTuningApp extends LinearOpMode {
             wrist.setPosFold(false);
         } else if (gamepad2.left_trigger > 0.9) {
             wrist.setPosSample(false);
+        } else if (gamepad2.left_bumper) {
+            wrist.setPosBasket(false);
+        } else if (gamepad2.right_bumper) {
+            wrist.setPosChamberBack(false);
         } else if (gamepad2.dpad_up && !buttonPressed) {
             if (wrist_cur_pos < 0.99) {
                 wrist_cur_pos += wrist_inc;
