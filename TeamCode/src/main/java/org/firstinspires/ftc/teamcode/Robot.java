@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -48,8 +49,8 @@ public class Robot {
     public Follower follower;
 
     // Claw positions
-    public double claw_open = 0.2;
-    public double claw_close = 0.55;
+    public double claw_open = 0.5;
+    public double claw_close = 0.65;
 
     //ClawAngle positions
     public double claw_horizontal = 0.71;
@@ -69,15 +70,15 @@ public class Robot {
 
 
     // Wrist positions
-    public double wrist_pos_starting = 0.66;
-    public double wrist_pos_fold = 0.9;
+    public double wrist_pos_starting = 0.65;
+    public double wrist_pos_fold = 0.65;
     public double wrist_pos_sample  = 0.67;//0.69
-    public double wrist_pos_sample_two = 0.19;
+    public double wrist_pos_sample_two = 0.67;
     public double wrist_pos_specimen = 0.35;
     public double wrist_pos_high_chamber = 0.25; //0.5
     public double wrist_pos_high_chamber_back = 0.35; //0.5
     public double wrist_pos_autonomous_chamber = 0.15;
-    public double wrist_pos_basket = 0.72;
+    public double wrist_pos_basket = 0.29;
     public double wrist_pos_park = 0.46;
 
     // Slider positions
@@ -95,6 +96,7 @@ public class Robot {
     public int wrist_pos_chamber_auton;
     public TouchSensor limitSwitch;
 
+    public VoltageSensor voltageSensor;
 
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
@@ -126,6 +128,7 @@ public class Robot {
         led.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
 //        webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
 
+        voltageSensor = hardwareMap.voltageSensor.iterator().next();
         follower = new Follower(hardwareMap);
     }
 

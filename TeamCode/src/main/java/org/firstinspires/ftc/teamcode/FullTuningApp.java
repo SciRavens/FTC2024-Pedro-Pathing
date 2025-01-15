@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
+
 @TeleOp(name = "FullTuning")
 public class FullTuningApp extends LinearOpMode {
     public Robot robot;
@@ -38,8 +41,9 @@ public class FullTuningApp extends LinearOpMode {
         clawAngle = new ClawAngle(robot);
 
         waitForStart();
-        robot.telemetry.addData("ARM: x, WRIST: y, CLAW: a, CLAW_ANGLE: b", 0);
+        robot.telemetry.addLine("Arm: X, Wrist: Y, Claw: A, ClawAngle: B");
         while (opModeIsActive()) {
+            telemetry.addData("VOLTAGE: ", robot.voltageSensor.getVoltage());
             if (gamepad2.x) {
                 arm_tuning = true;
                 wrist_tuning = false;
@@ -103,7 +107,11 @@ public class FullTuningApp extends LinearOpMode {
         robot.telemetry.addData("Slider Current Position:", pos);
     }
     private void arm_operate() {
-        if (gamepad2.dpad_up && !buttonPressed) {
+        if (gamepad2.right_trigger > 0.9) {
+            arm.setPosFold(false);
+        } else if (gamepad2.left_trigger > 0.9) {
+            arm.setPosSample(false);
+        } else if (gamepad2.dpad_up && !buttonPressed) {
             if (arm_cur_pos < 0.99) {
                 arm_cur_pos += arm_inc;
             }
@@ -123,7 +131,11 @@ public class FullTuningApp extends LinearOpMode {
     }
 
     private void wrist_operate() {
-        if (gamepad2.dpad_up && !buttonPressed) {
+        if (gamepad2.right_trigger > 0.9) {
+            wrist.setPosFold(false);
+        } else if (gamepad2.left_trigger > 0.9) {
+            wrist.setPosSample(false);
+        } else if (gamepad2.dpad_up && !buttonPressed) {
             if (wrist_cur_pos < 0.99) {
                 wrist_cur_pos += wrist_inc;
             }
@@ -144,18 +156,22 @@ public class FullTuningApp extends LinearOpMode {
     }
 
     private void claw_angle_operate() {
-        if (gamepad2.dpad_up && !buttonPressed) {
+        if (gamepad2.right_trigger > 0.9) {
+            clawAngle.setHorizontal();
+        } else if (gamepad2.left_trigger > 0.9) {
+            clawAngle.setVertical();
+        } else if (gamepad2.dpad_up && !buttonPressed) {
             if (claw_angle_cur_pos < 0.99) {
                 claw_angle_cur_pos += wrist_inc;
             }
             buttonPressed = true;
-            robot.servoCR.setPosition(claw_angle_cur_pos);
+            clawAngle.setPosAbsolute(claw_angle_cur_pos);
         } else if (gamepad2.dpad_down && !buttonPressed) {
             if (claw_angle_cur_pos > 0.01) {
                 claw_angle_cur_pos -= wrist_inc;
             }
             buttonPressed = true;
-            robot.servoCR.setPosition(claw_angle_cur_pos);
+            clawAngle.setPosAbsolute(claw_angle_cur_pos);
         } else {
             if (!gamepad2.dpad_up && !gamepad2.dpad_down)
                 buttonPressed = false;
@@ -173,17 +189,17 @@ public class FullTuningApp extends LinearOpMode {
                     claw_cur_pos += claw_inc;
                 }
                 buttonPressed = true;
-                robot.servoCL.setPosition(claw_cur_pos);
+                claw.setPosAbsolute(claw_cur_pos);
         } else if (gamepad2.dpad_down && !buttonPressed) {
                 if (claw_cur_pos > 0.01) {
                     claw_cur_pos -= claw_inc;
                 }
                 buttonPressed = true;
-                robot.servoCL.setPosition(claw_cur_pos);
+                claw.setPosAbsolute(claw_cur_pos);
         } else {
                 if (!gamepad2.dpad_up && !gamepad2.dpad_down)
                     buttonPressed = false;
         }
-        robot.telemetry.addData("Claw Current Value:", claw_cur_pos);
+        robot.telemetry.addData("Claw Current Value:", claw.getCurPos());
     }
 }
