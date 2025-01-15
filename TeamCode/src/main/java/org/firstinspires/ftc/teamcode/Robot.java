@@ -56,28 +56,28 @@ public class Robot {
     public double claw_vertical = 0.37;
 
     // Arm positions
-    public double arm_pos_starting = 0.98;
+    public double arm_pos_starting = 0.71;
     public double arm_pos_fold = arm_pos_starting;
-    public  double arm_pos_sample = 0.39;//0.39
-    public double arm_pos_sample_two = 0.43;
-    public double arm_pos_basket = 0.75; //0.55
-    public double arm_pos_specimen = 0.36; //0.38
+    public  double arm_pos_sample = 0.03;//0.39
+    public double arm_pos_sample_two = 0.3;
+    public double arm_pos_basket = 0.3894; //0.55
+    public double arm_pos_specimen = 0.03; //0.38
     public double arm_pos_autonomous_chamber = 0.225;//0.425
-    public double arm_pos_chamber = 0.48; //0.65
-    public double arm_pos_chamber_back = 0.9; //0.65
-    public double arm_pos_park = 0.72;
+    public double arm_pos_chamber = 0.25; //0.65
+    public double arm_pos_chamber_back = 0.5; //0.65
+    public double arm_pos_park = 0.38;
 
 
     // Wrist positions
-    public double wrist_pos_starting = 0.66;
+    public double wrist_pos_starting = 0.99;
     public double wrist_pos_fold = 0.9;
-    public double wrist_pos_sample  = 0.67;//0.69
+    public double wrist_pos_sample  = 0.6694;//0.69
     public double wrist_pos_sample_two = 0.19;
-    public double wrist_pos_specimen = 0.35;
+    public double wrist_pos_specimen = 0.4389;
     public double wrist_pos_high_chamber = 0.25; //0.5
-    public double wrist_pos_high_chamber_back = 0.35; //0.5
+    public double wrist_pos_high_chamber_back = 0.4189; //0.5
     public double wrist_pos_autonomous_chamber = 0.15;
-    public double wrist_pos_basket = 0.72;
+    public double wrist_pos_basket = 0.7989;
     public double wrist_pos_park = 0.46;
 
     // Slider positions

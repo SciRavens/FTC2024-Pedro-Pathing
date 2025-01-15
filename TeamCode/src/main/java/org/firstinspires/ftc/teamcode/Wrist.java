@@ -98,6 +98,6 @@ public class Wrist {
         robot.telemetry.addData("Wrist Speed Control: ", speed_control);
     }
     public double getCurPos() {
-        return cur_pos;
+        return robot.servoWrist.getPosition();
     }
 }
