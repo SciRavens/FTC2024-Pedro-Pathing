@@ -1,4 +1,6 @@
 package org.firstinspires.ftc.teamcode;
+import android.sax.StartElementListener;
+
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import androidx.annotation.NonNull;
 
@@ -26,14 +28,22 @@ public class Arm {
         if (sc_on) {
             setSCTarget(pos);
         } else {
-            robot.servoArmLeft.setPosition(pos);
-            robot.servoArmRight.setPosition(pos);
-            cur_pos = pos;
+            double left_pos = robot.servoArmLeft.getPosition();
+            double right_pos = robot.servoArmLeft.getPosition();
+            if (left_pos == right_pos) {
+                robot.servoArmLeft.setPosition(pos);
+                robot.servoArmRight.setPosition(pos);
+                cur_pos = pos;
+                robot.telemetry.addData("ARM SERVOS Right:", robot.servoArmRight.getPosition());
+                robot.telemetry.addData("ARM SERVOS Left:", robot.servoArmLeft.getPosition());
+            } else {
+                robot.telemetry.addData("ARM SERVOS ARE NOT SYNC!!!!", left_pos);
+            }
         }
     }
     public double getCurPos()
     {
-        return cur_pos;
+        return robot.servoArmLeft.getPosition();
     }
 
     public void setPosStarting(boolean sc_on){

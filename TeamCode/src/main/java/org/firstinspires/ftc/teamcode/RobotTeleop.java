@@ -39,25 +39,19 @@ public class RobotTeleop extends LinearOpMode {
         claw = new Claw(robot);
         clawAngle = new ClawAngle(robot);
 
-//        leds = new Leds(robot);
-//        leds.setPattern(0);
         arm.setPosStarting(false);
         wrist.setPosStarting(false);
         clawAngle.setHorizontal();
         waitForStart();
-//        leds.setPattern(led_cur);
         while(opModeIsActive()) {
             follower_operate();
             arm.operate();
             wrist.operate();
-//            slider_operate();
             slider_joystick();
-            //get_ticks();
             arm_wrist_operate();
             claw_operate();
             turning();
-            //leds_operate();
-            //robot.telemetry.update();
+            robot.telemetry.update();
         }
     }
 
