@@ -50,43 +50,44 @@ public class Robot {
 
     // Claw positions
     public double claw_open = 0.5;
-    public double claw_close = 0.65;
+    public double claw_open_wide = 0.4;
+    public double claw_close = 0.7;
 
     //ClawAngle positions
     public double claw_horizontal = 0.71;
     public double claw_vertical = 0.37;
 
     // Arm positions
-    public double arm_pos_starting = 0.71;
+    public double arm_pos_starting = 0.73; //0.75
     public double arm_pos_fold = arm_pos_starting;
-    public  double arm_pos_sample = 0.03;//0.39
+    public  double arm_pos_sample = 0.13;//0.39
     public double arm_pos_sample_two = 0.3;
-    public double arm_pos_basket = 0.3894; //0.55
-    public double arm_pos_specimen = 0.03; //0.38
+    public double arm_pos_basket = 0.47; //0.39
+    public double arm_pos_specimen = 0.09; //0.01
     public double arm_pos_autonomous_chamber = 0.225;//0.425
-    public double arm_pos_chamber = 0.25; //0.65
-    public double arm_pos_chamber_back = 0.5; //0.65
+    public double arm_pos_chamber = 0.21; //0.65
+    public double arm_pos_chamber_back = 0.64; //0.63
     public double arm_pos_park = 0.38;
 
 
     // Wrist positions
-    public double wrist_pos_starting = 0.65;
-    public double wrist_pos_fold = 0.65;
-    public double wrist_pos_sample  = 0.67;//0.69
+    public double wrist_pos_starting = 0.05;
+    public double wrist_pos_fold = 0.43;//0.65
+    public double wrist_pos_sample  = 0.47;//0.49
     public double wrist_pos_sample_two = 0.67;
-    public double wrist_pos_specimen = 0.35;
-    public double wrist_pos_high_chamber = 0.25; //0.5
-    public double wrist_pos_high_chamber_back = 0.4189; //0.5
+    public double wrist_pos_specimen = 0.77;//0.73
+    public double wrist_pos_high_chamber = 0.87; //0.08
+    public double wrist_pos_high_chamber_back = 0.75; //0.76
     public double wrist_pos_autonomous_chamber = 0.15;
-    public double wrist_pos_basket = 0.29;
+    public double wrist_pos_basket = 0.4;//0.56
     public double wrist_pos_park = 0.46;
 
     // Slider positions
     public int slider_Initial_Pose_ticks = 0;
     public int slider_LowBasket_ticks = 2050;
     public int slider_HighBasket_ticks = 2100; // finished needs testing
-    public int slider_LowChamber_ticks = 1420; //1400
-    public int slider_HighChamber_ticks = 610; // 675 finished needs testing
+    public int slider_LowChamber_ticks = 1220; //1400
+    public int slider_HighChamber_ticks = 680; // 675 finished needs testing
     public int slider_HighChamberBack_ticks = 2200; // 675 finished needs testing
 
 

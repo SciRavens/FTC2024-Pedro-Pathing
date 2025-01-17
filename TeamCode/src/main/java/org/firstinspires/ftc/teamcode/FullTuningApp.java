@@ -44,6 +44,11 @@ public class FullTuningApp extends LinearOpMode {
         robot.telemetry.addLine("Arm: X, Wrist: Y, Claw: A, ClawAngle: B");
         while (opModeIsActive()) {
             telemetry.addData("VOLTAGE: ", robot.voltageSensor.getVoltage());
+            if (gamepad1.x) {
+                arm.setPosChamberBack(false);
+                wrist.setPosChamberBack(false);
+                slider.HighChamberBack();
+            }
             if (gamepad2.x) {
                 arm_tuning = true;
                 wrist_tuning = false;
@@ -86,9 +91,7 @@ public class FullTuningApp extends LinearOpMode {
                 claw_operate();
                 telemetry.addLine("LT: Close  RT: Open");
             }
-            if (gamepad2.left_trigger > 0.9 || gamepad1.left_trigger > 0.9) {
-                slider_operate();
-            }
+            slider_operate();
             robot.telemetry.update();
 
         }
@@ -111,15 +114,10 @@ public class FullTuningApp extends LinearOpMode {
         robot.telemetry.addData("Slider Current Position:", pos);
     }
     private void arm_operate() {
-        if (gamepad2.right_trigger > 0.9) {
-            arm.setPosFold(false);
-        } else if (gamepad2.left_trigger > 0.9) {
-            arm.setPosSample(false);
-        } else if (gamepad2.left_bumper) {
-            arm.setPosBasket(false);
-        } else if (gamepad2.right_bumper) {
-            arm.setPosChamberBack(false);
-        } else if (gamepad2.dpad_up && !buttonPressed) {
+        telemetry.addData("ARM Left: ", robot.servoArmLeft.getPosition());
+        telemetry.addData("ARM Right: ", robot.servoArmRight.getPosition());
+
+        if (gamepad2.dpad_up && !buttonPressed) {
             if (arm_cur_pos < 0.99) {
                 arm_cur_pos += arm_inc;
             }

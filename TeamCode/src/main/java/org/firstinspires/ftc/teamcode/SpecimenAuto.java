@@ -22,24 +22,24 @@ public class SpecimenAuto extends OpMode {
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState = 0;
     private final Pose startPose = new Pose(9.757, 65.000, Math.toRadians(0)); // starting position
-    private final Pose chamberPose = new Pose(41.5, 65.0, Math.toRadians(0));
+    private final Pose chamberPose = new Pose(41, 65.0, Math.toRadians(0));
     private final Pose backup1Pose = new Pose(30, 65.0, Math.toRadians(0));
-    private final Pose push1Pose = new Pose(19.0, 26.0, Math.toRadians(0)); // spline to align with 1st sample
+    private final Pose push1Pose = new Pose(23, 19.0, Math.toRadians(0)); // spline to align with 1st sample
     private final Pose push2Pose = new Pose(65.0, 42.0, Math.toRadians(0)); // push 1st sample
-    private final Pose push3Pose = new Pose(57.000, 23.5, Math.toRadians(0)); // move back after pushing 1st sample
-    private final Pose push4Pose = new Pose(21.000, 23.5, Math.toRadians(0)); // strafe to alight with 2nd sample
-    private final Pose push5Pose = new Pose(53.000, 23.5, Math.toRadians(0)); // push 2nd sample
-    private final Pose push6Pose = new Pose(53.000, 13.000, Math.toRadians(0)); // move back after pushing 2nd sample
+    private final Pose push3Pose = new Pose(60.000, 25, Math.toRadians(0)); // move back after pushing 1st sample
+    private final Pose push4Pose = new Pose(21.000, 25, Math.toRadians(0)); // strafe to alight with 2nd sample
+    private final Pose push5Pose = new Pose(53.000, 25, Math.toRadians(0)); // push 2nd sample
+    private final Pose push6Pose = new Pose(53.000, 14.250, Math.toRadians(0)); // move back after pushing 2nd sample
     private final Pose push7Pose = new Pose(21.000, 13.000, Math.toRadians(0));
     private final Pose push8Pose = new Pose(24.000, 13.000, Math.toRadians(0));
     private final Pose alignwithsecondspecimenPose = new Pose(24, 24, Math.toRadians(0));
-    private final Pose pickupPose = new Pose(23.75, 24, Math.toRadians(0)); //22
-    private final Pose deliversecondspecimenPose = new Pose(49, 67.5,Math.toRadians(0));
+    private final Pose pickupPose = new Pose(23.25, 24, Math.toRadians(0)); //22
+    private final Pose deliversecondspecimenPose = new Pose(44, 67.5,Math.toRadians(0));
     private final Pose deliversecondspecimencontrolpoint = new Pose(20, 69 ,Math.toRadians(0));
     private final Pose pickupthirdspecimencontrolpoint1 = new Pose(20,69, Math.toRadians(0));
     private final Pose pickupthirdspecimencontrolpoint2 = new Pose(45,19, Math.toRadians(0));
-    private final Pose deliverthirdspecimenPose = new Pose(54,70, Math.toRadians(0));
-    private final Pose deliverfourthspecimenPose = new Pose(47.5,72.5, Math.toRadians(0));
+    private final Pose deliverthirdspecimenPose = new Pose(47.5,70, Math.toRadians(0));
+    private final Pose deliverfourthspecimenPose = new Pose(48,70, Math.toRadians(0));
     private final Pose parkPose = new Pose(12,25, Math.toRadians(0));
 
 
@@ -244,7 +244,7 @@ public class SpecimenAuto extends OpMode {
             case 2:
                 if (follower.getPose().getX() > (chamberPose.getX() - 1)) {
                     // Now we pushed it, release the claw and backup
-                    claw.open();
+                    claw.open_wide();
                     follower.followPath(backUp, true);
                     setPathState(3);
                 }
@@ -291,8 +291,9 @@ public class SpecimenAuto extends OpMode {
                 break;
             case 8:
                 if (pathTimer.getElapsedTimeSeconds() > 1) {
+                    follower.setMaxPower(0.6);
                     slider.LowChamber();
-                    follower.followPath(DeliverSecondSpecimen);
+                    follower.followPath(DeliverSecondSpecimen,true);
                     arm.setPosChamberBack(false);
                     wrist.setPosChamberBack(false);
                     setPathState(9);
@@ -309,7 +310,7 @@ public class SpecimenAuto extends OpMode {
                 break;
             case 10:
                 if (pathTimer.getElapsedTimeSeconds() > 0.75) {
-                    claw.open();
+                    claw.open_wide();
                     follower.followPath(IntakeThirdSpecimen);
                     arm.setPosSpecimen(false);
                     wrist.setPosSpecimen(false);
@@ -328,8 +329,8 @@ public class SpecimenAuto extends OpMode {
             case 12:
                 if (pathTimer.getElapsedTimeSeconds() > 1.5) {
                     slider.LowChamber();
-                    follower.setMaxPower(0.8);
-                    follower.followPath(DeliverThirdSpecimen);
+                    follower.setMaxPower(0.6);
+                    follower.followPath(DeliverThirdSpecimen, true);
                     arm.setPosChamberBack(false);
                     wrist.setPosChamberBack(false);
                     setPathState(13);
@@ -343,8 +344,8 @@ public class SpecimenAuto extends OpMode {
                 break;
             case 14:
                 if (pathTimer.getElapsedTimeSeconds() > 0.75) {
-                    claw.open();
-                    follower.setMaxPower(0.8);
+                    claw.open_wide();
+                    follower.setMaxPower(0.6);
                     follower.followPath(IntakeThirdSpecimen);
                     arm.setPosSpecimen(false);
                     wrist.setPosSpecimen(false);
@@ -354,7 +355,6 @@ public class SpecimenAuto extends OpMode {
                 break;
             case 141:
                 if (pathTimer.getElapsedTimeSeconds() > 1) {
-                    slider.setPower(0);
                     setPathState(15);
                 }
                 break;
@@ -367,22 +367,22 @@ public class SpecimenAuto extends OpMode {
             case 16:
                 if (pathTimer.getElapsedTimeSeconds() > 1.25) {
                     slider.LowChamber();
-                    follower.setMaxPower(0.8);
-                    follower.followPath(DeliverFourthSpecimen);
+                    follower.setMaxPower(0.6);
+                    follower.followPath(DeliverFourthSpecimen, true);
                     arm.setPosChamberBack(false);
                     wrist.setPosChamberBack(false);
                     setPathState(17);
                 }
                 break;
             case 17:
-                if (!follower.isBusy()) {
+                if (!follower.isBusy() || pathTimer.getElapsedTimeSeconds() > 3.5) {
                     slider.HighChamberBack();
                     setPathState(18);
                 }
                 break;
             case 18:
                 if (pathTimer.getElapsedTimeSeconds() > 0.75) {
-                    claw.open();
+                    claw.open_wide();
                     follower.followPath(Park);
                     arm.setPosFold(false);
                     wrist.setPosFold(false);
