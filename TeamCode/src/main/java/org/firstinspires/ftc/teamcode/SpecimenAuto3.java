@@ -291,7 +291,7 @@ public class SpecimenAuto3 extends OpMode {
                 break;
             case 8:
                 if (pathTimer.getElapsedTimeSeconds() > 1) {
-                    follower.setMaxPower(0.6);
+                    follower.setMaxPower(0.8);
                     slider.LowChamber();
                     follower.followPath(DeliverSecondSpecimen,true);
                     arm.setPosChamberBack(false);
@@ -300,7 +300,7 @@ public class SpecimenAuto3 extends OpMode {
                 }
                 break;
             case 9:
-                if (!follower.isBusy() || pathTimer.getElapsedTimeSeconds() > 3.5) {
+                if (!follower.isBusy() || pathTimer.getElapsedTimeSeconds() > 3.25) {
                     slider.HighChamberBack();
                     setPathState(10);
                 }
@@ -326,7 +326,7 @@ public class SpecimenAuto3 extends OpMode {
             case 12:
                 if (pathTimer.getElapsedTimeSeconds() > 1.5) {
                     slider.LowChamber();
-                    follower.setMaxPower(0.6);
+                    follower.setMaxPower(0.8);
                     follower.followPath(DeliverThirdSpecimen, true);
                     arm.setPosChamberBack(false);
                     wrist.setPosChamberBack(false);
@@ -334,7 +334,7 @@ public class SpecimenAuto3 extends OpMode {
                 }
                 break;
             case 13:
-                if (!follower.isBusy() || pathTimer.getElapsedTimeSeconds() > 3.5) {
+                if (!follower.isBusy() || pathTimer.getElapsedTimeSeconds() > 3.25) {
                     slider.HighChamberBack();
                     setPathState(14);
                 }
