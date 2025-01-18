@@ -38,7 +38,7 @@ public class SpecimenAuto3 extends OpMode {
     private final Pose deliversecondspecimencontrolpoint = new Pose(20, 69 ,Math.toRadians(0));
     private final Pose pickupthirdspecimencontrolpoint1 = new Pose(20,69, Math.toRadians(0));
     private final Pose pickupthirdspecimencontrolpoint2 = new Pose(45,19, Math.toRadians(0));
-    private final Pose deliverthirdspecimenPose = new Pose(47.5,70, Math.toRadians(0));
+    private final Pose deliverthirdspecimenPose = new Pose(47.5,72, Math.toRadians(0)); //70
     private final Pose deliverfourthspecimenPose = new Pose(48,70, Math.toRadians(0));
     private final Pose parkPose = new Pose(12,25, Math.toRadians(0));
 
@@ -300,7 +300,7 @@ public class SpecimenAuto3 extends OpMode {
                 }
                 break;
             case 9:
-                if (!follower.isBusy() || pathTimer.getElapsedTimeSeconds() > 3.25) {
+                if (!follower.isBusy() || pathTimer.getElapsedTimeSeconds() > 3) {
                     slider.HighChamberBack();
                     setPathState(10);
                 }
@@ -344,8 +344,8 @@ public class SpecimenAuto3 extends OpMode {
                     claw.open_wide();
                     follower.setMaxPower(1.0);
                     follower.followPath(Park);
-                    arm.setPosFold(false);
-                    wrist.setPosFold(false);
+                    arm.setPosSpecimen(false); //
+                    wrist.setPosSpecimen(false); //
                     slider.InitialPose();
                     setPathState(-1);
                 }
