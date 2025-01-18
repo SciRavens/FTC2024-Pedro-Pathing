@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathBuilder;
 
 
-@Autonomous(name = "SampleAutoPush", group = "Examples")
+@Autonomous(name = "SampleAutoPush", group = "Competition", preselectTeleOp="SciRavens-TeleOp")
 public class SampleAutoPush extends OpMode {
     public Robot robot;
     public Claw claw;

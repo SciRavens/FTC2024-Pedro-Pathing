@@ -22,7 +22,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
@@ -46,55 +45,54 @@ public class Robot {
     public Telemetry telemetry;
 
     public WebcamName webcam;
-    public Follower follower;
 
     // Claw positions
-    public double claw_open = 0.5;
-    public double claw_open_wide = 0.4;
-    public double claw_close = 0.7;
+    public static double claw_open = 0.5;
+    public static double claw_open_wide = 0.4;
+    public static double claw_close = 0.7;
 
     //ClawAngle positions
-    public double claw_horizontal = 0.71;
-    public double claw_vertical = 0.37;
+    public static double claw_horizontal = 0.71;
+    public static double claw_vertical = 0.37;
 
     // Arm positions
-    public double arm_pos_starting = 0.73; //0.75
-    public double arm_pos_fold = arm_pos_starting;
-    public  double arm_pos_sample = 0.13;//0.39
-    public double arm_pos_sample_two = 0.3;
-    public double arm_pos_basket = 0.47; //0.39
-    public double arm_pos_specimen = 0.09; //0.01
-    public double arm_pos_autonomous_chamber = 0.225;//0.425
-    public double arm_pos_chamber = 0.21; //0.65
-    public double arm_pos_chamber_back = 0.64; //0.63
-    public double arm_pos_park = 0.38;
+    public static double arm_pos_starting = 0.73; //0.75
+    public static double arm_pos_fold = arm_pos_starting;
+    public  static double arm_pos_sample = 0.13;//0.39
+    public static double arm_pos_sample_two = 0.3;
+    public static double arm_pos_basket = 0.47; //0.39
+    public static double arm_pos_specimen = 0.09; //0.01
+    public static double arm_pos_autonomous_chamber = 0.225;//0.425
+    public static double arm_pos_chamber = 0.21; //0.65
+    public static double arm_pos_chamber_back = 0.64; //0.63
+    public static double arm_pos_park = 0.38;
 
 
     // Wrist positions
-    public double wrist_pos_starting = 0.05;
-    public double wrist_pos_fold = 0.43;//0.65
-    public double wrist_pos_sample  = 0.47;//0.49
-    public double wrist_pos_sample_two = 0.67;
-    public double wrist_pos_specimen = 0.77;//0.73
-    public double wrist_pos_high_chamber = 0.87; //0.08
-    public double wrist_pos_high_chamber_back = 0.75; //0.76
-    public double wrist_pos_autonomous_chamber = 0.15;
-    public double wrist_pos_basket = 0.4;//0.56
-    public double wrist_pos_park = 0.46;
+    public static double wrist_pos_starting = 0.05;
+    public static double wrist_pos_fold = 0.43;//0.65
+    public static double wrist_pos_sample  = 0.47;//0.49
+    public static double wrist_pos_sample_two = 0.67;
+    public static double wrist_back_deliery = 0.67;
+    public static double wrist_pos_specimen = 0.77;//0.73
+    public static double wrist_pos_high_chamber = 0.87; //0.08
+    public static double wrist_pos_high_chamber_back = 0.75; //0.76
+    public static double wrist_pos_autonomous_chamber = 0.15;
+    public static double wrist_pos_basket = 0.4;//0.56
+    public static double wrist_pos_park = 0.46;
 
     // Slider positions
-    public int slider_Initial_Pose_ticks = 0;
-    public int slider_LowBasket_ticks = 2050;
-    public int slider_HighBasket_ticks = 2100; // finished needs testing
-    public int slider_LowChamber_ticks = 1220; //1400
-    public int slider_HighChamber_ticks = 680; // 675 finished needs testing
-    public int slider_HighChamberBack_ticks = 2200; // 675 finished needs testing
+    public static int slider_Initial_Pose_ticks = 0;
+    public static int slider_LowBasket_ticks = 2050;
+    public static int slider_HighBasket_ticks = 2100; // finished needs testing
+    public static int slider_LowChamber_ticks = 1220; //1400
+    public static int slider_HighChamber_ticks = 680; // 675 finished needs testing
+    public static int slider_HighChamberBack_ticks = 2200; // 675 finished needs testing
 
 
-    public int slider_ChamberAuton_ticks = 10;
+    public static int slider_ChamberAuton_ticks = 10;
 
-    public RevBlinkinLedDriver led;
-    public int wrist_pos_chamber_auton;
+    public static int wrist_pos_chamber_auton;
     public TouchSensor limitSwitch;
 
     public VoltageSensor voltageSensor;
@@ -125,12 +123,8 @@ public class Robot {
         servoWrist = hardwareMap.get(Servo.class, "claw_arm");
         servoCL = hardwareMap.get(Servo.class, "claw_left");
         servoCR = hardwareMap.get(Servo.class, "claw_right");
-        led = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
-        led.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
-//        webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
-        follower = new Follower(hardwareMap);
     }
 
 }

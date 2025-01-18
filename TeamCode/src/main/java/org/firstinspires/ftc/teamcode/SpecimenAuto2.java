@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathBuilder;
 
 
-@Autonomous(name = "SpecimenAuto2", group = "Examples")
+@Autonomous(name = "SpecimenAuto2", group = "Competition", preselectTeleOp="SciRavens-TeleOp")
 public class SpecimenAuto2 extends OpMode {
 
     private Follower follower;

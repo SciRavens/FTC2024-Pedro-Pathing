@@ -14,8 +14,6 @@ public class SliderTestApp extends LinearOpMode {
     public Claw claw;
 
     RevBlinkinLedDriver.BlinkinPattern pattern;
-    Leds leds;
-private int cur = 1;
     @Override
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap, telemetry);
@@ -24,18 +22,14 @@ private int cur = 1;
         wrist = new Wrist(robot);
         claw = new Claw(robot);
 
-        leds = new Leds(robot);
-        leds.setPattern(0);
         arm.setPosStarting(false);
         wrist.setPosStarting(false);
         waitForStart();
-        leds.setPattern(cur);
         while(opModeIsActive()) {
 //          slider_operate();
             slider_joystick();
             arm_wrist_operate();
 //           claw_operate();
-//            leds_operate();
         }
     }
 
