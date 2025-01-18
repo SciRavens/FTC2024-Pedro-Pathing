@@ -75,6 +75,10 @@ public class Arm {
     public void setPosChamberBack(boolean sc_on){
         setPosforBoth(robot.arm_pos_chamber_back, sc_on);
     }
+
+    public void setPosBackHuman(boolean sc_on){
+        setPosforBoth(robot.arm_back_human, sc_on);
+    }
     public void setPosAbsolute(double pos) {
         setPosforBoth(pos, false);
     }

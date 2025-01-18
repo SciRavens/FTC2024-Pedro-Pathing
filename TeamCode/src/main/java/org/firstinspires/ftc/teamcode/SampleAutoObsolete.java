@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import  com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.teamcode.pedroPathing.follower.*;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
@@ -12,9 +13,9 @@ import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathBuilder;
 
-
+@Disabled
 @Autonomous(name = "SampleAuto", group = "Competition", preselectTeleOp="SciRavens-TeleOp")
-public class SampleAuto extends OpMode {
+public class SampleAutoObsolete extends OpMode {
     public Robot robot;
     public Claw claw;
     public Arm arm;

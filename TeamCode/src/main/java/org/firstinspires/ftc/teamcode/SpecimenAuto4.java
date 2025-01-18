@@ -15,8 +15,8 @@ import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathBuilder;
 
 
-@Autonomous(name = "SpecimenAuto", group = "Competition", preselectTeleOp="SciRavens-TeleOp")
-public class SpecimenAuto extends OpMode {
+@Autonomous(name = "4 SpecimenAuto", group = "Competition", preselectTeleOp="SciRavens-TeleOp")
+public class SpecimenAuto4 extends OpMode {
 
     private Follower follower;
     private Timer pathTimer, actionTimer, opmodeTimer;
@@ -300,7 +300,8 @@ public class SpecimenAuto extends OpMode {
                 }
                 break;
             case 9:
-                if (!follower.isBusy() || pathTimer.getElapsedTimeSeconds() > 3.5) {
+                telemetry.addData(" Delivering the Second Specimen:", follower.isBusy());
+                if (!follower.isBusy()|| pathTimer.getElapsedTimeSeconds() > 3.5) {
                     slider.HighChamberBack();
                     setPathState(10);
                 }
@@ -334,7 +335,7 @@ public class SpecimenAuto extends OpMode {
                 }
                 break;
             case 13:
-                if (!follower.isBusy() || pathTimer.getElapsedTimeSeconds() > 3.5) {
+                if (!follower.isBusy()|| pathTimer.getElapsedTimeSeconds() > 3.5) {
                     slider.HighChamberBack();
                     setPathState(14);
                 }
@@ -343,11 +344,11 @@ public class SpecimenAuto extends OpMode {
                 if (pathTimer.getElapsedTimeSeconds() > 0.75) {
                     claw.open_wide();
                     follower.setMaxPower(0.6);
-                    follower.followPath(Park);
-                    arm.setPosFold(false);
-                    wrist.setPosFold(false);
+                    follower.followPath(IntakeThirdSpecimen);
+                    arm.setPosSpecimen(false);
+                    wrist.setPosSpecimen(false);
                     slider.InitialPose();
-                    setPathState(-1);
+                    setPathState(141);
                 }
                 break;
             case 141:
@@ -380,7 +381,6 @@ public class SpecimenAuto extends OpMode {
             case 18:
                 if (pathTimer.getElapsedTimeSeconds() > 0.75) {
                     claw.open_wide();
-                    follower.setMaxPower(1.0);
                     follower.followPath(Park);
                     arm.setPosFold(false);
                     wrist.setPosFold(false);

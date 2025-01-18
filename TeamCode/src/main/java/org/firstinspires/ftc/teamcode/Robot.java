@@ -66,14 +66,15 @@ public class Robot {
     public static double arm_pos_chamber = 0.21; //0.65
     public static double arm_pos_chamber_back = 0.64; //0.63
     public static double arm_pos_park = 0.38;
+    public static double arm_back_human = 0.63;
 
 
     // Wrist positions
     public static double wrist_pos_starting = 0.05;
-    public static double wrist_pos_fold = 0.43;//0.65
+    public static double wrist_pos_fold = 0.16;// 0.43 -> 0.65
     public static double wrist_pos_sample  = 0.47;//0.49
     public static double wrist_pos_sample_two = 0.67;
-    public static double wrist_back_deliery = 0.67;
+    public static double wrist_back_human = 0.58;
     public static double wrist_pos_specimen = 0.77;//0.73
     public static double wrist_pos_high_chamber = 0.87; //0.08
     public static double wrist_pos_high_chamber_back = 0.75; //0.76

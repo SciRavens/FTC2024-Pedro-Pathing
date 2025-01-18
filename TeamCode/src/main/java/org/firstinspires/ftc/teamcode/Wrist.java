@@ -69,6 +69,9 @@ public class Wrist {
         setPos(robot.wrist_pos_high_chamber_back, sc_on);
     }
 
+    public void setPosBackHuman(boolean sc_on){
+        setPos(robot.arm_back_human, sc_on);
+    }
     public void setPosAbsolute(double pos)
     {
         robot.servoWrist.setPosition(pos);
