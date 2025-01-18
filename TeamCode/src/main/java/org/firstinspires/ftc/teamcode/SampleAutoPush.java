@@ -33,7 +33,7 @@ public class SampleAutoPush extends OpMode {
     private final Pose pushfirstsamplePose = new Pose(16,117.5, Math.toRadians(0));
     private final Pose strafetosecondsamplePose = new Pose(60, 128, Math.toRadians(0));
     private final Pose pushsecondsamplePose = new Pose(17,128, Math.toRadians(0));
-    private final Pose strafetothirdsamplePose = new Pose(60, 133.5, Math.toRadians(0));
+    private final Pose strafetothirdsamplePose = new Pose(60, 130.5, Math.toRadians(0));
     private final Pose pushthirdsamplePose = new Pose(17,135.5, Math.toRadians(0));
     private final Pose parking = new Pose(62,96,Math.toRadians(0));
 
@@ -148,7 +148,8 @@ public class SampleAutoPush extends OpMode {
                 break;
             case 1:
                 if (pathTimer.getElapsedTimeSeconds() > 1) {
-//                    slider.setPower(0);
+//
+                    follower.setMaxPower(0.6);
                     follower.followPath(scoreSpecimen);
                     setPathState(2);
                 }

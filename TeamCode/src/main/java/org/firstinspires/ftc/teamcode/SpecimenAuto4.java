@@ -33,12 +33,12 @@ public class SpecimenAuto4 extends OpMode {
     private final Pose push7Pose = new Pose(21.000, 13.000, Math.toRadians(0));
     private final Pose push8Pose = new Pose(24.000, 13.000, Math.toRadians(0));
     private final Pose alignwithsecondspecimenPose = new Pose(24, 24, Math.toRadians(0));
-    private final Pose pickupPose = new Pose(23.25, 24, Math.toRadians(0)); //22
-    private final Pose deliversecondspecimenPose = new Pose(44, 67.5,Math.toRadians(0));
+    private final Pose pickupPose = new Pose(23.25, 30, Math.toRadians(0)); //22
+    private final Pose deliversecondspecimenPose = new Pose(48, 67.5,Math.toRadians(0));
     private final Pose deliversecondspecimencontrolpoint = new Pose(20, 69 ,Math.toRadians(0));
     private final Pose pickupthirdspecimencontrolpoint1 = new Pose(20,69, Math.toRadians(0));
     private final Pose pickupthirdspecimencontrolpoint2 = new Pose(45,19, Math.toRadians(0));
-    private final Pose deliverthirdspecimenPose = new Pose(47.5,70, Math.toRadians(0));
+    private final Pose deliverthirdspecimenPose = new Pose(49,70, Math.toRadians(0));
     private final Pose deliverfourthspecimenPose = new Pose(48,70, Math.toRadians(0));
     private final Pose parkPose = new Pose(12,25, Math.toRadians(0));
 
@@ -291,7 +291,7 @@ public class SpecimenAuto4 extends OpMode {
                 break;
             case 8:
                 if (pathTimer.getElapsedTimeSeconds() > 1) {
-                    follower.setMaxPower(0.6);
+                    follower.setMaxPower(1.0);
                     slider.LowChamber();
                     follower.followPath(DeliverSecondSpecimen,true);
                     arm.setPosChamberBack(false);
@@ -300,8 +300,7 @@ public class SpecimenAuto4 extends OpMode {
                 }
                 break;
             case 9:
-                telemetry.addData(" Delivering the Second Specimen:", follower.isBusy());
-                if (!follower.isBusy()|| pathTimer.getElapsedTimeSeconds() > 3.5) {
+                if (!follower.isBusy() || pathTimer.getElapsedTimeSeconds() > 2) {
                     slider.HighChamberBack();
                     setPathState(10);
                 }
@@ -309,6 +308,7 @@ public class SpecimenAuto4 extends OpMode {
             case 10:
                 if (pathTimer.getElapsedTimeSeconds() > 0.75) {
                     claw.open_wide();
+                    follower.setMaxPower(0.8);
                     follower.followPath(IntakeThirdSpecimen);
                     arm.setPosSpecimen(false);
                     wrist.setPosSpecimen(false);
@@ -327,7 +327,7 @@ public class SpecimenAuto4 extends OpMode {
             case 12:
                 if (pathTimer.getElapsedTimeSeconds() > 1.5) {
                     slider.LowChamber();
-                    follower.setMaxPower(0.6);
+                    follower.setMaxPower(1.0);
                     follower.followPath(DeliverThirdSpecimen, true);
                     arm.setPosChamberBack(false);
                     wrist.setPosChamberBack(false);
@@ -335,7 +335,7 @@ public class SpecimenAuto4 extends OpMode {
                 }
                 break;
             case 13:
-                if (!follower.isBusy()|| pathTimer.getElapsedTimeSeconds() > 3.5) {
+                if (!follower.isBusy() || pathTimer.getElapsedTimeSeconds() > 2) {
                     slider.HighChamberBack();
                     setPathState(14);
                 }
@@ -343,7 +343,7 @@ public class SpecimenAuto4 extends OpMode {
             case 14:
                 if (pathTimer.getElapsedTimeSeconds() > 0.75) {
                     claw.open_wide();
-                    follower.setMaxPower(0.6);
+                    follower.setMaxPower(0.8);
                     follower.followPath(IntakeThirdSpecimen);
                     arm.setPosSpecimen(false);
                     wrist.setPosSpecimen(false);
@@ -365,7 +365,7 @@ public class SpecimenAuto4 extends OpMode {
             case 16:
                 if (pathTimer.getElapsedTimeSeconds() > 1.25) {
                     slider.LowChamber();
-                    follower.setMaxPower(0.6);
+                    follower.setMaxPower(1.0);
                     follower.followPath(DeliverFourthSpecimen, true);
                     arm.setPosChamberBack(false);
                     wrist.setPosChamberBack(false);
@@ -373,7 +373,7 @@ public class SpecimenAuto4 extends OpMode {
                 }
                 break;
             case 17:
-                if (!follower.isBusy() || pathTimer.getElapsedTimeSeconds() > 3.5) {
+                if (!follower.isBusy() || pathTimer.getElapsedTimeSeconds() > 2) {
                     slider.HighChamberBack();
                     setPathState(18);
                 }
@@ -381,6 +381,7 @@ public class SpecimenAuto4 extends OpMode {
             case 18:
                 if (pathTimer.getElapsedTimeSeconds() > 0.75) {
                     claw.open_wide();
+                    follower.setMaxPower(1.0);
                     follower.followPath(Park);
                     arm.setPosFold(false);
                     wrist.setPosFold(false);
