@@ -27,9 +27,9 @@ public class RobotTeleop extends LinearOpMode {
     private Follower follower;
     RevBlinkinLedDriver.BlinkinPattern pattern;
     private double slider_pos;
-    private static final double Kp = 0.2;
-    private static final double Ki = 0.1;
-    private static final double Kd = 0.02;
+    private static final double Kp = 0.02;
+    private static final double Ki = 0.0;
+    private static final double Kd = 0.002;
 
     double strafeHeading; // for strafing straight
     boolean strafeHeadingOn = false;
@@ -70,10 +70,8 @@ public class RobotTeleop extends LinearOpMode {
         boolean strafeOnly = false;
         double xInput = Math.abs(gamepad1.left_stick_x) > DEAD_ZONE ? gamepad1.left_stick_x : 0;
         double yInput = Math.abs(gamepad1.left_stick_y) > DEAD_ZONE ? gamepad1.left_stick_y : 0;
-//        if (gamepad1.right_bumper) {
-//            turnToAngle(90);
-//        }
-        if (gamepad1.right_trigger > 0.5 || gamepad1.right_bumper) {
+
+        if (gamepad1.right_trigger > 0.5) {
             follower.setMaxPower(0.25);
         } else if (gamepad1.left_trigger > 0.5) {
             strafeOnly = true;
@@ -99,9 +97,8 @@ public class RobotTeleop extends LinearOpMode {
 
     private void arm_wrist_operate() {
         if (gamepad2.dpad_down) {
-            arm.setPosBackHuman(false);
-            wrist.setPosBackHuman(false);
-            slider.HighChamber();
+            arm.setPosSampleTwo(false);
+            wrist.setPosSampleTwo(false);
         } else if (gamepad2.y) {
             arm.setPosBasket(false);
             wrist.setPosBasket(false);
@@ -109,13 +106,12 @@ public class RobotTeleop extends LinearOpMode {
             slider.HighBasket();
         } else if (gamepad2.x) {
             clawAngle.setHorizontal();
-            arm.setPosFold(false);
-            wrist.setPosFold(false);
+            arm.setPosStarting(false);
+            wrist.setPosStarting(false);
             slider.InitialPose();
         } else if (gamepad2.b) {
             arm.setPosSpecimen(false);
             wrist.setPosSpecimen(false);
-            slider.InitialPose();
         } else if (gamepad2.a) {
             arm.setPosSample(false);
             wrist.setPosSample(false);
@@ -188,7 +184,7 @@ public class RobotTeleop extends LinearOpMode {
         double currentAngle = getHeading(); // Get initial heading
         double error, lastError = 0, totalError = 0;
         double turnPower;
-        double maxTurnPower = 1.0; // Cap rotational power to ensure stability
+        double maxTurnPower = 0.5; // Cap rotational power to ensure stability
 
         // Calculate the target heading (in radians)
         double targetHeading = Math.toRadians(targetAngle) + currentAngle;
