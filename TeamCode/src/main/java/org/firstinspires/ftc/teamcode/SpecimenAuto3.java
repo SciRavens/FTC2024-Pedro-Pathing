@@ -342,7 +342,7 @@ public class SpecimenAuto3 extends OpMode {
             case 14:
                 if (pathTimer.getElapsedTimeSeconds() > 0.75) {
                     claw.open_wide();
-                    follower.setMaxPower(0.6);
+                    follower.setMaxPower(1.0);
                     follower.followPath(Park);
                     arm.setPosFold(false);
                     wrist.setPosFold(false);

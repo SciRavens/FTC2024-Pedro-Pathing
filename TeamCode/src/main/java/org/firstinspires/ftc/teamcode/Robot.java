@@ -58,13 +58,13 @@ public class Robot {
     // Arm positions
     public static double arm_pos_starting = 0.73; //0.75
     public static double arm_pos_fold = arm_pos_starting;
-    public  static double arm_pos_sample = 0.13;//0.39
+    public  static double arm_pos_sample = 0.07;//0.39
     public static double arm_pos_sample_two = 0.3;
-    public static double arm_pos_basket = 0.47; //0.39
-    public static double arm_pos_specimen = 0.09; //0.01
+    public static double arm_pos_basket = 0.41; //0.39
+    public static double arm_pos_specimen = 0.009; //0.01
     public static double arm_pos_autonomous_chamber = 0.225;//0.425
-    public static double arm_pos_chamber = 0.21; //0.65
-    public static double arm_pos_chamber_back = 0.64; //0.63
+    public static double arm_pos_chamber = 0.12; //0.65
+    public static double arm_pos_chamber_back = 0.55; //0.63
     public static double arm_pos_park = 0.38;
     public static double arm_back_human = 0.63;
 
@@ -72,11 +72,11 @@ public class Robot {
     // Wrist positions
     public static double wrist_pos_starting = 0.05;
     public static double wrist_pos_fold = 0.16;// 0.43 -> 0.65
-    public static double wrist_pos_sample  = 0.47;//0.49
+    public static double wrist_pos_sample  = 0.44;//0.49
     public static double wrist_pos_sample_two = 0.67;
     public static double wrist_back_human = 0.58;
-    public static double wrist_pos_specimen = 0.77;//0.73
-    public static double wrist_pos_high_chamber = 0.87; //0.08
+    public static double wrist_pos_specimen = 0.79;//0.73
+    public static double wrist_pos_high_chamber = 0.88; //0.08
     public static double wrist_pos_high_chamber_back = 0.75; //0.76
     public static double wrist_pos_autonomous_chamber = 0.15;
     public static double wrist_pos_basket = 0.4;//0.56
@@ -87,7 +87,7 @@ public class Robot {
     public static int slider_LowBasket_ticks = 2050;
     public static int slider_HighBasket_ticks = 2100; // finished needs testing
     public static int slider_LowChamber_ticks = 1220; //1400
-    public static int slider_HighChamber_ticks = 680; // 675 finished needs testing
+    public static int slider_HighChamber_ticks = 700; // 675 finished needs testing
     public static int slider_HighChamberBack_ticks = 2200; // 675 finished needs testing
 
 
