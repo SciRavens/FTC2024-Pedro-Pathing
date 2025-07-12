@@ -1,8 +1,18 @@
 package org.firstinspires.ftc.teamcode;
 
+
+import org.firstinspires.ftc.teamcode.pedroPathing.follower.*;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Path;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
+
+
+
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @TeleOp(name = "SciRavens-TeleOp")
@@ -14,53 +24,75 @@ public class RobotTeleop extends LinearOpMode {
     public Wrist wrist;
     public Claw claw;
     public ClawAngle clawAngle;
-
+    private Follower follower;
     RevBlinkinLedDriver.BlinkinPattern pattern;
-    Leds leds;
-    private int led_cur = 1;
     private double slider_pos;
+    private static final double Kp = 0.02;
+    private static final double Ki = 0.0;
+    private static final double Kd = 0.002;
+
+    double strafeHeading; // for strafing straight
+    boolean strafeHeadingOn = false;
+
+    private static double Kp_strafing = 0.002;
+    private static double DEAD_ZONE = 0.1;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap, telemetry);
-        robot.follower.startTeleopDrive();
-        slider = new Slider(robot);
-        arm = new Arm(robot);
-        wrist = new Wrist(robot);
-        claw = new Claw(robot);
-        clawAngle = new ClawAngle(robot);
+        follower = new Follower(hardwareMap);
+        follower.setStartingPose(new Pose(0,0,0));
+        follower.startTeleopDrive();
+//        slider = new Slider(robot);
+//        arm = new Arm(robot);
+//        wrist = new Wrist(robot);
+//        claw = new Claw(robot);
+//        clawAngle = new ClawAngle(robot);
 
-//        leds = new Leds(robot);
-//        leds.setPattern(0);
-        arm.setPosStarting(false);
-        wrist.setPosStarting(false);
-        clawAngle.setHorizontal();
+        //arm.setPosStarting(false);
+        //wrist.setPosStarting(false);
+        //clawAngle.setHorizontal();
         waitForStart();
-//        leds.setPattern(led_cur);
-        while(opModeIsActive()) {
+        while (opModeIsActive()) {
             follower_operate();
-            arm.operate();
-            wrist.operate();
-//            slider_operate();
-            slider_joystick();
-            //get_ticks();
-            arm_wrist_operate();
-            claw_operate();
-            //leds_operate();
-            //robot.telemetry.update();
+            //arm.operate();
+            //wrist.operate();
+            //slider_joystick();
+            //arm_wrist_operate();
+            //claw_operate();
+            robot.telemetry.update();
         }
     }
 
 
-    private void follower_operate()
-    {
-        if (gamepad1.left_trigger > 0.5 || gamepad1.right_trigger > 0.5) {
-            robot.follower.setMaxPower(0.25);
+    private void follower_operate() {
+        boolean strafeOnly = false;
+        double xInput = Math.abs(gamepad1.left_stick_x) > DEAD_ZONE ? gamepad1.left_stick_x : 0;
+        double yInput = Math.abs(gamepad1.left_stick_y) > DEAD_ZONE ? gamepad1.left_stick_y : 0;
+
+        if (gamepad1.right_trigger > 0.5) {
+            follower.setMaxPower(0.25);
+        } else if (gamepad1.left_trigger > 0.5) {
+            strafeOnly = true;
+            if (!strafeHeadingOn) {
+                strafeHeading = follower.getPose().getHeading();
+            }
+            // Heading correction
+            double imuHeading = follower.getPose().getHeading();
+            double headingError = strafeHeading - imuHeading; // Target heading is initialized when strafing starts
+            double correction = Kp_strafing * headingError;
+
+            // Adjust movement with IMU and drift correction
+            follower.setTeleOpMovementVectors(xInput, yInput, correction);
         } else {
-            robot.follower.setMaxPower(1.0);
+            follower.setMaxPower(1.0);
         }
-        robot.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x);
-        robot.follower.update();
+        if (!strafeOnly) {
+            strafeHeadingOn = false;
+            follower.setTeleOpMovementVectors(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x);
+        }
+        follower.update();
     }
 
     private void arm_wrist_operate() {
@@ -81,20 +113,19 @@ public class RobotTeleop extends LinearOpMode {
             arm.setPosSpecimen(false);
             wrist.setPosSpecimen(false);
         } else if (gamepad2.a) {
-            arm.setPosSample(true);
-            wrist.setPosSample(true);
-
-        } else if (gamepad2.dpad_up) {
-            // TBD: fix this
-            arm.setPosChamber(false);
-            wrist.setPosHighChamber(false);
-            slider.HighChamber();
+            arm.setPosSample(false);
+            wrist.setPosSample(false);
         } else if (gamepad2.dpad_left) {
             clawAngle.setHorizontal();
         } else if (gamepad2.dpad_right) {
             clawAngle.setVertical();
+        } else if (gamepad2.dpad_up) {
+            slider.LowChamber();
+            arm.setPosChamberBack(false);
+            wrist.setPosChamberBack(false);
         }
     }
+
 
     public void get_ticks() {
         slider_pos = slider.getCurrentPosition();
@@ -110,7 +141,7 @@ public class RobotTeleop extends LinearOpMode {
         } else if (gamepad2.dpad_up) {
             // Go to High Basket
             slider.HighBasket();
-        } else if  (gamepad2.dpad_right) {
+        } else if (gamepad2.dpad_right) {
             // Move to Low Basket
             slider.LowBasket();
         } else if (gamepad2.dpad_left) {
@@ -148,13 +179,53 @@ public class RobotTeleop extends LinearOpMode {
             claw.close();
         }
     }
-    private void leds_operate() {
-        if (gamepad2.right_bumper || gamepad1.right_bumper) {
-            led_cur = (led_cur + 1) % leds.patterns.length;
-            leds.setPattern(led_cur);
-            telemetry.addData("SETTING COLOR", leds.patterns[led_cur].toString());
+
+    private void turnToAngle(double targetAngle) {
+        double currentAngle = getHeading(); // Get initial heading
+        double error, lastError = 0, totalError = 0;
+        double turnPower;
+        double maxTurnPower = 0.5; // Cap rotational power to ensure stability
+
+        // Calculate the target heading (in radians)
+        double targetHeading = Math.toRadians(targetAngle) + currentAngle;
+
+        while (opModeIsActive()) {
+            // Get the current heading
+            currentAngle = getHeading();
+
+            // Calculate error between target and current heading
+            error = targetHeading - currentAngle;
+
+            // Exit loop when the error is within acceptable bounds
+            if (Math.abs(error) < Math.toRadians(1.0)) break;
+
+            // PID calculations
+            totalError += error; // Integral term
+            double derivative = error - lastError; // Derivative term
+            turnPower = Kp * error + Ki * totalError + Kd * derivative;
+
+            // Limit the turn power
+            turnPower = Math.max(-maxTurnPower, Math.min(maxTurnPower, turnPower));
+
+            // Set movement vectors to rotate the robot
+            // `x` and `y` are zero for pure rotation, and `turnPower` is for rotation
+            follower.setTeleOpMovementVectors(0, 0, turnPower);
+
+            lastError = error;
+
+            // Debugging information
+            telemetry.addData("Target Heading (deg)", Math.toDegrees(targetHeading));
+            telemetry.addData("Current Heading (deg)", Math.toDegrees(currentAngle));
+            telemetry.addData("Turn Power", turnPower);
             telemetry.update();
         }
+
+        // Stop movement by zeroing the vectors
+        follower.setTeleOpMovementVectors(0, 0, 0);
+    }
+
+    private double getHeading() {
+        // Retrieve the heading from Follower's pose
+        return follower.getPose().getHeading(); // Assumes heading is in radians
     }
 }
-

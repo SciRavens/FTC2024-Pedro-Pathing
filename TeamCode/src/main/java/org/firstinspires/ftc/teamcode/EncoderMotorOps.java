@@ -17,7 +17,7 @@ public class EncoderMotorOps {
     private int tolerance = 10;
     private int pos_min = 0;
     private int pos_max;
-    private double auto_power = 0.5;
+    private double auto_power = 1.0;
     private double cur_manual_power = 0.5;
     private int cur_position = 0;
 
@@ -86,8 +86,10 @@ public class EncoderMotorOps {
           //  return;
         //}
         cur_position = motor.getCurrentPosition();
-        motor.setPower(-power);
-        cur_manual_power = -power;
+        if (!(robot.limitSwitch.isPressed() && power > 0.0)) {
+            motor.setPower(-power);
+            cur_manual_power = -power;
+        }
 
         robot.telemetry.addData("Slider Curr tick:", cur_position);
     }
@@ -125,6 +127,14 @@ public class EncoderMotorOps {
         if (!inAutoOp) {
             return;
         }
+        /*
+        if (!motor.isBusy()) {
+            motor.setPower(0);
+            inAutoOp = false;
+            return;
+        }
+
+         */
         cur_position = motor.getCurrentPosition();
         telemetry.addData("Autoop CHECK Count: ", count++);
         telemetry.addData("Autoop TICKS: ", cur_position);
@@ -135,10 +145,17 @@ public class EncoderMotorOps {
             //if (cur_position < 0) {
             //    motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             //}
-            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+           // motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             motor.setPower(0);
             telemetry.addData("Autoop CHECK, STOPPED THE MOTOR:", stopped++);
         }
+    }
+
+    public void stopAndReset() {
+        motor.setPower(0);
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        cur_position = 0;
+
     }
     public void manualDefaultStop() {
         if (!inAutoOp) {

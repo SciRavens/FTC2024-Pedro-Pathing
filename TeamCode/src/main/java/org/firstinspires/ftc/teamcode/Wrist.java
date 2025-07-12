@@ -57,12 +57,21 @@ public class Wrist {
         setPos(robot.wrist_pos_high_chamber, sc_on);
     }
    // public void setPosLowChamber() {robot.servoWrist.setPosition(robot.wrist_pos_low_chamber);}
-
+   public void setPosPark(boolean sc_on){
+       setPos(robot.wrist_pos_park, sc_on);
+   }
     public void setPosBasket(boolean sc_on)
     {
         setPos(robot.wrist_pos_basket, sc_on);
     }
+    public void setPosChamberBack(boolean sc_on)
+    {
+        setPos(robot.wrist_pos_high_chamber_back, sc_on);
+    }
 
+    public void setPosBackHuman(boolean sc_on){
+        setPos(robot.arm_back_human, sc_on);
+    }
     public void setPosAbsolute(double pos)
     {
         robot.servoWrist.setPosition(pos);
@@ -91,6 +100,6 @@ public class Wrist {
         robot.telemetry.addData("Wrist Speed Control: ", speed_control);
     }
     public double getCurPos() {
-        return cur_pos;
+        return robot.servoWrist.getPosition();
     }
 }

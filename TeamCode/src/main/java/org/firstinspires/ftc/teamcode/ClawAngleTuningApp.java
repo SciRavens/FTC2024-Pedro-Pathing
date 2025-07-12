@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-@Disabled
+//@Disabled
 @TeleOp(name = "ClawAngleTuning")
 public class ClawAngleTuningApp extends LinearOpMode {
     public Robot robot;

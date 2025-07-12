@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode;
+import android.sax.StartElementListener;
+
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.sun.source.doctree.StartElementTree;
+
 import androidx.annotation.NonNull;
 
 
@@ -26,14 +30,22 @@ public class Arm {
         if (sc_on) {
             setSCTarget(pos);
         } else {
-            robot.servoArmLeft.setPosition(pos);
-            robot.servoArmRight.setPosition(pos);
-            cur_pos = pos;
+            double left_pos = robot.servoArmLeft.getPosition();
+            double right_pos = robot.servoArmLeft.getPosition();
+            if (left_pos == right_pos) {
+                robot.servoArmLeft.setPosition(pos);
+                robot.servoArmRight.setPosition(pos);
+                cur_pos = pos;
+                robot.telemetry.addData("ARM SERVOS Right:", robot.servoArmRight.getPosition());
+                robot.telemetry.addData("ARM SERVOS Left:", robot.servoArmLeft.getPosition());
+            } else {
+                robot.telemetry.addData("ARM SERVOS ARE NOT SYNC!!!!", left_pos);
+            }
         }
     }
     public double getCurPos()
     {
-        return cur_pos;
+        return robot.servoArmLeft.getPosition();
     }
 
     public void setPosStarting(boolean sc_on){
@@ -57,6 +69,16 @@ public class Arm {
     public void setPosBasket(boolean sc_on){
         setPosforBoth(robot.arm_pos_basket, sc_on);
         }
+    public void setPosPark(boolean sc_on){
+        setPosforBoth(robot.arm_pos_park, sc_on);
+    }
+    public void setPosChamberBack(boolean sc_on){
+        setPosforBoth(robot.arm_pos_chamber_back, sc_on);
+    }
+
+    public void setPosBackHuman(boolean sc_on){
+        setPosforBoth(robot.arm_back_human, sc_on);
+    }
     public void setPosAbsolute(double pos) {
         setPosforBoth(pos, false);
     }
@@ -66,6 +88,7 @@ public class Arm {
         speed_control = true;
         this.target = target;
     }
+
     /*
     public void setChamberPush() {
         setPosforBoth(robot.arm_pos_autonomous_chamber);
