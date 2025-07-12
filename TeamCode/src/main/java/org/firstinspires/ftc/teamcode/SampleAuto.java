@@ -105,7 +105,7 @@ public class SampleAuto extends OpMode {
                         new Point(backUpFromDroppingFirstSamplePose.getX(), backUpFromDroppingFirstSamplePose.getY(), Point.CARTESIAN)
                 )
         )
-                .setConstantHeadingInterpolation(Math.toRadians(155))
+                .setConstantHeadingInterpolation(Math.toRadians(135))
                 .build();
         return p;
     }
@@ -119,7 +119,7 @@ public class SampleAuto extends OpMode {
                                 new Point(goToPickUpSecondSamplePose.getX(), goToPickUpSecondSamplePose.getY(), Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(155), Math.toRadians(0))
+                .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(0))
                 .build();
         return p;
     }
@@ -133,7 +133,7 @@ public class SampleAuto extends OpMode {
                                 new Point(alignWithTheBasketToDeliverTheSecondSamplePose.getX(), alignWithTheBasketToDeliverTheSecondSamplePose.getY(), Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(115))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(135))
                 .build();
         return p;
     }
@@ -147,7 +147,7 @@ public class SampleAuto extends OpMode {
                         new Point(deliversecondsamplePose.getX(), deliversecondsamplePose.getY(), Point.CARTESIAN)
                 )
         )
-                .setConstantHeadingInterpolation(Math.toRadians(115))
+                .setConstantHeadingInterpolation(Math.toRadians(135))
                 .build();
         return p;
     }
@@ -161,7 +161,7 @@ public class SampleAuto extends OpMode {
                                 new Point(backUpFromDroppingSecondSamplePose.getX(), backUpFromDroppingSecondSamplePose.getY(), Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(115), Math.toRadians(90))
+                .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(90))
                 .build();
         return p;
     }
@@ -255,8 +255,6 @@ public class SampleAuto extends OpMode {
                 break;
             case 1:
                 if (pathTimer.getElapsedTimeSeconds() > 2) {
-                    follower.setMaxPower(1.0);
-                    slider.setPower(0);
                     follower.followPath(scoreSpecimen);
                     setPathState(2);
                 }
@@ -278,7 +276,6 @@ public class SampleAuto extends OpMode {
                 break;
             case 4:
                 if (pathTimer.getElapsedTimeSeconds() > 1) {
-                    slider.setPower(0);
                     follower.setMaxPower(1.0);
                     follower.followPath(StrafeToFirstSample);
                     setPathState(5);
@@ -290,6 +287,7 @@ public class SampleAuto extends OpMode {
                     arm.setPosSample(true);
                     claw.open();
                     wrist.setPosSample(false);
+                    slider.setPower(0);
                     setPathState(6);
                 }
                 break;
@@ -310,7 +308,6 @@ public class SampleAuto extends OpMode {
                 break;
             case 62:
                 if (pathTimer.getElapsedTimeSeconds() > 2) {
-                    slider.setPower(0);
                     follower.followPath(GoToDeliverFirstSample);
                     setPathState(7);
                 }
