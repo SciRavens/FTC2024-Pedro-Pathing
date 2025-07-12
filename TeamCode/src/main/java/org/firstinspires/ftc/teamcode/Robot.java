@@ -114,18 +114,34 @@ public class Robot {
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+//
+//        motorSlider = hardwareMap.get(DcMotorEx.class, "slides");
+//        motorSlider.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        limitSwitch = hardwareMap.get(TouchSensor.class, "limitSwitch");
+//
+//        servoArmLeft = hardwareMap.get(Servo.class, "left_arm");
+//        servoArmRight = hardwareMap.get(Servo.class, "right_arm");
+//        servoWrist = hardwareMap.get(Servo.class, "claw_arm");
+//        servoCL = hardwareMap.get(Servo.class, "claw_left");
+//        servoCR = hardwareMap.get(Servo.class, "claw_right");
 
-        motorSlider = hardwareMap.get(DcMotorEx.class, "sliders");
-        motorSlider.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        limitSwitch = hardwareMap.get(TouchSensor.class, "limitSwitch");
+//        voltageSensor = hardwareMap.voltageSensor.iterator().next();
+    }
 
-        servoArmLeft = hardwareMap.get(Servo.class, "left_arm");
-        servoArmRight = hardwareMap.get(Servo.class, "right_arm");
-        servoWrist = hardwareMap.get(Servo.class, "claw_arm");
-        servoCL = hardwareMap.get(Servo.class, "claw_left");
-        servoCR = hardwareMap.get(Servo.class, "claw_right");
+    // positive power = right turn
+    // negative power = left turn
+    public void turn(double power) {
+        this.leftFront.setPower(power);
+        this.leftRear.setPower(power);
+        this.rightFront.setPower(-power);
+        this.rightRear.setPower(-power);
 
-        voltageSensor = hardwareMap.voltageSensor.iterator().next();
+    }
+    public void forward(double power) {
+        this.leftFront.setPower(power);
+        this.leftRear.setPower(power);
+        this.rightFront.setPower(power);
+        this.rightRear.setPower(power);
     }
 
 }

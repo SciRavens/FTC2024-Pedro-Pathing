@@ -34,7 +34,7 @@ public class SpecimenAuto3 extends OpMode {
     private final Pose push8Pose = new Pose(24.000, 13.000, Math.toRadians(0));
     private final Pose alignwithsecondspecimenPose = new Pose(24, 24, Math.toRadians(0));
     private final Pose pickupPose = new Pose(23.25, 24, Math.toRadians(0)); //22
-    private final Pose deliversecondspecimenPose = new Pose(44, 67.5,Math.toRadians(0));
+    private final Pose deliversecondspecimenPose = new Pose(46, 67.5,Math.toRadians(0));
     private final Pose deliversecondspecimencontrolpoint = new Pose(20, 69 ,Math.toRadians(0));
     private final Pose pickupthirdspecimencontrolpoint1 = new Pose(20,69, Math.toRadians(0));
     private final Pose pickupthirdspecimencontrolpoint2 = new Pose(45,19, Math.toRadians(0));

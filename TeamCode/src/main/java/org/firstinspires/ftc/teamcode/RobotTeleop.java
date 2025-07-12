@@ -44,23 +44,23 @@ public class RobotTeleop extends LinearOpMode {
         follower = new Follower(hardwareMap);
         follower.setStartingPose(new Pose(0,0,0));
         follower.startTeleopDrive();
-        slider = new Slider(robot);
-        arm = new Arm(robot);
-        wrist = new Wrist(robot);
-        claw = new Claw(robot);
-        clawAngle = new ClawAngle(robot);
+//        slider = new Slider(robot);
+//        arm = new Arm(robot);
+//        wrist = new Wrist(robot);
+//        claw = new Claw(robot);
+//        clawAngle = new ClawAngle(robot);
 
-        arm.setPosStarting(false);
-        wrist.setPosStarting(false);
-        clawAngle.setHorizontal();
+        //arm.setPosStarting(false);
+        //wrist.setPosStarting(false);
+        //clawAngle.setHorizontal();
         waitForStart();
         while (opModeIsActive()) {
             follower_operate();
-            arm.operate();
-            wrist.operate();
-            slider_joystick();
-            arm_wrist_operate();
-            claw_operate();
+            //arm.operate();
+            //wrist.operate();
+            //slider_joystick();
+            //arm_wrist_operate();
+            //claw_operate();
             robot.telemetry.update();
         }
     }
